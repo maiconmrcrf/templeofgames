@@ -1,39 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Temple of Games — Flask + Asaas PIX + Admin.
-O token vem da variável de ambiente ASAAS_API_KEY configurada no Render."""
+"""Vakinha Bet of Games — Flask + PIX estático (sem Asaas)."""
 
 import os, json
 from datetime import datetime
-import requests
+from decimal import Decimal, InvalidOperation
 from flask import Flask, request, jsonify, send_from_directory
 
 app = Flask(__name__, static_folder="public", static_url_path="")
 
-ACCESS_TOKEN = os.environ.get("ASAAS_API_KEY", "").strip()
+# ============ CONFIG PIX ============
+PIX_KEY       = "6377167@vakinha.com.br"
+MERCHANT_NAME = "PAGAMENTO"
+MERCHANT_CITY = "BRASIL"
+VALOR_MINIMO  = 5.00
+ADMIN_SENHA   = "temple2026"
 
-if ACCESS_TOKEN and "_prod_" in ACCESS_TOKEN:
-    BASE_URL, AMBIENTE = "https://api.asaas.com", "PRODUÇÃO"
-elif ACCESS_TOKEN and "_sandbox_" in ACCESS_TOKEN:
-    BASE_URL, AMBIENTE = "https://api-sandbox.asaas.com", "SANDBOX"
-elif ACCESS_TOKEN:
-    BASE_URL, AMBIENTE = "https://api.asaas.com", "PRODUÇÃO"
-else:
-    BASE_URL, AMBIENTE = "https://api.asaas.com", "SEM TOKEN"
-
-HEADERS = {"access_token": ACCESS_TOKEN, "Content-Type": "application/json"}
-VALOR_MINIMO = 5.00
-ADMIN_SENHA = "temple2026"
-
+# ============ ARQUIVOS ============
 BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
 USERS_FILE  = os.path.join(BASE_DIR, "usuarios.json")
 PIX_FILE    = os.path.join(BASE_DIR, "pix_pendentes.json")
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
 
 CONFIG_PADRAO = {
-    "empresa": {"nome": "Temple of Games",
-                "descricao_pix": "Temple of Games - Créditos",
-                "logo_emoji": "🏛️"},
+    "empresa": {"nome": "Vakinha Bet of Games",
+                "descricao_pix": "Vakinha Bet of Games - Créditos",
+                "logo_emoji": "🎰"},
     "banner": "ONLINE CASINO GAMES",
     "cores": {"dourado": "#d4af37", "dourado_claro": "#f0c040"},
     "jogos": [
@@ -85,14 +77,6 @@ def get_config():
         return CONFIG_PADRAO
     for k, v in CONFIG_PADRAO.items():
         if k not in cfg: cfg[k] = v
-
-    # MIGRAÇÃO: força atualizar os jogos se a versão antiga estiver salva
-    versao_atual = cfg.get("_versao_jogos", 0)
-    if versao_atual < 4:
-        cfg["jogos"] = CONFIG_PADRAO["jogos"]
-        cfg["_versao_jogos"] = 4
-        salvar_json(CONFIG_FILE, cfg)
-
     return cfg
 
 
@@ -102,6 +86,45 @@ def get_ip_cliente():
     return request.remote_addr or "desconhecido"
 
 
+# ============ PIX (BR Code) ============
+def campo(tag, valor):
+    valor = str(valor)
+    return f"{tag}{len(valor):02d}{valor}"
+
+
+def crc16(payload):
+    crc = 0xFFFF
+    for byte in payload.encode("utf-8"):
+        crc ^= byte << 8
+        for _ in range(8):
+            if crc & 0x8000:
+                crc = ((crc << 1) ^ 0x1021) & 0xFFFF
+            else:
+                crc = (crc << 1) & 0xFFFF
+    return f"{crc:04X}"
+
+
+def gerar_pix(valor, txid="***"):
+    valor_pix = f"{float(valor):.2f}"
+    merchant_account = campo("00", "br.gov.bcb.pix") + campo("01", PIX_KEY)
+    payload = (
+        campo("00", "01") +
+        campo("01", "11") +
+        campo("26", merchant_account) +
+        campo("52", "0000") +
+        campo("53", "986") +
+        campo("54", valor_pix) +
+        campo("58", "BR") +
+        campo("59", MERCHANT_NAME) +
+        campo("60", MERCHANT_CITY) +
+        campo("62", campo("05", txid)) +
+        "6304"
+    )
+    payload += crc16(payload)
+    return payload
+
+
+# ============ ROTAS ============
 @app.route("/")
 def root(): return send_from_directory("public", "index.html")
 
@@ -112,13 +135,6 @@ def static_files(path): return send_from_directory("public", path)
 
 @app.route("/api/config")
 def api_get_config(): return jsonify(get_config())
-
-
-@app.route("/api/saldo/<email>")
-def api_saldo(email):
-    u = ler_json(USERS_FILE, {}).get(email.lower())
-    if not u: return jsonify({"saldo": 0})
-    return jsonify({"saldo": u.get("saldo", 0.0)})
 
 
 @app.route("/api/usuarios", methods=["GET"])
@@ -187,117 +203,39 @@ def historico_usuario(email):
     return jsonify(u.get("historico", []))
 
 
-@app.route("/api/testar-token")
-def testar_token():
-    if not ACCESS_TOKEN:
-        return jsonify({"ok": False, "erro": "Token não configurado. Defina ASAAS_API_KEY no Render."})
-    try:
-        r = requests.get(f"{BASE_URL}/v3/customers?limit=1", headers=HEADERS, timeout=15)
-        return jsonify({"ok": r.status_code == 200, "status_code": r.status_code,
-                        "ambiente": AMBIENTE, "base_url": BASE_URL,
-                        "token_prefixo": ACCESS_TOKEN[:30] + "...",
-                        "token_tamanho": len(ACCESS_TOKEN),
-                        "resposta": r.text[:400]})
-    except Exception as e:
-        return jsonify({"ok": False, "erro": str(e), "ambiente": AMBIENTE})
-
-
-def asaas_cadastrar_cliente(nome, cpf, email):
-    r = requests.post(f"{BASE_URL}/v3/customers",
-        json={"name": nome, "cpfCnpj": cpf, "email": email, "notificationDisabled": True},
-        headers=HEADERS, timeout=30)
-    if r.status_code == 200: return r.json().get("id"), None
-    try: erro = r.json().get("errors", [{}])[0].get("description", "Erro")
-    except Exception: erro = r.text[:300]
-    return None, f"{r.status_code} - {erro}"
-
-
-def asaas_criar_cobranca(customer_id, valor, descricao):
-    r = requests.post(f"{BASE_URL}/v3/payments",
-        json={"customer": customer_id, "billingType": "PIX",
-              "dueDate": datetime.now().strftime("%Y-%m-%d"),
-              "value": round(valor, 2), "description": descricao,
-              "postalService": False},
-        headers=HEADERS, timeout=30)
-    if r.status_code == 200: return r.json(), None
-    try: erro = r.json().get("errors", [{}])[0].get("description", "Erro")
-    except Exception: erro = r.text[:300]
-    return None, f"{r.status_code} - {erro}"
-
-
+# ============ CRIAR PIX (novo) ============
 @app.route("/api/criar-pix", methods=["POST"])
 def api_criar_pix():
-    if not ACCESS_TOKEN:
-        return jsonify({"erro": "Token do Asaas não configurado no servidor."}), 500
-
     data = request.get_json() or {}
-    try: valor = float(data.get("valor", 0))
-    except (TypeError, ValueError): return jsonify({"erro": "Valor inválido."}), 400
+    try:
+        valor = float(data.get("valor", 0))
+    except (TypeError, ValueError):
+        return jsonify({"erro": "Valor inválido."}), 400
     if valor < VALOR_MINIMO:
         return jsonify({"erro": f"Valor mínimo: R$ {VALOR_MINIMO:.2f}"}), 400
 
-    cfg = get_config()
-    emp = cfg.get("empresa", {})
-    nome_emp = emp.get("nome", "Temple of Games")
-    desc_pix = emp.get("descricao_pix", f"{nome_emp} - Créditos")
-
-    customer_id, err = asaas_cadastrar_cliente(nome_emp, "11144477735",
-                                               "cliente@templegames.demo")
-    if not customer_id:
-        return jsonify({"erro": f"Asaas (cliente): {err}"}), 500
-
-    cobranca, err = asaas_criar_cobranca(customer_id, valor, desc_pix)
-    if not cobranca:
-        return jsonify({"erro": f"Asaas (cobrança): {err}"}), 500
-    payment_id = cobranca.get("id")
-
-    try:
-        r = requests.get(f"{BASE_URL}/v3/payments/{payment_id}/pixQrCode",
-                         headers=HEADERS, timeout=20)
-        if r.status_code >= 400:
-            return jsonify({"erro": f"Asaas (QR): {r.text[:300]}"}), 500
-        qr = r.json()
-    except Exception as e:
-        return jsonify({"erro": f"Falha no QR: {e}"}), 500
-
     email_user = (data.get("email") or "").strip().lower()
+    txid = email_user[:20].replace("@", "").replace(".", "") or "***"
+    codigo = gerar_pix(valor, txid=txid[:25])
+
+    # Salva como pendente
     pend = ler_json(PIX_FILE, {})
-    pend[payment_id] = {"email": email_user, "valor": valor,
-                        "criado_em": datetime.now().isoformat(), "status": "PENDING"}
+    chave = f"local_{datetime.now().strftime('%Y%m%d%H%M%S')}_{email_user}"
+    pend[chave] = {
+        "email": email_user, "valor": valor,
+        "criado_em": datetime.now().isoformat(), "status": "PENDENTE",
+        "codigo": codigo
+    }
     salvar_json(PIX_FILE, pend)
 
-    return jsonify({"payment_id": payment_id, "encodedImage": qr.get("encodedImage", ""),
-                    "payload": qr.get("payload", ""),
-                    "expirationDate": qr.get("expirationDate", "")})
+    return jsonify({
+        "payment_id": chave,
+        "payload": codigo,
+        "encodedImage": ""
+    })
 
 
-@app.route("/api/verificar-pagamento/<payment_id>")
-def verificar_pagamento(payment_id):
-    try:
-        r = requests.get(f"{BASE_URL}/v3/payments/{payment_id}", headers=HEADERS, timeout=20)
-        if r.status_code >= 400: return jsonify({"erro": r.text[:300]}), 500
-        d = r.json(); status = d.get("status")
-        if status in ("RECEIVED", "CONFIRMED", "RECEIVED_IN_CASH"):
-            pend = ler_json(PIX_FILE, {})
-            info = pend.get(payment_id)
-            if info and info.get("status") != "PAGO":
-                users = ler_json(USERS_FILE, {})
-                u = users.get(info["email"])
-                if u:
-                    u["saldo"] = round(u.get("saldo", 0.0) + info["valor"], 2)
-                    u.setdefault("historico", []).insert(0, {
-                        "tipo": "Depósito PIX", "valor": info["valor"],
-                        "data": datetime.now().isoformat()})
-                    u["historico"] = u["historico"][:50]
-                    salvar_json(USERS_FILE, users)
-                info["status"] = "PAGO"
-                info["pago_em"] = datetime.now().isoformat()
-                salvar_json(PIX_FILE, pend)
-        return jsonify({"status": status, "value": d.get("value")})
-    except Exception as e:
-        return jsonify({"erro": str(e)}), 500
-
-
+# ============ ADMIN ============
 ADMIN_HTML = """<!DOCTYPE html><html><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin</title>
 <style>
@@ -335,24 +273,16 @@ tr:hover{background:#111}
 .salvar-bar{position:fixed;bottom:0;left:0;right:0;background:#111;padding:12px;border-top:1px solid #333;display:flex;gap:10px}
 .salvar-bar button{flex:1;margin:0}
 </style></head><body>
-<h1>🏛️ Painel Admin</h1>
+<h1>🎰 Painel Admin</h1>
 <div class="tabs">
   <div class="tab ativo" onclick="mostrarAba('stats', this)">📊 Stats</div>
   <div class="tab" onclick="mostrarAba('config', this)">⚙️ Config</div>
   <div class="tab" onclick="mostrarAba('jogos', this)">🎰 Jogos</div>
   <div class="tab" onclick="mostrarAba('users', this)">👥 Usuários</div>
+  <div class="tab" onclick="mostrarAba('pix', this)">💰 PIX Pendentes</div>
 </div>
 <div class="painel ativo" id="painel-stats">
   <div class="stats" id="stats"></div>
-  <div class="card">
-    <h2 style="margin-top:0">💡 Como usar</h2>
-    <p style="font-size:13px;color:#9ca3af;line-height:1.6">
-      • Aba <b>Config</b>: edite nome, descrição do PIX, banner e cores.<br>
-      • Aba <b>Jogos</b>: adicione, edite ou remova jogos.<br>
-      • Aba <b>Usuários</b>: veja todos os cadastros.<br>
-      • Tudo é salvo em <code>config.json</code>.
-    </p>
-  </div>
 </div>
 <div class="painel" id="painel-config">
   <div class="card">
@@ -373,7 +303,15 @@ tr:hover{background:#111}
 <div class="painel" id="painel-users">
   <h2>👥 Usuários</h2>
   <div style="overflow-x:auto;"><table id="tabela-users">
-    <thead><tr><th>Nome</th><th>E-mail</th><th>CPF</th><th>Saldo</th><th>IP</th><th>Data</th></tr></thead>
+    <thead><tr><th>Nome</th><th>E-mail</th><th>CPF</th><th>Saldo</th><th>IP</th><th>Data</th><th>Ação</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
+</div>
+<div class="painel" id="painel-pix">
+  <h2>💰 PIX Pendentes</h2>
+  <p style="font-size:12px;color:#9ca3af;margin-bottom:12px;">Como o PIX é estático, você precisa confirmar manualmente quando receber.</p>
+  <div style="overflow-x:auto;"><table id="tabela-pix">
+    <thead><tr><th>Usuário</th><th>Valor</th><th>Criado em</th><th>Status</th><th>Ação</th></tr></thead>
     <tbody></tbody>
   </table></div>
 </div>
@@ -384,13 +322,13 @@ tr:hover{background:#111}
 </div>
 <script>
 const SENHA = new URLSearchParams(location.search).get('s');
-const AMB = "{AMBIENTE}";
 let cfg = {};
 function mostrarAba(nome, el){
   document.querySelectorAll('.painel').forEach(p=>p.classList.remove('ativo'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('ativo'));
   document.getElementById('painel-'+nome).classList.add('ativo');
   el.classList.add('ativo');
+  if(nome==='pix') carregarPIX();
 }
 function setMsg(txt, ok){
   const m=document.getElementById('msg'); m.textContent=txt;
@@ -405,7 +343,7 @@ async function carregar(){
   document.getElementById('stats').innerHTML =
     '<div class="stat"><b>Usuários</b><span>'+total+'</span></div>'+
     '<div class="stat"><b>Saldo</b><span>R$ '+saldoTotal.toFixed(2)+'</span></div>'+
-    '<div class="stat"><b>Ambiente</b><span style="font-size:14px;">'+AMB+'</span></div>';
+    '<div class="stat"><b>Sistema</b><span style="font-size:14px;">PIX Estático</span></div>';
   document.getElementById('cfg_nome').value    = cfg.empresa.nome || '';
   document.getElementById('cfg_desc').value    = cfg.empresa.descricao_pix || '';
   document.getElementById('cfg_logo').value    = cfg.empresa.logo_emoji || '';
@@ -433,14 +371,50 @@ function remJogo(i){ if(confirm('Remover?')){ cfg.jogos.splice(i,1); renderJogos
 function renderUsers(users){
   const tb=document.querySelector('#tabela-users tbody');
   const arr = Object.entries(users);
-  if(!arr.length){ tb.innerHTML='<tr><td colspan="6">Nenhum.</td></tr>'; return; }
+  if(!arr.length){ tb.innerHTML='<tr><td colspan="7">Nenhum.</td></tr>'; return; }
   tb.innerHTML = arr.map(function(p){
     const e=p[0], u=p[1];
     return '<tr><td>'+(u.nome||'—')+'</td><td>'+e+'</td><td>'+(u.cpf||'—')+'</td>'+
       '<td style="color:#22c55e">R$ '+(u.saldo||0).toFixed(2)+'</td>'+
       '<td>'+(u.ip_capturado||'—')+'</td>'+
-      '<td style="color:#666">'+((u.criado_em||'').slice(0,16))+'</td></tr>';
+      '<td style="color:#666">'+((u.criado_em||'').slice(0,16))+'</td>'+
+      '<td><button class="btn-green" style="padding:4px 8px;font-size:11px;margin:0;" onclick="addSaldo(\\''+e+'\\')">+ R$</button></td></tr>';
   }).join('');
+}
+async function addSaldo(email){
+  const v = prompt("Quanto adicionar de saldo para " + email + "?");
+  if(!v) return;
+  const valor = parseFloat(v.replace(",", "."));
+  if(!valor || valor <= 0) return alert("Valor inválido");
+  const r = await fetch('/api/usuarios/'+encodeURIComponent(email)+'/saldo', {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({delta: valor, motivo: "Depósito PIX (manual)"})
+  });
+  if(r.ok){ setMsg('✅ Saldo adicionado!', true); carregar(); }
+  else setMsg('❌ Erro', false);
+}
+async function carregarPIX(){
+  const pix = await (await fetch('/api/pix-pendentes')).json();
+  const tb = document.querySelector('#tabela-pix tbody');
+  const arr = Object.entries(pix);
+  if(!arr.length){ tb.innerHTML='<tr><td colspan="5">Nenhum PIX pendente.</td></tr>'; return; }
+  tb.innerHTML = arr.map(function(p){
+    const id=p[0], d=p[1];
+    const st = d.status==='PAGO' ? 'PAGO ✅' : 'PENDENTE ⏳';
+    return '<tr><td>'+d.email+'</td><td>R$ '+d.valor.toFixed(2)+'</td>'+
+      '<td style="color:#666">'+((d.criado_em||'').slice(0,16))+'</td>'+
+      '<td>'+st+'</td>'+
+      '<td><button class="btn-green" style="padding:4px 8px;font-size:11px;margin:0;" onclick="confirmarPIX(\\''+id+'\\')">Confirmar</button></td></tr>';
+  }).join('');
+}
+async function confirmarPIX(id){
+  if(!confirm("Confirmar que o PIX foi recebido?")) return;
+  const r = await fetch('/admin/confirmar-pix?s='+SENHA, {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({id: id})
+  });
+  if(r.ok){ setMsg('✅ PIX confirmado!', true); carregarPIX(); carregar(); }
+  else setMsg('❌ Erro', false);
 }
 async function salvarTudo(){
   cfg.empresa.nome = document.getElementById('cfg_nome').value;
@@ -469,7 +443,7 @@ def admin_panel():
         <input name='s' type='password' placeholder='Senha' style='padding:10px;font-size:16px'>
         <button type='submit' style='padding:10px 20px;background:#d4af37;border:none;font-weight:bold'>Entrar</button>
         </form></body></html>""", 401
-    return ADMIN_HTML.replace("{AMBIENTE}", AMBIENTE)
+    return ADMIN_HTML
 
 
 @app.route("/admin/salvar", methods=["POST"])
@@ -480,12 +454,42 @@ def admin_salvar():
     return jsonify({"ok": True})
 
 
+@app.route("/api/pix-pendentes", methods=["GET"])
+def api_pix_pendentes():
+    return jsonify(ler_json(PIX_FILE, {}))
+
+
+@app.route("/admin/confirmar-pix", methods=["POST"])
+def admin_confirmar_pix():
+    if request.args.get("s", "") != ADMIN_SENHA:
+        return jsonify({"erro": "Senha inválida"}), 401
+    data = request.get_json() or {}
+    pid = data.get("id")
+    pix = ler_json(PIX_FILE, {})
+    info = pix.get(pid)
+    if not info: return jsonify({"erro": "PIX não encontrado"}), 404
+    if info.get("status") == "PAGO": return jsonify({"ok": True})
+    users = ler_json(USERS_FILE, {})
+    u = users.get(info["email"])
+    if u:
+        u["saldo"] = round(u.get("saldo", 0.0) + info["valor"], 2)
+        u.setdefault("historico", []).insert(0, {
+            "tipo": "Depósito PIX", "valor": info["valor"],
+            "data": datetime.now().isoformat()})
+        u["historico"] = u["historico"][:50]
+        salvar_json(USERS_FILE, users)
+    info["status"] = "PAGO"
+    info["pago_em"] = datetime.now().isoformat()
+    salvar_json(PIX_FILE, pix)
+    return jsonify({"ok": True})
+
+
 if __name__ == "__main__":
     get_config()
     port = int(os.environ.get("PORT", 8080))
     print("=" * 60)
-    print(f"  🏛️  TEMPLE OF GAMES — {AMBIENTE}")
+    print("  🎰 VAKINHA BET OF GAMES — Servidor rodando")
     print(f"  Porta: {port}")
-    print(f"  Token: {len(ACCESS_TOKEN)} chars" if ACCESS_TOKEN else "  Token: NÃO CONFIGURADO")
+    print(f"  PIX: {PIX_KEY}")
     print("=" * 60)
     app.run(host="0.0.0.0", port=port, debug=False)
