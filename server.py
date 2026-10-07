@@ -21,6 +21,7 @@ BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
 USERS_FILE  = os.path.join(BASE_DIR, "usuarios.json")
 PIX_FILE    = os.path.join(BASE_DIR, "pix_pendentes.json")
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
+VISITS_FILE = os.path.join(BASE_DIR, "visitas.json")
 
 CONFIG_PADRAO = {
     "empresa": {"nome": "Vakinha Bet of Games",
@@ -131,6 +132,24 @@ def root(): return send_from_directory("public", "index.html")
 
 @app.route("/<path:path>")
 def static_files(path): return send_from_directory("public", path)
+
+
+@app.route("/api/visita", methods=["POST"])
+def api_visita():
+    v = ler_json(VISITS_FILE, {"total": 0, "hoje": 0, "data": ""})
+    hoje = datetime.now().strftime("%Y-%m-%d")
+    if v.get("data") != hoje:
+        v["data"] = hoje
+        v["hoje"] = 0
+    v["total"] = v.get("total", 0) + 1
+    v["hoje"] = v.get("hoje", 0) + 1
+    salvar_json(VISITS_FILE, v)
+    return jsonify({"ok": True})
+
+
+@app.route("/api/visitas", methods=["GET"])
+def api_visitas():
+    return jsonify(ler_json(VISITS_FILE, {"total": 0, "hoje": 0, "data": ""}))
 
 
 @app.route("/api/config")
@@ -341,7 +360,10 @@ async function carregar(){
   const users = await (await fetch('/api/usuarios')).json();
   const total = Object.keys(users).length;
   const saldoTotal = Object.values(users).reduce((s,u)=>s+(u.saldo||0),0);
+  const v = await (await fetch('/api/visitas')).json();
   document.getElementById('stats').innerHTML =
+    '<div class="stat"><b>👥 Visitantes totais</b><span>'+(v.total||0)+'</span></div>'+
+    '<div class="stat"><b>📅 Hoje</b><span>'+(v.hoje||0)+'</span></div>' +
     '<div class="stat"><b>Usuários</b><span>'+total+'</span></div>'+
     '<div class="stat"><b>Saldo</b><span>R$ '+saldoTotal.toFixed(2)+'</span></div>'+
     '<div class="stat"><b>Sistema</b><span style="font-size:14px;">PIX Estático</span></div>';

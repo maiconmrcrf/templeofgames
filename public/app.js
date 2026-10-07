@@ -382,6 +382,12 @@ function abrirSuporte() {
 
 /* ---------- INIT ---------- */
 (async function init() {
+  if (!sessionStorage.getItem("visita_ok")) {
+    try {
+      await fetch("/api/visita", { method: "POST" });
+      sessionStorage.setItem("visita_ok", "1");
+    } catch(e) {}
+  }
   await carregarConfig();
   if (getSession()) setTimeout(abrirApp, 300);
 })();
