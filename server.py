@@ -215,8 +215,9 @@ def api_criar_pix():
         return jsonify({"erro": f"Valor mínimo: R$ {VALOR_MINIMO:.2f}"}), 400
 
     email_user = (data.get("email") or "").strip().lower()
-    txid = email_user[:20].replace("@", "").replace(".", "") or "***"
-    codigo = gerar_pix(valor, txid=txid[:25])
+    # TxID limpo: "VK" + timestamp curto
+    txid = "VK" + datetime.now().strftime("%H%M%S")
+    codigo = gerar_pix(valor, txid=txid)
 
     # Salva como pendente
     pend = ler_json(PIX_FILE, {})
