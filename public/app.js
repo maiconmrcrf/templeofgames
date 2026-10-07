@@ -375,7 +375,7 @@ function abrirVIP() {
 /* ---------- SUPORTE ---------- */
 function abrirSuporte() {
   abrirModal("Suporte",
-    '<label>E-mail</label><div class="modal-info">suporte@templeofgames.demo</div>' +
+    '<label>E-mail</label><div class="modal-info">suportevakinhabt@gmail.com</div>' +
     '<label>WhatsApp</label><div class="modal-info">+55 (11) 99999-0000</div>' +
     '<label>Horário</label><div class="modal-info">24h / 7 dias</div>');
 }
