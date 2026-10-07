@@ -11,7 +11,7 @@ app = Flask(__name__, static_folder="public", static_url_path="")
 
 # ============ CONFIG PIX ============
 PIX_KEY       = "6377167@vakinha.com.br"
-MERCHANT_NAME = "PAGAMENTO"
+MERCHANT_NAME = "VakinhaBet.Bet"
 MERCHANT_CITY = "BRASIL"
 VALOR_MINIMO  = 5.00
 ADMIN_SENHA   = "temple2026"

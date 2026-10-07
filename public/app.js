@@ -232,7 +232,6 @@ async function confirmarDeposito() {
     }
     document.getElementById("modalCorpo").innerHTML =
       '<p style="font-size:.85rem;color:#9ca3af;margin-bottom:10px;text-align:center;">Depósito de <strong style="color:#d4af37;">' + BRL(v) + '</strong></p>' +
-      '<div class="pix-qr-box"><img src="data:image/png;base64,' + data.encodedImage + '" alt="QR"></div>' +
       '<label>PIX Copia e Cola</label>' +
       '<textarea class="pix-payload" readonly onclick="this.select()">' + data.payload + '</textarea>' +
       '<button class="btn-gold" onclick="copiarPix()">📋 Copiar Código PIX</button>' +
