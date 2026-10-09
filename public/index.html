@@ -34,17 +34,13 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
 .btn-sacar:active{transform:scale(.97);background:var(--bg3)}
 .btn-menu{background:var(--bg2);color:#fff;border:none;padding:10px 12px;border-radius:8px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;transition:.15s;white-space:nowrap}
 .btn-menu:active{background:var(--bg3)}
-.btn-login{background:var(--red);color:#fff;border:none;padding:10px 16px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;flex:1;text-align:center;transition:.15s;white-space:nowrap}
-.btn-login:active{transform:scale(.97);background:var(--red2)}
-
-/* CATEGORIAS */
-.cats{display:flex;gap:8px;padding:12px 14px;overflow-x:auto;scrollbar-width:none;background:var(--bg)}
-.cats::-webkit-scrollbar{display:none}
-.cat{flex-shrink:0;background:var(--bg2);color:var(--txt);border:none;padding:8px 16px;border-radius:20px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;transition:.15s;white-space:nowrap}
-.cat.ativo{background:var(--red);color:#fff}
+.btn-login{background:transparent;color:#fff;border:1px solid var(--bd);padding:10px 16px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;flex:1;text-align:center;transition:.15s;white-space:nowrap}
+.btn-login:active{transform:scale(.97);background:var(--bg3)}
+.btn-cadastro{background:var(--red);color:#fff;border:none;padding:10px 16px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;flex:1;text-align:center;transition:.15s;white-space:nowrap}
+.btn-cadastro:active{transform:scale(.97);background:var(--red2)}
 
 /* HERO BANNER */
-.hero-banner{margin:8px 14px 16px;background:linear-gradient(135deg,#1e3a4c,#0f212e);border-radius:12px;padding:24px 20px;text-align:center;position:relative;overflow:hidden;border:1px solid var(--bd)}
+.hero-banner{margin:16px 14px;background:linear-gradient(135deg,#1e3a4c,#0f212e);border-radius:12px;padding:24px 20px;text-align:center;position:relative;overflow:hidden;border:1px solid var(--bd)}
 .hero-banner::before{content:'';position:absolute;top:-50%;right:-30%;width:250px;height:250px;background:radial-gradient(circle,rgba(230,57,70,.25),transparent 70%);border-radius:50%}
 .hero-banner .icone{font-size:44px;margin-bottom:12px;position:relative;z-index:1}
 .hero-banner h1{font-size:22px;font-weight:900;margin-bottom:6px;position:relative;z-index:1;line-height:1.2;letter-spacing:-.3px}
@@ -163,11 +159,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
 
 <!-- HEADER -->
 <div class="top-bar" id="topBar"></div>
-
-<!-- CATEGORIA ÚNICA -->
-<div class="cats">
-  <button class="cat ativo">Todos</button>
-</div>
 
 <!-- HERO BANNER -->
 <div class="hero-banner" id="heroBanner">
@@ -354,7 +345,6 @@ function toast(msg,tipo){
   window._toastT=setTimeout(()=>{t.className='toast';},3200);
 }
 
-/* ============ HEADER DINÂMICO ============ */
 function renderHeader(){
   const bar=document.getElementById('topBar');
   if(usuario){
@@ -373,11 +363,10 @@ function renderHeader(){
   }else{
     bar.innerHTML=
       '<button class="btn-login" onclick="abrirAuth(\'entrar\')">Entrar</button>'+
-      '<button class="btn-menu" onclick="abrirMenu()">☰ Menu</button>';
+      '<button class="btn-cadastro" onclick="abrirAuth(\'cadastrar\')">Cadastrar</button>';
   }
 }
 
-/* ============ MENU LATERAL DINÂMICO ============ */
 function renderMenu(){
   const head=document.getElementById('drawerHead');
   const lista=document.getElementById('drawerMenu');
@@ -399,8 +388,6 @@ function renderMenu(){
     head.classList.remove('ativo');
     saldoBox.style.display='none';
     lista.innerHTML=
-      '<li onclick="abrirAuth(\'entrar\')"><span class="ic">🔑</span> Entrar</li>'+
-      '<li onclick="abrirAuth(\'cadastrar\')"><span class="ic">✨</span> Criar Conta</li>'+
       '<li onclick="menuIr(\'suporte\')"><span class="ic">🎧</span> Suporte ao Vivo</li>';
   }
 }
