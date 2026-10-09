@@ -1,222 +1,296 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<meta name="theme-color" content="#000000" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#08090c">
 <title>Temple of Games</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎰</text></svg>">
-<link rel="stylesheet" href="style.css" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --gold:#d4af37;--gold2:#f0c040;--gold3:#b8941f;
+  --bg:#050608;--bg2:#0d0f13;--bg3:#141820;--bd:#1e2229;
+  --txt:#f5f6f8;--mut:#8a9099;--grn:#22c55e;--red:#ef4444;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);color:var(--txt);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  min-height:100vh;overflow-x:hidden;
+  background-image:
+    radial-gradient(ellipse 80% 60% at 50% -10%,rgba(212,175,55,.15),transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 100%,rgba(212,175,55,.06),transparent 60%);
+  background-attachment:fixed;
+}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* ===== HEADER ===== */
+header{
+  position:sticky;top:0;z-index:50;
+  background:rgba(5,6,8,.85);backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--bd);
+  padding:16px 0;
+}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-icon{
+  width:44px;height:44px;border-radius:12px;
+  background:linear-gradient(135deg,var(--gold),var(--gold3));
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;box-shadow:0 8px 24px rgba(212,175,55,.35);
+  position:relative;
+}
+.logo-icon::after{
+  content:'';position:absolute;inset:0;border-radius:12px;
+  background:linear-gradient(135deg,rgba(255,255,255,.3),transparent 50%);
+}
+.logo-text h1{
+  font-size:17px;font-weight:900;letter-spacing:-.3px;
+  background:linear-gradient(135deg,#fff,var(--gold2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1.2;
+}
+.logo-text .sub{
+  font-size:10px;color:var(--mut);letter-spacing:2px;
+  text-transform:uppercase;font-weight:600;margin-top:2px;
+}
+.badge-live{
+  display:flex;align-items:center;gap:6px;
+  padding:8px 14px;border-radius:20px;
+  background:rgba(34,197,94,.12);
+  border:1px solid rgba(34,197,94,.25);
+  font-size:11px;font-weight:700;color:var(--grn);
+  text-transform:uppercase;letter-spacing:1px;
+}
+.badge-live .dot{
+  width:6px;height:6px;border-radius:50%;background:var(--grn);
+  box-shadow:0 0 8px var(--grn);
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* ===== HERO ===== */
+.hero{
+  text-align:center;padding:50px 20px 30px;
+  position:relative;
+}
+.hero h2{
+  font-size:clamp(28px,6vw,44px);font-weight:900;
+  letter-spacing:-1px;line-height:1.1;margin-bottom:12px;
+  background:linear-gradient(135deg,#fff 0%,var(--gold2) 50%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.hero p{
+  color:var(--mut);font-size:14px;font-weight:500;
+  max-width:500px;margin:0 auto;line-height:1.6;
+}
+.hero .shine{
+  display:inline-block;
+  background:linear-gradient(90deg,var(--gold) 0%,#fff 50%,var(--gold) 100%);
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  animation:shine 3s linear infinite;
+}
+@keyframes shine{to{background-position:200% center}}
+
+/* ===== SEÇÃO TÍTULO ===== */
+.section-title{
+  display:flex;align-items:center;gap:12px;
+  margin:40px 0 20px;
+}
+.section-title .bar{
+  width:4px;height:24px;border-radius:2px;
+  background:linear-gradient(180deg,var(--gold),var(--gold3));
+}
+.section-title h3{
+  font-size:18px;font-weight:800;letter-spacing:-.3px;
+}
+.section-title .count{
+  margin-left:auto;font-size:12px;color:var(--mut);
+  font-weight:600;
+}
+
+/* ===== GRID JOGOS ===== */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:16px;
+  margin-bottom:60px;
+}
+.jogo{
+  background:var(--bg2);
+  border:1px solid var(--bd);
+  border-radius:16px;
+  overflow:hidden;
+  text-decoration:none;color:inherit;
+  display:block;
+  transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s;
+  position:relative;
+}
+.jogo:hover,.jogo:active{
+  transform:translateY(-6px) scale(1.02);
+  border-color:var(--gold);
+  box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 0 1px rgba(212,175,55,.3),0 0 30px rgba(212,175,55,.15);
+}
+.jogo-img{
+  position:relative;width:100%;aspect-ratio:1/1;
+  overflow:hidden;background:#000;
+}
+.jogo-img img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform .5s cubic-bezier(.2,.8,.2,1);
+  display:block;
+}
+.jogo:hover .jogo-img img{transform:scale(1.1)}
+.jogo-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.9) 100%);
+  pointer-events:none;
+}
+.jogo-nome{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:14px 12px 12px;
+  font-size:13px;font-weight:700;line-height:1.3;
+  color:#fff;z-index:2;
+  text-shadow:0 2px 8px rgba(0,0,0,.8);
+}
+.jogo-tag{
+  position:absolute;top:10px;right:10px;z-index:3;
+  padding:4px 10px;border-radius:20px;
+  background:linear-gradient(135deg,var(--gold),var(--gold3));
+  color:#000;font-size:9px;font-weight:900;
+  letter-spacing:.8px;text-transform:uppercase;
+  box-shadow:0 4px 12px rgba(212,175,55,.4);
+}
+.jogo.vip{
+  border-color:rgba(212,175,55,.4);
+  background:linear-gradient(135deg,var(--bg2),#1a1408);
+}
+.jogo.vip .jogo-nome{color:var(--gold2)}
+
+/* ===== FOOTER ===== */
+footer{
+  border-top:1px solid var(--bd);
+  padding:30px 20px;text-align:center;
+  color:var(--mut);font-size:11px;
+  letter-spacing:1px;text-transform:uppercase;
+  font-weight:600;
+}
+footer .gold{color:var(--gold)}
+
+/* ===== SKELETON ===== */
+.skel{
+  background:linear-gradient(90deg,var(--bg2) 0%,var(--bg3) 50%,var(--bg2) 100%);
+  background-size:200% 100%;
+  animation:skel 1.5s infinite;
+  border-radius:16px;
+  aspect-ratio:1/1;
+}
+@keyframes skel{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ===== MOBILE ===== */
+@media(max-width:600px){
+  .wrap{padding:0 14px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:12px}
+  .jogo-nome{font-size:12px;padding:10px}
+  .badge-live span.txt{display:none}
+  .badge-live{padding:8px 10px}
+  .hero{padding:30px 10px 20px}
+}
+</style>
 </head>
 <body>
 
-<section class="view ativo" id="view-splash">
-  <div class="splash-bg"></div>
-  <div class="splash-box">
-    <div class="splash-badge">✨ Bem-vindo ao</div>
-
-    <div class="splash-logo">
-      <span class="temple-icon" id="splashLogo">🎰</span>
-      <h1 id="splashNome">VAKINHA<span>BET OF GAMES</span></h1>
-      <p class="splash-sub">A sua arena de jogos online</p>
+<header>
+<div class="wrap header-inner">
+  <a href="/" class="logo">
+    <div class="logo-icon" id="logoIcon">🎰</div>
+    <div class="logo-text">
+      <h1 id="logoNome">Temple of Games</h1>
+      <div class="sub" id="logoSub">Cassino Online</div>
     </div>
-
-    <div class="splash-stats">
-      <div class="stat-mini">
-        <div class="stat-mini-valor">+50</div>
-        <div class="stat-mini-label">Jogos</div>
-      </div>
-      <div class="stat-mini">
-        <div class="stat-mini-valor">+10</div>
-        <div class="stat-mini-label">Provedores</div>
-      </div>
-      <div class="stat-mini">
-        <div class="stat-mini-valor">24h</div>
-        <div class="stat-mini-label">Suporte</div>
-      </div>
-    </div>
-
-    <div class="splash-selos">
-      <div class="selo"><i class="fas fa-bolt"></i> PIX Instantâneo</div>
-      <div class="selo"><i class="fas fa-shield-halved"></i> 100% Seguro</div>
-      <div class="selo"><i class="fas fa-lock"></i> SSL</div>
-    </div>
-
-    <div class="splash-botoes">
-      <button class="btn-gold" onclick="mostrarView('view-login')">
-        <i class="fas fa-right-to-bracket"></i> Entrar
-      </button>
-      <button class="btn-ghost" onclick="mostrarView('view-cadastro')">
-        <i class="fas fa-user-plus"></i> Criar Conta
-      </button>
-    </div>
-
-    <p class="aviso-mini"><i class="fas fa-shield-halved"></i> Ambiente Seguro</p>
-  </div>
-</section>
-
-<section class="view" id="view-login">
-  <div class="auth-box">
-    <button class="voltar" onclick="mostrarView('view-splash')"><i class="fas fa-arrow-left"></i></button>
-    <div class="auth-logo" id="loginLogo">🎰</div>
-    <h2>Entrar</h2>
-    <p class="auth-sub">Acesse sua conta</p>
-    <form onsubmit="fazerLogin(event)">
-      <label>E-mail</label>
-      <input type="email" id="loginEmail" placeholder="seu@email.com" required />
-      <label>Senha</label>
-      <input type="password" id="loginSenha" placeholder="••••••••" required />
-      <button type="submit" class="btn-gold">Entrar</button>
-    </form>
-    <div class="auth-msg" id="msgLogin"></div>
-    <p class="auth-troca">Não tem conta? <a onclick="mostrarView('view-cadastro')">Cadastre-se</a></p>
-  </div>
-</section>
-
-<section class="view" id="view-cadastro">
-  <div class="auth-box">
-    <button class="voltar" onclick="mostrarView('view-splash')"><i class="fas fa-arrow-left"></i></button>
-    <div class="auth-logo" id="cadLogo">🎰</div>
-    <h2>Criar Conta</h2>
-    <p class="auth-sub">Preencha seus dados</p>
-    <form onsubmit="fazerCadastro(event)">
-      <label>Nome completo</label>
-      <input type="text" id="cadNome" placeholder="João da Silva" required />
-      <label>Data de nascimento</label>
-      <input type="date" id="cadNasc" required />
-      <label>CPF</label>
-      <input type="text" id="cadCpf" placeholder="000.000.000-00" maxlength="14" oninput="mascaraCPF(this)" required />
-      <label>E-mail</label>
-      <input type="email" id="cadEmail" placeholder="seu@email.com" required />
-      <label>Senha (mín. 6 caracteres)</label>
-      <input type="password" id="cadSenha" placeholder="••••••••" minlength="6" required />
-      <label>Confirmar senha</label>
-      <input type="password" id="cadSenha2" placeholder="••••••••" minlength="6" required />
-      <button type="submit" class="btn-gold">Criar Conta</button>
-    </form>
-    <div class="auth-msg" id="msgCadastro"></div>
-    <p class="auth-troca">Já tem conta? <a onclick="mostrarView('view-login')">Entrar</a></p>
-  </div>
-</section>
-
-<section class="view" id="view-app">
-  <header class="topbar">
-    <div class="menu-icon" onclick="abrirMenu()"><i class="fas fa-bars"></i></div>
-    <div class="logo" id="topLogo">VAKINHA <span class="logo-icon">🎰</span> BET OF GAMES</div>
-    <div class="user-icon" onclick="abrirMenu()"><i class="fas fa-user"></i></div>
-  </header>
-  <div class="saldo-bar">
-    <div class="saldo-info">
-      <span class="saldo-label">Saldo disponível</span>
-      <span class="saldo-valor" id="saldoApp">R$ 0,00</span>
-    </div>
-    <div class="promo-locked" id="promoLocked">
-      <div class="promo-top">
-        <span class="promo-badge">🎁 PROMOÇÃO</span>
-        <span class="promo-lock">🔒 BLOQUEADO</span>
-      </div>
-      <div class="promo-value">R$ 5,00</div>
-      <div class="promo-desc">Faça seu primeiro depósito para liberar esse valor junto ao seu saldo</div>
-    </div>
-    
-    <div class="saldo-acoes">
-      <button class="btn-dep" onclick="abrirDeposito()"><i class="fas fa-plus"></i> Depositar</button>
-      <button class="btn-saq" onclick="abrirSaque()"><i class="fas fa-money-bill-transfer"></i> Sacar</button>
-    </div>
-  </div>
-  <div class="banner" id="bannerApp">ONLINE CASINO GAMES</div>
-  <main class="game-grid" id="gameGrid"></main>
-  
-
-  <footer class="site-footer">
-    <div class="sf-section">
-      <h4 class="sf-titulo">Ajuda</h4>
-      <ul class="sf-lista">
-        <li><a href="#">Jogo responsável</a></li>
-        <li><a href="#">Aviso de privacidade</a></li>
-        <li><a href="#">Política de cookies</a></li>
-        <li><a href="#">Termos e Condições</a></li>
-        <li><a href="#">Regras de apostas e jogos</a></li>
-        <li><a href="#">Política de PLD e FT</a></li>
-        <li><a href="#">Atendimento e Ouvidoria</a></li>
-      </ul>
-    </div>
-
-    <div class="sf-section">
-      <h4 class="sf-titulo">Disponível em</h4>
-      <div class="sf-badges">
-        <div class="sf-badge">
-          <span class="sf-badge-sub">Esportes</span>
-          <span class="sf-badge-nome">Google Play</span>
-        </div>
-        <div class="sf-badge">
-          <span class="sf-badge-sub">Cassino</span>
-          <span class="sf-badge-nome">Google Play</span>
-        </div>
-        <div class="sf-badge">
-          <span class="sf-badge-sub">Esportes</span>
-          <span class="sf-badge-nome">App Store</span>
-        </div>
-        <div class="sf-badge">
-          <span class="sf-badge-sub">Cassino</span>
-          <span class="sf-badge-nome">App Store</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="sf-section">
-      <h4 class="sf-titulo">Métodos de Pagamento</h4>
-      <div class="sf-pix">
-        <span class="sf-pix-icon">◆</span>
-        <span class="sf-pix-nome">PIX</span>
-      </div>
-    </div>
-
-    <div class="sf-section sf-empresa">
-      <h4 class="sf-titulo">Ajuda</h4>
-      <p class="sf-texto">
-        <strong>Temple of Games</strong> é operado por Interactive Brasil Ltda.,
-        inscrita no CNPJ 54.071.596/0001-40, com sede em São Paulo/SP,
-        devidamente autorizada a operar apostas de quota fixa no Brasil
-        (Portaria SPA/MF n.º 2090/2024).
-      </p>
-    </div>
-
-    <div class="sf-footer-base">
-      <p>© 2026 Temple of Games — Todos os direitos reservados.</p>
-      <p class="sf-aviso">Jogue com responsabilidade. Proibido para menores de 18 anos.</p>
-    </div>
-  </footer>
-</section>
-
-<div class="overlay" id="overlay" onclick="fecharMenu()"></div>
-<aside class="sidebar" id="sidebar">
-  <div class="sb-header">
-    <div class="sb-avatar"><i class="fas fa-user"></i></div>
-    <div class="sb-info"><strong id="sbNome">—</strong><small id="sbEmail">—</small></div>
-  </div>
-  <div class="sb-saldo"><span>Saldo</span><strong id="sbSaldo">R$ 0,00</strong></div>
-  <nav class="sb-menu">
-    <a onclick="fecharMenu()"><i class="fas fa-house"></i> Início</a>
-    <a onclick="abrirPerfil()"><i class="fas fa-id-card"></i> Meu Perfil</a>
-    <a onclick="abrirDeposito()"><i class="fas fa-circle-plus"></i> Depositar</a>
-    <a onclick="abrirSaque()"><i class="fas fa-money-bill-transfer"></i> Sacar</a>
-    <a onclick="abrirHistorico()"><i class="fas fa-clock-rotate-left"></i> Histórico</a>
-    <a onclick="abrirSuporte()"><i class="fas fa-headset"></i> Suporte</a>
-    <a class="sb-sair" onclick="sair()"><i class="fas fa-right-from-bracket"></i> Sair</a>
-  </nav>
-  <div class="sb-footer"><small>Temple of Games v4.0</small></div>
-</aside>
-
-<div class="modal" id="modal">
-  <div class="modal-box">
-    <button class="modal-close" onclick="fecharModal()">×</button>
-    <h3 id="modalTitulo">Título</h3>
-    <div id="modalCorpo"></div>
+  </a>
+  <div class="badge-live">
+    <div class="dot"></div>
+    <span class="txt">Online</span>
   </div>
 </div>
+</header>
 
-<script src="app.js"></script>
+<section class="hero">
+  <h2>Jogue os melhores <span class="shine">slots</span> do mundo</h2>
+  <p id="heroSub">Os maiores títulos das produtoras premium, disponíveis 24 horas por dia.</p>
+</section>
+
+<div class="wrap">
+  <div class="section-title">
+    <div class="bar"></div>
+    <h3>🎮 Jogos Disponíveis</h3>
+    <span class="count" id="count">Carregando...</span>
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+
+<footer>
+  <p>Temple of Games &copy; <span class="gold" id="ano"></span> — Todos os direitos reservados</p>
+</footer>
+
+<script>
+// ano
+document.getElementById('ano').textContent = new Date().getFullYear();
+
+// skeleton inicial
+const grid = document.getElementById('grid');
+for(let i=0;i<8;i++){
+  const s = document.createElement('div');
+  s.className='skel';
+  grid.appendChild(s);
+}
+
+fetch('/api/config')
+  .then(r => r.json())
+  .then(cfg => {
+    // logo
+    if(cfg.empresa){
+      document.getElementById('logoIcon').textContent = cfg.empresa.logo_emoji || '🎰';
+      document.getElementById('logoNome').textContent = cfg.empresa.nome || 'Temple of Games';
+    }
+    if(cfg.banner){
+      document.getElementById('heroSub').textContent = cfg.banner;
+    }
+    // grid
+    const jogos = cfg.jogos || [];
+    document.getElementById('count').textContent = jogos.length + ' títulos';
+    grid.innerHTML = '';
+    jogos.forEach((j, i) => {
+      const a = document.createElement('a');
+      a.className = 'jogo' + (j.vip ? ' vip' : '');
+      a.href = j.link || '#';
+      a.target = '_blank';
+      a.rel = 'noopener';
+      a.style.animation = 'fadeUp .5s cubic-bezier(.2,.8,.2,1) ' + (i*0.05) + 's both';
+      a.innerHTML =
+        '<div class="jogo-img">' +
+          (j.imagem ? '<img src="'+j.imagem+'" alt="'+j.nome+'" loading="lazy" onerror="this.style.display=\'none\'">' : '') +
+          (j.vip ? '<div class="jogo-tag">VIP</div>' : '') +
+          '<div class="jogo-nome">'+j.nome+'</div>' +
+        '</div>';
+      grid.appendChild(a);
+    });
+  })
+  .catch(err => {
+    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--mut);padding:40px">Erro ao carregar jogos.</p>';
+  });
+
+// animação fade
+const style = document.createElement('style');
+style.textContent = '@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}';
+document.head.appendChild(style);
+</script>
 </body>
 </html>
