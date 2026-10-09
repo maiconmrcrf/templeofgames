@@ -712,25 +712,42 @@ function carregarJogos(){
   for(let i=0;i<6;i++){const s=document.createElement('div');s.className='skel';grid.appendChild(s);}
   fetch(API+'/api/config').then(r=>r.json()).then(cfg=>{
     jogosData=cfg.jogos||[];
-    grid.innerHTML='';
-    jogosData.forEach((j,i)=>{
-      const div=document.createElement('div');
-      div.className='jogo';
-      const linkEsc=(j.link||'').replace(/'/g,"\\'");
-      const numJog=numeroAleatorioJogando();
-      div.innerHTML=
-        '<div class="jogo-img">'+
-          (j.imagem?'<img src="'+j.imagem+'" alt="'+j.nome+'" loading="lazy" onerror="this.style.display=\'none\'">':'')+
-          '<div class="jogo-overlay"></div>'+
-          (j.vip?'<div class="jogo-tag">VIP</div>':'')+
-          '<div class="jogo-titulo">'+j.nome+'</div>'+
-          '<div class="jogo-prov">PRAGMATIC PLAY</div>'+
-        '</div>'+
-        '<div class="jogo-jogando"><span class="dot"></span> <b>'+numJog+'</b> jogando</div>';
-      div.onclick=()=>jogar(linkEsc);
-      grid.appendChild(div);
-    });
-  }).catch(()=>{grid.innerHTML='<p style="grid-column:1/-1;text-align:center;color:var(--mut);padding:40px">Erro ao carregar.</p>';});
+    renderGrid(jogosData);
+  }).catch(()=>{
+    const jogosFallback=[
+      {nome:'Zeus vs Hades',imagem:'https://i.ibb.co/PzcPLBtg/Screenshot-2026-09-30-10-34-24-313-com-android-chrome.png',link:'https://www.pragmaticplay.com/br/jogos/zeus-vs-hades-gods-of-war-250/?gamelang=br&cur=BRL'},
+      {nome:'Fortune Tiger',imagem:'https://i.ibb.co/bRgRw8kF/Screenshot-2026-09-30-10-34-02-165-com-android-chrome.png',link:'https://templeofgames.com/gameDetailIos?gameId=23537'},
+      {nome:'Gates of Olympus',imagem:'https://i.ibb.co/PvtjC7rg/Screenshot-2026-09-30-10-33-44-230-com-android-chrome.png',link:'https://www.pragmaticplay.com/br/jogos/gates-of-olympus/'},
+      {nome:'Fortune Rabbit',imagem:'https://i.ibb.co/bTkYQCz/Screenshot-2026-09-30-10-33-26-327-com-android-chrome.png',link:'https://templeofgames.com/gameDetailIos?gameId=23536'},
+      {nome:'Fortune Ox',imagem:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPlVsMXAaZ130eBumGDhW3NVDNn5-LTJx-mqtT5ha3ww&s=10',link:'https://templeofgames.com/gameDetailIos?gameId=12475'},
+      {nome:'Tigre Sortudo',imagem:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRIuMG3iUsuQD8dvF50cbQiohl7vcsek71fV98_pRYCg&s=10',link:'#'},
+      {nome:'Fortune Dragon',imagem:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYNKBNAec0CrMnlVic1KyG0f80jsI9Q9WmYhBY7NlSPw&s=10',link:'#'},
+      {nome:'Área VIP',imagem:'https://casasdeapostasonline.pt/wp-content/uploads/2024/11/pragmatic.jpg',link:'#vip',vip:true}
+    ];
+    renderGrid(jogosFallback);
+  });
+}
+
+function renderGrid(jogos){
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  jogos.forEach((j,i)=>{
+    const div=document.createElement('div');
+    div.className='jogo'+(j.vip?' vip':'');
+    const linkEsc=(j.link||'').replace(/'/g,"\\'");
+    const numJog=numeroAleatorioJogando();
+    div.innerHTML=
+      '<div class="jogo-img">'+
+        (j.imagem?'<img src="'+j.imagem+'" alt="'+j.nome+'" loading="lazy" onerror="this.style.display=\'none\'">':'')+
+        '<div class="jogo-overlay"></div>'+
+        (j.vip?'<div class="jogo-tag">VIP</div>':'')+
+        '<div class="jogo-titulo">'+j.nome+'</div>'+
+        '<div class="jogo-prov">PRAGMATIC PLAY</div>'+
+      '</div>'+
+      '<div class="jogo-jogando"><span class="dot"></span> <b>'+numJog+'</b> jogando</div>';
+    div.onclick=()=>jogar(linkEsc);
+    grid.appendChild(div);
+  });
 }
 
 const saved=localStorage.getItem('temple_user');
@@ -746,6 +763,8 @@ if(usuario){
     if(u&&!u.erro){usuario.nome=u.nome;usuario.saldo=u.saldo||0;localStorage.setItem('temple_user',JSON.stringify(usuario));aplicarUsuario();}
   }).catch(()=>{});
 }
+
+carregarJogos();
 
 carregarJogos();
 
