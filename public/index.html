@@ -374,6 +374,9 @@ function renderHeader(){
   const bar=document.getElementById('topBar');
   if(usuario){
     bar.innerHTML=
+      '<div class="logo-top" style="font-size:14px;font-weight:900;letter-spacing:1.2px;color:#fff;display:flex;align-items:center;gap:6px;margin-right:8px">'+
+        '<span style="font-size:20px">🐂</span>'+
+      '</div>'+
       '<div class="saldo-box" onclick="abrirCarteira()">'+
         '<span class="flag">🇧🇷</span>'+
         '<div class="info">'+
@@ -387,7 +390,9 @@ function renderHeader(){
       '<button class="btn-menu" onclick="abrirMenu()">☰ Menu</button>';
   }else{
     bar.innerHTML=
-      '<div style="flex:1"></div>'+
+      '<div class="logo-top" style="flex:1;font-size:15px;font-weight:900;letter-spacing:1.5px;color:#fff;display:flex;align-items:center;gap:8px">'+
+        '<span style="font-size:22px">🐂</span> VAQUINHAGAMES'+
+      '</div>'+
       '<button class="btn-login" onclick="abrirAuth(\'entrar\')" style="flex:0 0 auto;padding:10px 24px">Entrar</button>';
   }
 }
