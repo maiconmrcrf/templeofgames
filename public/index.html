@@ -2,331 +2,328 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#05060a">
+<meta name="theme-color" content="#0f212e">
 <title>Temple of Games</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--gold:#d9ae2b;--gold2:#f3cb5a;--gold3:#8f6f12;--bg:#070810;--bg2:#0f111a;--bg3:#161926;--bd:#1f2330;--txt:#e9ecf2;--mut:#6e7685;--grn:#2ecc71;--red:#e74c3c}
+:root{
+  --red:#e63946;--red2:#ff5566;--red3:#8b1a1a;
+  --bg:#0f212e;--bg2:#1a2c38;--bg3:#213743;--bg4:#2a4050;
+  --bd:#2a4050;--txt:#fff;--mut:#8ba0b0;--mut2:#5b7185;
+  --grn:#00e701;--gold:#f3ba2f;
+}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{overflow-x:hidden}
-body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.5;min-height:100vh}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.4;min-height:100vh;padding-bottom:70px}
 
-/* GATE */
-#gate{position:fixed;inset:0;z-index:9999;overflow-y:auto;
-  background:
-    radial-gradient(ellipse at 50% 0%, rgba(217,174,43,.15) 0%, transparent 55%),
-    radial-gradient(ellipse at 80% 90%, rgba(217,174,43,.06) 0%, transparent 55%),
-    radial-gradient(ellipse at 20% 80%, rgba(120,90,255,.05) 0%, transparent 55%),
-    linear-gradient(180deg,#070810 0%,#0a0c16 50%,#050609 100%);
-  display:flex;align-items:center;justify-content:center;padding:24px}
-#gate::before{content:'';position:absolute;inset:0;pointer-events:none;opacity:.5;
-  background-image:
-    radial-gradient(1.5px 1.5px at 15% 25%, rgba(217,174,43,.9), transparent),
-    radial-gradient(1px 1px at 85% 15%, rgba(217,174,43,.7), transparent),
-    radial-gradient(1.5px 1.5px at 25% 85%, rgba(255,255,255,.5), transparent),
-    radial-gradient(1px 1px at 70% 70%, rgba(255,255,255,.6), transparent),
-    radial-gradient(1.5px 1.5px at 45% 40%, rgba(217,174,43,.5), transparent),
-    radial-gradient(1px 1px at 90% 55%, rgba(217,174,43,.8), transparent),
-    radial-gradient(1px 1px at 10% 50%, rgba(255,255,255,.4), transparent),
-    radial-gradient(1.5px 1.5px at 60% 10%, rgba(217,174,43,.7), transparent)}
-#gate.escondido{display:none}
-.gate-wrap{width:100%;max-width:300px;text-align:center;position:relative;z-index:2}
-.gate-logo{width:78px;height:78px;margin:0 auto 18px;display:flex;align-items:center;justify-content:center;
-  font-size:52px;line-height:1;position:relative;
-  filter:drop-shadow(0 0 18px rgba(217,174,43,.6)) drop-shadow(0 0 40px rgba(217,174,43,.3));
-  animation:flutua 4s ease-in-out infinite}
-@keyframes flutua{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
-.gate-t1{font-size:21px;font-weight:900;letter-spacing:3.5px;color:#fff;line-height:1.15}
-.gate-t2{font-size:21px;font-weight:900;letter-spacing:3.5px;color:var(--gold);line-height:1.15;margin-top:1px;
-  text-shadow:0 0 16px rgba(217,174,43,.35)}
-.gate-sub{font-size:11px;color:var(--mut);margin-top:10px;margin-bottom:26px;font-weight:500;letter-spacing:.3px}
-.gate-btn{display:block;width:100%;padding:12px;border-radius:11px;border:none;
-  font-family:inherit;font-weight:700;font-size:13px;letter-spacing:.3px;
-  cursor:pointer;transition:.2s;margin-bottom:9px;position:relative;overflow:hidden}
-.gate-btn.primario{background:linear-gradient(135deg,#e0b730,#c8992a);color:#000;
-  box-shadow:0 6px 18px rgba(217,174,43,.28),inset 0 1px 0 rgba(255,255,255,.3)}
-.gate-btn.primario:active{transform:scale(.98)}
-.gate-btn.secundario{background:rgba(217,174,43,.04);color:var(--gold);border:1.2px solid rgba(217,174,43,.35);
-  backdrop-filter:blur(6px)}
-.gate-btn.secundario:active{transform:scale(.98);background:rgba(217,174,43,.08)}
-.gate-seg{color:var(--mut);font-size:10px;margin-top:18px;letter-spacing:.5px;opacity:.8}
+/* HEADER */
+.top-bar{background:var(--bg);padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(255,255,255,.04)}
+.logo-stake{font-size:30px;font-weight:900;letter-spacing:-1.5px;color:#fff;font-family:'Inter',sans-serif;font-style:italic;line-height:1}
+.saldo-box{background:var(--bg2);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;flex:1;max-width:220px}
+.saldo-box .flag{font-size:16px}
+.saldo-box .val{font-size:15px;font-weight:700;color:#fff}
+.saldo-box .arrow{color:var(--mut);font-size:12px;margin-left:auto}
+.top-bar .icons{margin-left:auto;display:flex;align-items:center;gap:6px}
+.icon-btn{background:transparent;border:none;color:#fff;font-size:20px;padding:8px;cursor:pointer;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:.15s}
+.icon-btn:active{background:var(--bg2)}
+.icon-btn.carteira{background:var(--red);color:#fff;border-radius:8px;padding:8px 12px;font-size:16px}
 
-.gate-card{width:100%;max-width:330px;background:linear-gradient(180deg,rgba(18,20,30,.96),rgba(12,14,22,.96));
-  border:1px solid rgba(217,174,43,.15);border-radius:16px;padding:24px 20px;
-  box-shadow:0 24px 60px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.04);
-  backdrop-filter:blur(20px);text-align:left;position:relative;z-index:2}
-.gate-tabs{display:flex;gap:4px;background:#000;padding:3px;border-radius:10px;margin-bottom:16px;border:1px solid var(--bd)}
-.gate-tab{flex:1;padding:9px;background:transparent;border:none;color:var(--mut);
-  border-radius:7px;font-family:inherit;font-size:11.5px;font-weight:700;cursor:pointer;transition:.2s;letter-spacing:.4px}
-.gate-tab.ativo{background:linear-gradient(135deg,#d9ae2b,#8f6f12);color:#000}
-.gate-card label{display:block;font-size:9.5px;color:var(--mut);text-transform:uppercase;
-  font-weight:700;letter-spacing:1.1px;margin:11px 0 4px}
-.gate-card input{width:100%;padding:11px 12px;background:#05060a;border:1px solid var(--bd);
-  color:var(--txt);border-radius:9px;font-size:13.5px;font-family:inherit;transition:.2s}
-.gate-card input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,174,43,.1)}
-.gate-btn-form{width:100%;padding:13px;border-radius:9px;border:none;font-family:inherit;
-  font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;
-  margin-top:14px;background:linear-gradient(135deg,#e0b730,#c8992a);color:#000;
-  box-shadow:0 6px 18px rgba(217,174,43,.3),inset 0 1px 0 rgba(255,255,255,.3)}
-.gate-btn-form:active{transform:scale(.98)}
-.gate-btn-form:disabled{opacity:.5;cursor:not-allowed}
-.gate-esq{display:block;text-align:right;margin-top:9px;color:var(--mut);
-  font-size:10.5px;font-weight:600;cursor:pointer}
-.gate-esq:hover{color:var(--gold)}
-.gate-voltar{background:transparent;border:none;color:var(--mut);font-size:11.5px;
-  font-weight:600;cursor:pointer;padding:8px;margin-top:4px;width:100%}
-.gate-voltar:hover{color:var(--gold)}
+/* NAV CATEGORIAS */
+.cats{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;scrollbar-width:none;background:var(--bg)}
+.cats::-webkit-scrollbar{display:none}
+.cat{flex-shrink:0;background:var(--bg2);color:var(--txt);border:none;padding:8px 14px;border-radius:20px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:.15s;white-space:nowrap}
+.cat:hover{background:var(--bg3)}
+.cat.ativo{background:var(--red);color:#fff}
 
-/* APP */
-#app{display:none;min-height:100vh}
-#app.ativo{display:block}
-.top{background:linear-gradient(180deg,#070810,#0a0c14);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(217,174,43,.08)}
-.top .menu{background:transparent;border:none;color:#fff;font-size:22px;cursor:pointer;padding:4px;line-height:1}
-.top .logo-top{font-size:13.5px;font-weight:900;letter-spacing:1.8px;color:#fff;display:flex;align-items:center;gap:5px}
-.top .logo-top .dourado{color:var(--gold)}
-.top .perfil{background:transparent;border:none;color:#fff;font-size:20px;cursor:pointer;padding:4px;line-height:1}
-.container{max-width:480px;margin:0 auto;padding:16px 16px 40px}
+/* HERO BANNER */
+.hero-banner{margin:8px 16px 16px;background:linear-gradient(135deg,#1e3a4c,#0f212e);border-radius:12px;padding:24px 20px;text-align:center;position:relative;overflow:hidden;border:1px solid var(--bd)}
+.hero-banner::before{content:'';position:absolute;top:-50%;right:-30%;width:250px;height:250px;background:radial-gradient(circle,rgba(230,57,70,.25),transparent 70%);border-radius:50%}
+.hero-banner .icone{font-size:44px;margin-bottom:12px;position:relative;z-index:1}
+.hero-banner h1{font-size:22px;font-weight:900;margin-bottom:6px;position:relative;z-index:1;line-height:1.2;letter-spacing:-.3px}
+.hero-banner p{font-size:13px;color:var(--mut);margin-bottom:16px;position:relative;z-index:1}
+.hero-banner .btn-cadastrar{background:var(--red);color:#fff;border:none;padding:12px 32px;border-radius:8px;font-family:inherit;font-size:14px;font-weight:700;cursor:pointer;position:relative;z-index:1;transition:.15s;letter-spacing:.2px}
+.hero-banner .btn-cadastrar:active{transform:scale(.97);background:var(--red2)}
 
-/* SALDO */
-.saldo-card{border:1px solid rgba(217,174,43,.2);border-radius:12px;padding:14px 16px;
-  background:linear-gradient(135deg,rgba(217,174,43,.06),rgba(217,174,43,.01));margin-bottom:12px}
-.saldo-label{font-size:9.5px;color:var(--mut);letter-spacing:1.5px;font-weight:700;text-transform:uppercase;margin-bottom:4px}
-.saldo-valor{font-size:26px;font-weight:900;color:var(--grn);letter-spacing:-.5px}
+/* SECTION HEADER */
+.sec-head{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px}
+.sec-head h2{font-size:15px;font-weight:800;letter-spacing:-.2px}
+.sec-head a{color:var(--mut);font-size:12px;font-weight:600;text-decoration:none}
+.sec-head a:hover{color:var(--red)}
 
-/* PROMO */
-.promo-card{border:1px dashed rgba(217,174,43,.35);border-radius:12px;padding:14px 16px;
-  background:linear-gradient(135deg,rgba(217,174,43,.05),rgba(217,174,43,.01));margin-bottom:12px}
-.promo-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
-.promo-tag{background:linear-gradient(135deg,#d9ae2b,#8f6f12);color:#000;font-size:9px;font-weight:900;letter-spacing:.7px;padding:3px 8px;border-radius:20px}
-.promo-lock{font-size:10.5px;color:var(--gold);font-weight:700;letter-spacing:.5px}
-.promo-valor{font-size:22px;font-weight:900;color:var(--gold);letter-spacing:-.3px;margin:3px 0 5px}
-.promo-desc{font-size:11.5px;color:var(--mut);line-height:1.5}
-
-/* BOTÕES */
-.acoes{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:16px}
-.btn-acao{padding:13px;border-radius:11px;border:none;font-family:inherit;font-weight:800;font-size:12.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:.15s;letter-spacing:.3px}
-.btn-acao:active{transform:scale(.97)}
-.btn-dep{background:linear-gradient(135deg,#2ecc71,#1a9c56);color:#fff;box-shadow:0 5px 14px rgba(46,204,113,.22)}
-.btn-saq{background:linear-gradient(135deg,#d9ae2b,#8f6f12);color:#000;box-shadow:0 5px 14px rgba(217,174,43,.22)}
-
-/* FAIXA */
-.faixa{background:linear-gradient(90deg,rgba(217,174,43,.9),rgba(243,203,90,.9),rgba(217,174,43,.9));color:#000;text-align:center;padding:10px;font-weight:900;font-size:10.5px;letter-spacing:3.5px;margin:16px -16px;border-top:1px solid rgba(0,0,0,.1);border-bottom:1px solid rgba(0,0,0,.1)}
-
-/* SECTION */
-.section-h{display:flex;align-items:center;gap:8px;margin:18px 0 12px}
-.section-h .bar{width:3px;height:16px;border-radius:2px;background:linear-gradient(180deg,#d9ae2b,#8f6f12)}
-.section-h h3{font-size:13.5px;font-weight:800;letter-spacing:-.2px}
-.section-h .count{margin-left:auto;font-size:10px;color:var(--mut);font-weight:600;padding:3px 8px;background:var(--bg2);border:1px solid var(--bd);border-radius:10px}
-
-/* GRID */
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px}
-.jogo{background:linear-gradient(180deg,#12141e,#0b0d14);border:1px solid var(--bd);border-radius:12px;overflow:hidden;position:relative;transition:.25s;cursor:pointer}
+/* GRID JOGOS */
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:0 16px;margin-bottom:24px}
+.jogo{background:var(--bg2);border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s;position:relative}
 .jogo:active{transform:scale(.98)}
-.jogo:hover{border-color:rgba(217,174,43,.5)}
 .jogo-img{position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;background:#000}
-.jogo-img img{width:100%;height:100%;object-fit:cover;display:block}
-.jogo-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(0,0,0,.95) 100%)}
-.jogo-nome{position:absolute;bottom:40px;left:0;right:0;padding:0 8px;font-size:10.5px;font-weight:700;color:#fff;z-index:2;text-shadow:0 2px 6px rgba(0,0,0,.9);text-align:center;line-height:1.25}
-.btn-play{position:absolute;bottom:7px;left:7px;right:7px;padding:7px;border-radius:8px;background:linear-gradient(135deg,#e0b730,#c8992a);color:#000;font-weight:900;font-size:10px;text-transform:uppercase;letter-spacing:.6px;text-align:center;z-index:3;border:none;cursor:pointer;font-family:inherit;box-shadow:0 3px 10px rgba(217,174,43,.35)}
-.btn-play:active{transform:scale(.96)}
-.jogo-tag{position:absolute;top:7px;right:7px;z-index:3;padding:2px 7px;border-radius:20px;background:linear-gradient(135deg,#d9ae2b,#8f6f12);color:#000;font-size:8px;font-weight:900;letter-spacing:.5px}
-.skel{background:linear-gradient(90deg,var(--bg2),var(--bg3),var(--bg2));background-size:200% 100%;animation:sk 1.4s infinite;border-radius:12px;aspect-ratio:1/1}
+.jogo-img img{width:100%;height:100%;object-fit:cover;display:block;transition:.3s}
+.jogo:hover .jogo-img img{transform:scale(1.05)}
+.jogo-titulo{position:absolute;bottom:32px;left:0;right:0;padding:0 10px;font-size:12px;font-weight:800;color:#fff;text-align:center;text-shadow:0 2px 6px rgba(0,0,0,.9);text-transform:uppercase;letter-spacing:.3px;line-height:1.2;z-index:2}
+.jogo-prov{position:absolute;bottom:14px;left:0;right:0;padding:0 10px;font-size:8px;font-weight:600;color:rgba(255,255,255,.7);text-align:center;text-transform:uppercase;letter-spacing:1px;z-index:2}
+.jogo-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.9) 100%);z-index:1}
+.jogo-tag{position:absolute;top:8px;right:8px;z-index:3;padding:3px 8px;border-radius:20px;background:var(--red);color:#fff;font-size:9px;font-weight:900;letter-spacing:.6px;text-transform:uppercase}
+.jogo-jogando{display:flex;align-items:center;gap:6px;padding:8px 10px;background:var(--bg2);font-size:11.5px;color:var(--mut)}
+.jogo-jogando .dot{width:7px;height:7px;border-radius:50%;background:var(--grn);box-shadow:0 0 6px var(--grn);flex-shrink:0}
+.jogo-jogando b{color:#fff;font-weight:700}
+
+/* SKELETON */
+.skel{background:linear-gradient(90deg,var(--bg2),var(--bg3),var(--bg2));background-size:200% 100%;animation:sk 1.4s infinite;border-radius:10px;aspect-ratio:1/1}
 @keyframes sk{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* AJUDA */
-.ajuda-sec{margin-top:28px;border-top:1px solid var(--bd);padding-top:20px}
-.ajuda-titulo{color:var(--gold);font-size:11px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:10px}
-.ajuda-item{display:flex;align-items:center;gap:8px;padding:11px 0;color:var(--mut);font-size:12.5px;cursor:pointer;border-bottom:1px solid rgba(31,35,48,.5)}
-.ajuda-item:last-child{border-bottom:none}
-.ajuda-item:hover{color:var(--gold)}
-.ajuda-item .seta{margin-left:auto;color:#3a3f48;font-size:11px}
-
 /* RODAPÉ */
-.rodape{text-align:center;padding:22px 12px;font-size:10px;color:#4a4f57;line-height:1.7;border-top:1px solid var(--bd);margin-top:18px}
-.rodape .18{display:inline-block;background:#c0392b;color:#fff;font-weight:900;padding:1px 5px;border-radius:3px;font-size:9px;margin-right:4px}
+.rodape{background:var(--bg);padding:28px 16px;border-top:1px solid var(--bd);text-align:center}
+.rodape-social{display:flex;justify-content:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.rodape-social a{color:var(--mut);font-size:22px;text-decoration:none;transition:.15s}
+.rodape-social a:hover{color:var(--red)}
+.rodape-copy{color:var(--mut);font-size:12.5px;margin-bottom:20px}
+.rodape-selos{display:flex;justify-content:center;gap:16px;margin-bottom:20px;flex-wrap:wrap;align-items:center}
+.rodape-selos .selo{background:rgba(255,255,255,.05);border:1px solid var(--bd);padding:6px 12px;border-radius:6px;font-size:10px;font-weight:900;color:var(--mut);letter-spacing:1px}
+.rodape-txt{color:var(--mut2);font-size:11.5px;line-height:1.7;max-width:520px;margin:0 auto 12px}
+.rodape-txt b{color:var(--mut)}
+.rodape-18{display:inline-block;background:var(--red);color:#fff;font-weight:900;padding:3px 8px;border-radius:4px;font-size:11px;margin:8px 0}
 
-/* DRAWER */
-.drawer-bg{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:100;opacity:0;pointer-events:none;transition:.3s}
+/* BARRA INFERIOR */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--bd);display:flex;justify-content:space-around;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:80}
+.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:transparent;border:none;color:var(--mut);font-family:inherit;font-size:10px;font-weight:600;cursor:pointer;padding:6px 0;transition:.15s}
+.bnav-item .ic{font-size:20px;line-height:1}
+.bnav-item.ativo{color:var(--red)}
+
+/* MENU LATERAL */
+.drawer-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;opacity:0;pointer-events:none;transition:.25s}
 .drawer-bg.aberto{opacity:1;pointer-events:all}
-.drawer{position:fixed;top:0;left:0;bottom:0;width:270px;max-width:85vw;background:linear-gradient(180deg,#0d0f18,#08090f);border-right:1px solid var(--bd);z-index:101;transform:translateX(-100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;overflow-y:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:290px;max-width:88vw;background:var(--bg2);z-index:101;transform:translateX(100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;overflow-y:auto;box-shadow:-10px 0 40px rgba(0,0,0,.5)}
 .drawer.aberto{transform:translateX(0)}
-.drawer-head{padding:20px 18px;border-bottom:1px solid var(--bd);display:flex;justify-content:space-between;align-items:flex-start}
-.drawer-head .nome{font-size:13.5px;font-weight:800;color:#fff}
-.drawer-head .email{font-size:10.5px;color:var(--mut);margin-top:3px;word-break:break-all}
-.drawer-head .fechar{background:transparent;border:none;color:var(--mut);font-size:18px;cursor:pointer}
-.drawer-saldo{margin:12px;padding:12px;border-radius:10px;background:linear-gradient(135deg,rgba(217,174,43,.1),rgba(217,174,43,.02));border:1px solid rgba(217,174,43,.25)}
-.drawer-saldo .lbl{font-size:9.5px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1.2px}
-.drawer-saldo .val{font-size:18px;font-weight:900;color:var(--gold2);margin-top:3px}
-.drawer-menu{list-style:none;padding:6px}
-.drawer-menu li{padding:12px 16px;border-radius:8px;display:flex;align-items:center;gap:12px;cursor:pointer;font-weight:600;font-size:13px;color:var(--txt)}
-.drawer-menu li:hover{background:var(--bg3);color:var(--gold)}
-.drawer-menu li .ico{font-size:15px;width:20px;text-align:center}
-.drawer-menu li.destaque{background:linear-gradient(135deg,#d9ae2b,#8f6f12);color:#000;font-weight:800;margin:5px 0}
-.drawer-foot{margin-top:auto;padding:12px;border-top:1px solid var(--bd);font-size:10px;color:var(--mut);text-align:center;letter-spacing:1px}
+.drawer-head{padding:18px 20px;border-bottom:1px solid var(--bd)}
+.drawer-head .nome{font-size:15px;font-weight:800;color:#fff}
+.drawer-head .email{font-size:11.5px;color:var(--mut);margin-top:3px;word-break:break-all}
+.drawer-head .fechar{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--mut);font-size:20px;cursor:pointer}
+.drawer-saldo{margin:14px 16px;padding:14px;border-radius:10px;background:linear-gradient(135deg,rgba(230,57,70,.15),rgba(230,57,70,.03));border:1px solid rgba(230,57,70,.3)}
+.drawer-saldo .lbl{font-size:10px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1.3px}
+.drawer-saldo .val{font-size:20px;font-weight:900;color:#fff;margin-top:4px}
+.drawer-menu{list-style:none;padding:6px 8px}
+.drawer-menu li{padding:13px 14px;border-radius:8px;display:flex;align-items:center;gap:14px;cursor:pointer;font-weight:600;font-size:14px;color:var(--txt);transition:.15s}
+.drawer-menu li:hover{background:var(--bg3)}
+.drawer-menu li .ic{font-size:18px;width:22px;text-align:center;color:var(--mut)}
+.drawer-menu li:hover .ic{color:var(--red)}
+.drawer-foot{margin-top:auto;padding:14px;border-top:1px solid var(--bd);font-size:10.5px;color:var(--mut2);text-align:center;letter-spacing:.5px}
 
-/* MODAL */
-.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+/* MODAL LOGIN */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(4px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
 .modal-bg.aberto{display:flex;animation:fadeIn .2s}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal{background:linear-gradient(180deg,#12141e,#0b0d14);border:1px solid var(--bd);border-radius:18px;width:100%;max-width:400px;padding:22px;max-height:90vh;overflow-y:auto;position:relative;animation:modIn .3s}
-@keyframes modIn{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:none}}
-.modal h3{font-size:17px;font-weight:900;margin-bottom:5px}
-.modal .sub{color:var(--mut);font-size:11.5px;margin-bottom:16px}
-.modal label{display:block;font-size:9.5px;color:var(--mut);text-transform:uppercase;font-weight:700;letter-spacing:1.1px;margin:12px 0 5px}
-.modal input{width:100%;padding:12px;background:#05060a;border:1px solid var(--bd);color:var(--txt);border-radius:9px;font-size:14px;font-family:inherit}
-.modal input:focus{outline:none;border-color:var(--gold)}
-.modal .btn{width:100%;padding:13px;border-radius:9px;border:none;font-family:inherit;font-weight:800;font-size:12.5px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;margin-top:14px}
-.modal .btn.gold{background:linear-gradient(135deg,#e0b730,#c8992a);color:#000;box-shadow:0 6px 18px rgba(217,174,43,.3)}
-.modal .btn.gold:active{transform:scale(.98)}
-.btn-close{position:absolute;top:12px;right:12px;background:rgba(0,0,0,.4);border:none;color:var(--mut);font-size:15px;cursor:pointer;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.valores{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:9px}
-.valores button{padding:11px;background:#05060a;border:1px solid var(--bd);color:var(--txt);border-radius:9px;font-weight:700;cursor:pointer;font-size:12.5px;font-family:inherit}
-.valores button:hover{border-color:var(--gold);color:var(--gold)}
-.pix-box{margin-top:14px;text-align:center}
-.pix-status{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:20px;background:rgba(217,174,43,.1);border:1px solid rgba(217,174,43,.3);color:var(--gold2);font-weight:700;font-size:11.5px;margin-bottom:12px}
-.pix-status .dot{width:6px;height:6px;border-radius:50%;background:var(--gold2);box-shadow:0 0 8px var(--gold2);animation:pul 1.4s infinite}
-@keyframes pul{0%,100%{opacity:1}50%{opacity:.35}}
-.pix-qr{width:170px;height:170px;margin:0 auto 12px;background:#fff;border-radius:12px;padding:9px}
-.pix-qr img{width:100%;height:100%;display:block;border-radius:5px}
-.pix-codigo{background:#000;padding:11px;border-radius:9px;font-family:monospace;font-size:9.5px;word-break:break-all;color:var(--gold2);max-height:80px;overflow-y:auto;border:1px solid var(--bd);text-align:left;line-height:1.5}
-.pix-copiar{width:100%;padding:12px;border-radius:9px;border:none;background:linear-gradient(135deg,#e0b730,#c8992a);color:#000;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;margin-top:10px;font-family:inherit}
-.pix-aviso{margin-top:10px;padding:10px;background:rgba(217,174,43,.06);border:1px solid rgba(217,174,43,.22);border-radius:9px;font-size:10.5px;color:var(--gold2);line-height:1.6}
+.modal{background:var(--bg2);border-radius:14px;width:100%;max-width:420px;padding:28px 24px;max-height:92vh;overflow-y:auto;position:relative;animation:modIn .28s}
+@keyframes modIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:none}}
+.modal-top{display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.modal-top .icone-top{font-size:24px}
+.modal-top h3{font-size:20px;font-weight:900}
+.modal-top .fechar{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--mut);font-size:20px;cursor:pointer}
+.modal-sub{font-size:15px;font-weight:700;color:var(--txt);margin-bottom:18px}
+.modal label{display:block;font-size:12px;color:var(--mut);font-weight:600;margin:14px 0 6px}
+.modal label .req{color:var(--red);margin-left:2px}
+.modal input{width:100%;padding:13px 14px;background:var(--bg);border:1px solid var(--bd);color:#fff;border-radius:8px;font-size:14.5px;font-family:inherit;transition:.15s}
+.modal input:focus{outline:none;border-color:var(--red)}
+.modal .link-esq{display:block;color:var(--txt);font-size:14px;font-weight:600;margin:14px 0;text-decoration:none}
+.modal .link-esq:hover{color:var(--red)}
+.modal .btn{width:100%;padding:14px;border-radius:8px;border:none;font-family:inherit;font-weight:700;font-size:14.5px;cursor:pointer;transition:.15s}
+.modal .btn.primario{background:var(--red);color:#fff}
+.modal .btn.primario:hover{background:var(--red2)}
+.modal .btn.primario:active{transform:scale(.98)}
+.modal .btn.primario:disabled{opacity:.55;cursor:not-allowed}
+.modal .btn.secundario{background:var(--bg3);color:#fff;margin-top:10px}
+.modal .divisor{display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--mut);font-size:13px}
+.modal .divisor::before,.modal .divisor::after{content:'';flex:1;height:1px;background:var(--bd)}
+.modal .tabs-auth{display:flex;gap:6px;background:var(--bg);padding:4px;border-radius:9px;margin-bottom:18px}
+.modal .tab-auth{flex:1;padding:10px;background:transparent;border:none;color:var(--mut);border-radius:6px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
+.modal .tab-auth.ativo{background:var(--red);color:#fff}
+.senha-wrap{position:relative}
+.senha-wrap input{padding-right:44px}
+.senha-wrap .olho{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--mut);font-size:16px;cursor:pointer;padding:4px}
 
-.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(120px);background:linear-gradient(180deg,#12141e,#0b0d14);border:1px solid var(--bd);border-radius:11px;padding:12px 20px;color:#fff;font-weight:700;font-size:12.5px;z-index:9999;opacity:0;transition:.3s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 40px rgba(0,0,0,.6);max-width:90vw;text-align:center;pointer-events:none}
+/* MODAL DEPÓSITO / SAQUE / HISTÓRICO */
+.modal h4{font-size:18px;font-weight:900;margin-bottom:6px}
+.modal .desc{font-size:12.5px;color:var(--mut);margin-bottom:16px}
+.valores{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.valores button{padding:12px;background:var(--bg);border:1px solid var(--bd);color:var(--txt);border-radius:8px;font-weight:700;cursor:pointer;font-size:13px;font-family:inherit}
+.valores button:hover{border-color:var(--red);color:var(--red)}
+.pix-status{display:inline-flex;align-items:center;gap:8px;padding:9px 14px;border-radius:20px;background:rgba(230,57,70,.12);border:1px solid rgba(230,57,70,.35);color:#fff;font-weight:700;font-size:12px;margin-bottom:12px}
+.pix-status .dot{width:7px;height:7px;border-radius:50%;background:var(--red);box-shadow:0 0 8px var(--red);animation:pul 1.4s infinite}
+@keyframes pul{0%,100%{opacity:1}50%{opacity:.35}}
+.pix-qr{width:180px;height:180px;margin:12px auto;background:#fff;border-radius:10px;padding:8px}
+.pix-qr img{width:100%;height:100%;display:block;border-radius:6px}
+.pix-codigo{background:var(--bg);padding:11px;border-radius:8px;font-family:monospace;font-size:10px;word-break:break-all;color:var(--mut);max-height:70px;overflow-y:auto;border:1px solid var(--bd);text-align:left;line-height:1.5}
+.pix-aviso{margin-top:12px;padding:10px;background:rgba(230,57,70,.08);border:1px solid rgba(230,57,70,.25);border-radius:8px;font-size:11.5px;color:var(--mut);line-height:1.6;text-align:center}
+
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--bg3);border:1px solid var(--bd);border-radius:10px;padding:12px 20px;color:#fff;font-weight:600;font-size:13px;z-index:9999;opacity:0;transition:.3s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 40px rgba(0,0,0,.6);max-width:90vw;text-align:center;pointer-events:none}
 .toast.visivel{opacity:1;transform:translateX(-50%) translateY(0)}
-.toast.ok{border-color:rgba(46,204,113,.6)}
-.toast.erro{border-color:rgba(231,76,60,.6)}
-.toast.info{border-color:rgba(217,174,43,.6)}
+.toast.ok{border-color:var(--grn)}
+.toast.erro{border-color:var(--red)}
 </style>
 </head>
 <body>
 
-<div id="gate">
-  <div class="gate-wrap" id="gateHome">
-    <div class="gate-logo">🏛️</div>
-    <div class="gate-t1">TEMPLE</div>
-    <div class="gate-t2">OF GAMES</div>
-    <div class="gate-sub">A sua arena de jogos online</div>
-    <button class="gate-btn primario" onclick="irPara('login')">Entrar</button>
-    <button class="gate-btn secundario" onclick="irPara('cadastro')">Criar Conta</button>
-    <div class="gate-seg">🔒 Ambiente Seguro</div>
+<!-- HEADER -->
+<div class="top-bar">
+  <div class="logo-stake">Temple</div>
+  <div class="saldo-box" id="saldoBox" onclick="abrirCarteira()">
+    <span class="flag">🇧🇷</span>
+    <span class="val" id="saldoTopo">R$ 0.00</span>
+    <span class="arrow">▾</span>
   </div>
+  <div class="icons">
+    <button class="icon-btn carteira" onclick="abrirCarteira()">💼</button>
+    <button class="icon-btn" onclick="abrirMenu()">👤</button>
+    <button class="icon-btn" onclick="abrirNotif()">🔔</button>
+  </div>
+</div>
 
-  <div class="gate-card" id="gateLogin" style="display:none">
-    <div class="gate-tabs">
-      <button class="gate-tab ativo" onclick="trocarAuth('entrar')">Entrar</button>
-      <button class="gate-tab" onclick="trocarAuth('cadastrar')">Cadastrar</button>
+<!-- CATEGORIAS -->
+<div class="cats">
+  <button class="cat ativo">Todos</button>
+  <button class="cat">Slots</button>
+  <button class="cat">Cassino ao Vivo</button>
+  <button class="cat">Roleta</button>
+  <button class="cat">Crash</button>
+  <button class="cat">Tigre</button>
+</div>
+
+<!-- HERO BANNER -->
+<div class="hero-banner" id="heroBanner">
+  <div class="icone">🎰</div>
+  <h1 id="heroTitulo">O Maior Cassino Online do Mundo</h1>
+  <p id="heroSub">Cadastre-se e comece a jogar em segundos</p>
+  <button class="btn-cadastrar" onclick="abrirCadastro()">Cadastre-se</button>
+</div>
+
+<!-- JOGOS -->
+<div class="sec-head">
+  <h2>🎰 Jogos Populares</h2>
+  <a onclick="verTodos()">Ver todos</a>
+</div>
+<div class="grid" id="grid"></div>
+
+<!-- RODAPÉ -->
+<div class="rodape">
+  <div class="rodape-social">
+    <a href="#">📱</a>
+    <a href="#">💬</a>
+    <a href="#">📘</a>
+    <a href="#">✖️</a>
+    <a href="#">📷</a>
+    <a href="#">▶️</a>
+    <a href="#">🎵</a>
+    <a href="#">✈️</a>
+    <a href="#">🛒</a>
+  </div>
+  <div class="rodape-copy">© 2026 Temple of Games | Todos os Direitos Reservados.</div>
+  <div class="rodape-selos">
+    <div class="selo">✓ GAMECHECK</div>
+    <div class="selo">GCB</div>
+    <div class="selo">◆ TANZANITE</div>
+  </div>
+  <div class="rodape-txt">
+    O Temple of Games é operado pela Temple Gaming N.V., número de registro: <b>145353</b>, endereço registrado: Seru Loraweg 17 B, Curaçao. Entre em contato conosco pelo e-mail <b>support@templeofgames.com</b>.
+  </div>
+  <div class="rodape-txt">
+    O Temple of Games está comprometido com o jogo responsável.
+  </div>
+  <div class="rodape-18">+18</div>
+  <div class="rodape-txt" style="margin-top:8px">
+    Jogue com responsabilidade. Apostas envolvem risco.
+  </div>
+</div>
+
+<!-- BARRA INFERIOR -->
+<div class="bottom-nav">
+  <button class="bnav-item ativo" onclick="mudarAba(this)"><span class="ic">🔍</span>Procurar</button>
+  <button class="bnav-item" onclick="mudarAba(this)"><span class="ic">🎰</span>Casino</button>
+  <button class="bnav-item" onclick="mudarAba(this)"><span class="ic">⭐</span>Para Você</button>
+  <button class="bnav-item" onclick="mudarAba(this)"><span class="ic">⚽</span>Esportes</button>
+  <button class="bnav-item" onclick="mudarAba(this)"><span class="ic">💬</span>Chat</button>
+</div>
+
+<!-- MENU LATERAL -->
+<div class="drawer-bg" id="drawerBg" onclick="fecharMenu()"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div class="nome" id="drawerNome">Visitante</div>
+    <div class="email" id="drawerEmail">Não logado</div>
+    <button class="fechar" onclick="fecharMenu()">✕</button>
+  </div>
+  <div class="drawer-saldo" id="drawerSaldoBox" style="display:none">
+    <div class="lbl">Saldo disponível</div>
+    <div class="val" id="drawerSaldo">R$ 0,00</div>
+  </div>
+  <ul class="drawer-menu">
+    <li onclick="menuIr('carteira')"><span class="ic">💼</span> Carteira</li>
+    <li onclick="menuIr('cofre')"><span class="ic">🔒</span> Cofre</li>
+    <li onclick="menuIr('vip')"><span class="ic">🏆</span> VIP</li>
+    <li onclick="menuIr('afiliados')"><span class="ic">🔗</span> Afiliados</li>
+    <li onclick="menuIr('estatisticas')"><span class="ic">📊</span> Estatísticas</li>
+    <li onclick="verHistorico()"><span class="ic">📋</span> Transações</li>
+    <li onclick="menuIr('apostas')"><span class="ic">🎯</span> Minhas Apostas</li>
+    <li onclick="menuIr('config')"><span class="ic">⚙️</span> Configurações</li>
+    <li onclick="menuIr('suporte')"><span class="ic">🎧</span> Suporte ao Vivo</li>
+    <li onclick="sair()" id="menuSair" style="display:none"><span class="ic">🚪</span> Sair</li>
+  </ul>
+  <div class="drawer-foot">Temple of Games © 2026</div>
+</aside>
+
+<!-- MODAL AUTH -->
+<div class="modal-bg" id="modalAuth" onclick="fecharSeBg(event,'modalAuth')">
+  <div class="modal">
+    <button class="fechar" onclick="fecharModal('modalAuth')" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--mut);font-size:20px;cursor:pointer">✕</button>
+    <div class="modal-top">
+      <span class="icone-top" id="authIcone">👤</span>
+      <h3 id="authTitulo">Entrar</h3>
     </div>
+    <div class="tabs-auth">
+      <button class="tab-auth ativo" id="tabEntrar" onclick="trocarAuth('entrar')">Entrar</button>
+      <button class="tab-auth" id="tabCadastrar" onclick="trocarAuth('cadastrar')">Cadastrar</button>
+    </div>
+
     <div id="formEntrar">
-      <label>E-mail</label>
-      <input id="login_email" type="email" placeholder="seu@email.com" autocomplete="email">
-      <label>Senha</label>
-      <input id="login_senha" type="password" placeholder="••••••" autocomplete="current-password">
-      <span class="gate-esq" onclick="esqueciSenha()">Esqueci minha senha</span>
-      <button class="gate-btn-form" id="btnFazerLogin" onclick="fazerLogin()">Entrar</button>
+      <div class="modal-sub">Bem-vindo de volta ao Temple!</div>
+      <label>E-mail ou Nome de Usuário <span class="req">*</span></label>
+      <input id="login_email" type="email" placeholder="" autocomplete="email">
+      <label>Senha <span class="req">*</span></label>
+      <div class="senha-wrap">
+        <input id="login_senha" type="password" placeholder="" autocomplete="current-password">
+        <button class="olho" onclick="verSenha('login_senha',this)">👁</button>
+      </div>
+      <span class="link-esq" onclick="esqueciSenha()">Esqueceu sua senha?</span>
+      <button class="btn primario" id="btnFazerLogin" onclick="fazerLogin()">Entrar</button>
     </div>
+
     <div id="formCadastrar" style="display:none">
-      <label>Nome completo</label>
-      <input id="cad_nome" type="text" placeholder="Seu nome">
-      <label>E-mail</label>
-      <input id="cad_email" type="email" placeholder="seu@email.com">
+      <div class="modal-sub">Crie sua conta em segundos</div>
+      <label>Nome completo <span class="req">*</span></label>
+      <input id="cad_nome" type="text" placeholder="">
+      <label>E-mail <span class="req">*</span></label>
+      <input id="cad_email" type="email" placeholder="">
       <label>CPF</label>
       <input id="cad_cpf" type="text" placeholder="000.000.000-00" inputmode="numeric">
       <label>Nascimento</label>
       <input id="cad_nasc" type="text" placeholder="DD/MM/AAAA" inputmode="numeric">
-      <label>Senha</label>
-      <input id="cad_senha" type="password" placeholder="Mínimo 6 caracteres">
-      <button class="gate-btn-form" id="btnFazerCadastro" onclick="fazerCadastro()">Criar conta</button>
-    </div>
-    <button class="gate-voltar" onclick="voltarHome()">← Voltar</button>
-  </div>
-</div>
-
-<div id="app">
-  <div class="drawer-bg" id="drawerBg" onclick="fecharDrawer()"></div>
-  <aside class="drawer" id="drawer">
-    <div class="drawer-head">
-      <div>
-        <div class="nome" id="drawerNome">—</div>
-        <div class="email" id="drawerEmail">—</div>
+      <label>Senha <span class="req">*</span></label>
+      <div class="senha-wrap">
+        <input id="cad_senha" type="password" placeholder="Mínimo 6 caracteres">
+        <button class="olho" onclick="verSenha('cad_senha',this)">👁</button>
       </div>
-      <button class="fechar" onclick="fecharDrawer()">✕</button>
-    </div>
-    <div class="drawer-saldo">
-      <div class="lbl">Saldo disponível</div>
-      <div class="val" id="drawerSaldo">R$ 0,00</div>
-    </div>
-    <ul class="drawer-menu">
-      <li class="destaque" onclick="abrirDeposito()"><span class="ico">💰</span> Depositar</li>
-      <li onclick="abrirSacar()"><span class="ico">💸</span> Sacar</li>
-      <li onclick="verHistorico()"><span class="ico">📜</span> Histórico</li>
-      <li onclick="fecharDrawer();window.scrollTo({top:0,behavior:'smooth'})"><span class="ico">🎮</span> Jogos</li>
-      <li onclick="sair()"><span class="ico">🚪</span> Sair</li>
-    </ul>
-    <div class="drawer-foot">Temple of Games © 2026</div>
-  </aside>
-
-  <header class="top">
-    <button class="menu" onclick="abrirDrawer()">☰</button>
-    <div class="logo-top">TEMPLE <span class="dourado">🏛️ OF GAMES</span></div>
-    <button class="perfil" onclick="abrirDrawer()">👤</button>
-  </header>
-
-  <div class="container">
-    <div class="saldo-card">
-      <div class="saldo-label">Saldo disponível</div>
-      <div class="saldo-valor" id="saldoTopo">R$ 0,00</div>
-    </div>
-
-    <div class="promo-card" id="promoCard">
-      <div class="promo-top">
-        <span class="promo-tag">PROMOÇÃO</span>
-        <span class="promo-lock" id="promoLock">🔒 BLOQUEADO</span>
-      </div>
-      <div class="promo-valor">R$ 5,00</div>
-      <div class="promo-desc" id="promoDesc">Faça seu primeiro depósito para liberar esse valor junto ao seu saldo.</div>
-    </div>
-
-    <div class="acoes">
-      <button class="btn-acao btn-dep" onclick="abrirDeposito()">＋ Depositar</button>
-      <button class="btn-acao btn-saq" onclick="abrirSacar()">💸 Sacar</button>
-    </div>
-
-    <div class="faixa">ONLINE CASINO GAMES</div>
-
-    <div class="section-h">
-      <div class="bar"></div>
-      <h3>🎮 Jogos Disponíveis</h3>
-      <span class="count" id="count">—</span>
-    </div>
-    <div class="grid" id="grid"></div>
-
-    <div class="ajuda-sec">
-      <div class="ajuda-titulo">AJUDA</div>
-      <div class="ajuda-item" onclick="ajuda('Jogo responsável')">Jogo responsável<span class="seta">›</span></div>
-      <div class="ajuda-item" onclick="ajuda('Aviso de privacidade')">Aviso de privacidade<span class="seta">›</span></div>
-      <div class="ajuda-item" onclick="ajuda('Política de cookies')">Política de cookies<span class="seta">›</span></div>
-      <div class="ajuda-item" onclick="ajuda('Termos e Condições')">Termos e Condições<span class="seta">›</span></div>
-      <div class="ajuda-item" onclick="ajuda('Regras de apostas')">Regras de apostas e jogos<span class="seta">›</span></div>
-      <div class="ajuda-item" onclick="ajuda('Contato')">Contato<span class="seta">›</span></div>
-    </div>
-
-    <div class="rodape">
-      <span class="18">+18</span> Jogue com responsabilidade<br>
-      © <span id="ano"></span> Temple of Games
+      <button class="btn primario" id="btnFazerCadastro" onclick="fazerCadastro()" style="margin-top:18px">Cadastrar</button>
     </div>
   </div>
 </div>
 
+<!-- MODAL DEPÓSITO -->
 <div class="modal-bg" id="modalDep" onclick="fecharSeBg(event,'modalDep')">
   <div class="modal">
-    <button class="btn-close" onclick="fecharModal('modalDep')">✕</button>
-    <h3>💰 Depositar</h3>
-    <div class="sub">Escolha o valor e pague via PIX</div>
+    <button class="fechar" onclick="fecharModal('modalDep')" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--mut);font-size:20px;cursor:pointer">✕</button>
+    <h4>💰 Depositar</h4>
+    <div class="desc">Escolha o valor e pague via PIX</div>
     <div id="dep_etapa1">
       <label>Valor (R$)</label>
       <input id="dep_valor" type="number" inputmode="decimal" placeholder="0,00" min="5">
@@ -335,37 +332,39 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
         <button onclick="setDep(50)">R$ 50</button>
         <button onclick="setDep(100)">R$ 100</button>
       </div>
-      <button class="btn gold" id="btnGerarPix" onclick="gerarPix()">Gerar PIX</button>
+      <button class="btn primario" id="btnGerarPix" onclick="gerarPix()" style="margin-top:16px">Gerar PIX</button>
     </div>
-    <div id="dep_etapa2" style="display:none" class="pix-box">
-      <div class="pix-status"><div class="dot"></div> Aguardando pagamento...</div>
+    <div id="dep_etapa2" style="display:none;text-align:center">
+      <div class="pix-status"><span class="dot"></span> Aguardando pagamento...</div>
       <div class="pix-qr" id="pix_qr"></div>
       <div class="pix-codigo" id="dep_codigo"></div>
-      <button class="pix-copiar" onclick="copiarPix()">📋 Copiar código PIX</button>
+      <button class="btn primario" onclick="copiarPix()" style="margin-top:12px">📋 Copiar código PIX</button>
       <div class="pix-aviso">⏳ Saldo creditado automaticamente após o pagamento.</div>
     </div>
   </div>
 </div>
 
+<!-- MODAL SAQUE -->
 <div class="modal-bg" id="modalSaq" onclick="fecharSeBg(event,'modalSaq')">
   <div class="modal">
-    <button class="btn-close" onclick="fecharModal('modalSaq')">✕</button>
-    <h3>💸 Sacar</h3>
-    <div class="sub">Solicite o saque do seu saldo</div>
+    <button class="fechar" onclick="fecharModal('modalSaq')" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--mut);font-size:20px;cursor:pointer">✕</button>
+    <h4>💸 Sacar</h4>
+    <div class="desc">Solicite o saque do seu saldo</div>
     <label>Valor (R$)</label>
     <input id="saq_valor" type="number" inputmode="decimal" placeholder="0,00">
     <label>Chave PIX</label>
     <input id="saq_chave" type="text" placeholder="CPF, e-mail ou telefone">
-    <button class="btn gold" onclick="pedirSaque()">Solicitar saque</button>
+    <button class="btn primario" onclick="pedirSaque()" style="margin-top:16px">Solicitar saque</button>
     <div class="pix-aviso">ℹ️ Saques são processados em até 24h úteis.</div>
   </div>
 </div>
 
+<!-- MODAL HISTÓRICO -->
 <div class="modal-bg" id="modalHist" onclick="fecharSeBg(event,'modalHist')">
   <div class="modal">
-    <button class="btn-close" onclick="fecharModal('modalHist')">✕</button>
-    <h3>📜 Histórico</h3>
-    <div class="sub">Suas últimas transações</div>
+    <button class="fechar" onclick="fecharModal('modalHist')" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--mut);font-size:20px;cursor:pointer">✕</button>
+    <h4>📜 Histórico</h4>
+    <div class="desc">Suas últimas transações</div>
     <div id="hist_lista"></div>
   </div>
 </div>
@@ -376,8 +375,9 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
 const API='';
 let usuario=null;
 let pixPolling=null;
+let jogosData=[];
 
-document.getElementById('ano').textContent=new Date().getFullYear();
+document.getElementById('ano') && (document.getElementById('ano').textContent=new Date().getFullYear());
 
 function toast(msg,tipo){
   const t=document.getElementById('toast');
@@ -387,29 +387,50 @@ function toast(msg,tipo){
   window._toastT=setTimeout(()=>{t.className='toast';},3200);
 }
 
-function irPara(tipo){
-  document.getElementById('gateHome').style.display='none';
-  document.getElementById('gateLogin').style.display='block';
-  trocarAuth(tipo==='cadastro'?'cadastrar':'entrar');
+function abrirMenu(){
+  document.getElementById('drawer').classList.add('aberto');
+  document.getElementById('drawerBg').classList.add('aberto');
 }
-function voltarHome(){
-  document.getElementById('gateLogin').style.display='none';
-  document.getElementById('gateHome').style.display='block';
+function fecharMenu(){
+  document.getElementById('drawer').classList.remove('aberto');
+  document.getElementById('drawerBg').classList.remove('aberto');
 }
-function trocarAuth(aba){
-  document.getElementById('formEntrar').style.display=aba==='entrar'?'block':'none';
-  document.getElementById('formCadastrar').style.display=aba==='cadastrar'?'block':'none';
-  document.querySelectorAll('.gate-tab').forEach((t,i)=>{
-    t.classList.toggle('ativo',(i===0&&aba==='entrar')||(i===1&&aba==='cadastrar'));
-  });
+function fecharModal(id){
+  if(id==='modalDep')pararPolling();
+  document.getElementById(id).classList.remove('aberto');
 }
-
-function abrirDrawer(){document.getElementById('drawer').classList.add('aberto');document.getElementById('drawerBg').classList.add('aberto')}
-function fecharDrawer(){document.getElementById('drawer').classList.remove('aberto');document.getElementById('drawerBg').classList.remove('aberto')}
-function fecharModal(id){if(id==='modalDep')pararPolling();document.getElementById(id).classList.remove('aberto')}
 function abrirModal(id){document.getElementById(id).classList.add('aberto')}
 function fecharSeBg(e,id){if(e.target.id===id)fecharModal(id)}
 
+function abrirCarteira(){
+  if(!usuario){abrirAuth('entrar');return;}
+  abrirDeposito();
+}
+function abrirNotif(){toast('Nenhuma notificação no momento','info');}
+function verTodos(){toast('Mostrando todos os jogos','info');}
+function mudarAba(el){
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('ativo'));
+  el.classList.add('ativo');
+}
+function verSenha(id,btn){
+  const inp=document.getElementById(id);
+  if(inp.type==='password'){inp.type='text';btn.textContent='🙈';}
+  else{inp.type='password';btn.textContent='👁';}
+}
+
+function abrirAuth(aba){
+  abrirModal('modalAuth');
+  trocarAuth(aba||'entrar');
+}
+function abrirCadastro(){abrirAuth('cadastrar');}
+function trocarAuth(aba){
+  document.getElementById('tabEntrar').classList.toggle('ativo',aba==='entrar');
+  document.getElementById('tabCadastrar').classList.toggle('ativo',aba==='cadastrar');
+  document.getElementById('formEntrar').style.display=aba==='entrar'?'block':'none';
+  document.getElementById('formCadastrar').style.display=aba==='cadastrar'?'block':'none';
+  document.getElementById('authTitulo').textContent=aba==='entrar'?'Entrar':'Cadastrar';
+  document.getElementById('authIcone').textContent=aba==='entrar'?'👤':'✨';
+}
 function esqueciSenha(){
   const e=prompt('Digite seu e-mail cadastrado:');
   if(e) toast('Se o e-mail existir, enviaremos instruções.','info');
@@ -427,7 +448,8 @@ async function fazerLogin(){
     if(!r.ok){toast(d.erro||'Erro','erro');return;}
     usuario=d;
     localStorage.setItem('temple_user',JSON.stringify(d));
-    entrarApp();
+    aplicarUsuario();
+    fecharModal('modalAuth');
     toast('Bem-vindo, '+d.nome+'!','ok');
   }catch(e){toast('Erro de conexão','erro');}
   finally{btn.disabled=false;btn.textContent='Entrar';}
@@ -453,47 +475,49 @@ async function fazerCadastro(){
     document.getElementById('login_senha').value=senha;
     await fazerLogin();
   }catch(e){toast('Erro de conexão','erro');}
-  finally{btn.disabled=false;btn.textContent='Criar conta';}
-}
-
-function entrarApp(){
-  document.getElementById('gate').classList.add('escondido');
-  document.getElementById('app').classList.add('ativo');
-  document.getElementById('drawerNome').textContent=usuario.nome||'Jogador';
-  document.getElementById('drawerEmail').textContent=usuario.email;
-  atualizarSaldoUI(usuario.saldo||0);
-  atualizarPromo(usuario.saldo||0);
-  carregarJogos();
+  finally{btn.disabled=false;btn.textContent='Cadastrar';}
 }
 
 function sair(){
   usuario=null;
   localStorage.removeItem('temple_user');
-  fecharDrawer();
-  document.getElementById('app').classList.remove('ativo');
-  document.getElementById('gate').classList.remove('escondido');
-  voltarHome();
-  document.getElementById('login_senha').value='';
+  fecharMenu();
+  aplicarUsuario();
+  toast('Você saiu da conta','info');
 }
 
-function atualizarSaldoUI(v){
-  const fmt='R$ '+parseFloat(v||0).toFixed(2).replace('.',',');
-  document.getElementById('drawerSaldo').textContent=fmt;
-  document.getElementById('saldoTopo').textContent=fmt;
-}
-
-function atualizarPromo(saldo){
-  if(saldo>=5){
-    document.getElementById('promoLock').textContent='✅ LIBERADO';
-    document.getElementById('promoDesc').textContent='Valor de boas-vindas creditado na sua conta!';
+function aplicarUsuario(){
+  const dn=document.getElementById('drawerNome');
+  const de=document.getElementById('drawerEmail');
+  const ds=document.getElementById('drawerSaldoBox');
+  const mSair=document.getElementById('menuSair');
+  const heroBtn=document.getElementById('heroBanner');
+  if(usuario){
+    dn.textContent=usuario.nome||'Jogador';
+    de.textContent=usuario.email;
+    ds.style.display='block';
+    mSair.style.display='flex';
+    heroBtn.style.display='none';
+    atualizarSaldoUI(usuario.saldo||0);
   }else{
-    document.getElementById('promoLock').textContent='🔒 BLOQUEADO';
-    document.getElementById('promoDesc').textContent='Faça seu primeiro depósito para liberar esse valor junto ao seu saldo.';
+    dn.textContent='Visitante';
+    de.textContent='Não logado';
+    ds.style.display='none';
+    mSair.style.display='none';
+    heroBtn.style.display='block';
+    document.getElementById('saldoTopo').textContent='R$ 0.00';
   }
 }
 
+function atualizarSaldoUI(v){
+  const num=parseFloat(v||0).toFixed(2);
+  document.getElementById('saldoTopo').textContent='R$ '+num;
+  document.getElementById('drawerSaldo').textContent='R$ '+num.replace('.',',');
+}
+
 function abrirDeposito(){
-  fecharDrawer();
+  fecharMenu();
+  if(!usuario){abrirAuth('entrar');toast('Faça login primeiro','info');return;}
   document.getElementById('dep_etapa1').style.display='block';
   document.getElementById('dep_etapa2').style.display='none';
   document.getElementById('dep_valor').value='';
@@ -539,10 +563,8 @@ function iniciarPolling(paymentId){
       const u=await r.json();
       if(u&&!u.erro){
         usuario.saldo=u.saldo||0;
-        usuario.nome=u.nome;
         localStorage.setItem('temple_user',JSON.stringify(usuario));
         atualizarSaldoUI(usuario.saldo);
-        atualizarPromo(usuario.saldo);
         const rp=await fetch(API+'/api/pix-pendentes');
         const pix=await rp.json();
         const info=pix[paymentId];
@@ -557,7 +579,11 @@ function iniciarPolling(paymentId){
 }
 function pararPolling(){if(pixPolling){clearInterval(pixPolling);pixPolling=null;}}
 
-function abrirSacar(){fecharDrawer();abrirModal('modalSaq');}
+function abrirSacar(){
+  fecharMenu();
+  if(!usuario){abrirAuth('entrar');toast('Faça login primeiro','info');return;}
+  abrirModal('modalSaq');
+}
 function pedirSaque(){
   const valor=parseFloat(document.getElementById('saq_valor').value.replace(',','.'));
   const chave=document.getElementById('saq_chave').value.trim();
@@ -571,7 +597,8 @@ function pedirSaque(){
 }
 
 async function verHistorico(){
-  fecharDrawer();
+  fecharMenu();
+  if(!usuario){abrirAuth('entrar');toast('Faça login primeiro','info');return;}
   abrirModal('modalHist');
   const lista=document.getElementById('hist_lista');
   lista.innerHTML='<p style="color:var(--mut);text-align:center;padding:20px">Carregando...</p>';
@@ -581,15 +608,23 @@ async function verHistorico(){
     if(!arr.length){lista.innerHTML='<p style="color:var(--mut);text-align:center;padding:20px">Nenhuma transação.</p>';return;}
     lista.innerHTML=arr.map(h=>{
       const pos=h.valor>=0;
-      return '<div style="display:flex;justify-content:space-between;padding:11px 4px;border-bottom:1px solid var(--bd)">'+
-      '<div><div style="font-weight:700;font-size:12.5px">'+h.tipo+'</div>'+
-      '<div style="font-size:10px;color:var(--mut);margin-top:2px">'+((h.data||'').slice(0,16).replace('T',' '))+'</div></div>'+
-      '<div style="font-weight:900;color:'+(pos?'var(--grn)':'var(--red)')+';font-size:13px">'+(pos?'+':'')+'R$ '+Math.abs(h.valor).toFixed(2).replace('.',',')+'</div></div>';
+      return '<div style="display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--bd)">'+
+      '<div><div style="font-weight:700;font-size:13px">'+h.tipo+'</div>'+
+      '<div style="font-size:10.5px;color:var(--mut);margin-top:2px">'+((h.data||'').slice(0,16).replace('T',' '))+'</div></div>'+
+      '<div style="font-weight:800;color:'+(pos?'var(--grn)':'var(--red)')+';font-size:13.5px">'+(pos?'+':'')+'R$ '+Math.abs(h.valor).toFixed(2).replace('.',',')+'</div></div>';
     }).join('');
   }catch(e){lista.innerHTML='<p style="color:var(--red);text-align:center">Erro</p>';}
 }
 
+function menuIr(item){
+  fecharMenu();
+  if(!usuario){abrirAuth('entrar');return;}
+  if(item==='carteira'){abrirDeposito();return;}
+  toast(item.charAt(0).toUpperCase()+item.slice(1)+' — em breve','info');
+}
+
 function jogar(link){
+  if(!usuario){abrirAuth('entrar');toast('Faça login para jogar','info');return;}
   if((usuario.saldo||0)<=0){
     toast('Você está sem saldo! Faça um depósito.','erro');
     setTimeout(abrirDeposito,400);
@@ -599,32 +634,40 @@ function jogar(link){
   else toast('Jogo indisponível','info');
 }
 
-function ajuda(nome){ toast(nome+' — em breve','info'); }
+function numeroAleatorioJogando(){
+  return Math.floor(Math.random()*900)+30;
+}
 
-let jogosCarregados=false;
 function carregarJogos(){
-  if(jogosCarregados)return;
-  jogosCarregados=true;
   const grid=document.getElementById('grid');
-  for(let i=0;i<8;i++){const s=document.createElement('div');s.className='skel';grid.appendChild(s);}
+  for(let i=0;i<6;i++){const s=document.createElement('div');s.className='skel';grid.appendChild(s);}
   fetch(API+'/api/config').then(r=>r.json()).then(cfg=>{
-    if(cfg.empresa){
-      if(cfg.empresa.logo_emoji) document.querySelector('.gate-logo').textContent=cfg.empresa.logo_emoji;
+    if(cfg.empresa && cfg.empresa.logo_emoji){
+      // nada, mantém "Temple" como logo
     }
-    const jogos=cfg.jogos||[];
-    document.getElementById('count').textContent=jogos.length+' títulos';
+    if(cfg.empresa && cfg.empresa.nome){
+      document.getElementById('heroTitulo').textContent='O Maior Cassino Online do Mundo';
+    }
+    if(cfg.banner){
+      document.getElementById('heroSub').textContent=cfg.banner;
+    }
+    jogosData=cfg.jogos||[];
     grid.innerHTML='';
-    jogos.forEach((j,i)=>{
+    jogosData.forEach((j,i)=>{
       const div=document.createElement('div');
-      div.className='jogo'+(j.vip?' vip':'');
-      div.style.animation='fadeUp .4s ease '+(i*0.04)+'s both';
+      div.className='jogo';
       const linkEsc=(j.link||'').replace(/'/g,"\\'");
-      div.innerHTML='<div class="jogo-img">'+
-        (j.imagem?'<img src="'+j.imagem+'" alt="'+j.nome+'" loading="lazy" onerror="this.style.display=\'none\'">':'')+
-        (j.vip?'<div class="jogo-tag">VIP</div>':'')+
-        '<div class="jogo-nome">'+j.nome+'</div>'+
-        '<button class="btn-play" onclick="event.stopPropagation();jogar(\''+linkEsc+'\')">▶ Jogar</button>'+
-        '</div>';
+      const numJog=numeroAleatorioJogando();
+      div.innerHTML=
+        '<div class="jogo-img">'+
+          (j.imagem?'<img src="'+j.imagem+'" alt="'+j.nome+'" loading="lazy" onerror="this.style.display=\'none\'">':'')+
+          '<div class="jogo-overlay"></div>'+
+          (j.vip?'<div class="jogo-tag">VIP</div>':'')+
+          '<div class="jogo-titulo">'+j.nome+'</div>'+
+          '<div class="jogo-prov">PRAGMATIC PLAY</div>'+
+        '</div>'+
+        '<div class="jogo-jogando"><span class="dot"></span> <b>'+numJog+'</b> jogando</div>';
+      div.onclick=()=>jogar(linkEsc);
       grid.appendChild(div);
     });
   }).catch(()=>{grid.innerHTML='<p style="grid-column:1/-1;text-align:center;color:var(--mut);padding:40px">Erro ao carregar.</p>';});
@@ -634,16 +677,29 @@ const saved=localStorage.getItem('temple_user');
 if(saved){
   try{
     usuario=JSON.parse(saved);
-    entrarApp();
+    aplicarUsuario();
     fetch(API+'/api/usuarios/'+encodeURIComponent(usuario.email)).then(r=>r.json()).then(u=>{
-      if(u&&!u.erro){usuario.nome=u.nome;usuario.saldo=u.saldo||0;localStorage.setItem('temple_user',JSON.stringify(usuario));atualizarSaldoUI(usuario.saldo);atualizarPromo(usuario.saldo);}
+      if(u&&!u.erro){usuario.nome=u.nome;usuario.saldo=u.saldo||0;localStorage.setItem('temple_user',JSON.stringify(usuario));aplicarUsuario();}
     }).catch(()=>{});
   }catch(e){}
+} else {
+  aplicarUsuario();
 }
 
-const style=document.createElement('style');
-style.textContent='@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}';
-document.head.appendChild(style);
+carregarJogos();
+
+// Atualiza números aleatórios a cada 8s
+setInterval(()=>{
+  document.querySelectorAll('.jogo-jogando').forEach(el=>{
+    const b=el.querySelector('b');
+    if(b){
+      const atual=parseInt(b.textContent);
+      const delta=Math.floor(Math.random()*15)-7;
+      const novo=Math.max(5,atual+delta);
+      b.textContent=novo;
+    }
+  });
+},8000);
 </script>
 </body>
 </html>
