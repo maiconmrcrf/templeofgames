@@ -164,8 +164,16 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
 <div class="hero-banner">
   <div class="icone">🎰</div>
   <h1>O Maior Cassino Online do Mundo</h1>
-  <p>VAQUINHAGAMES</p>
+  <p>ONLINE CASINO GAMES</p>
   <button class="btn-cadastrar" onclick="abrirCadastro()">Cadastrar</button>
+</div>
+
+<!-- HERO BANNER -->
+<div class="hero-banner" id="heroBanner">
+  <div class="icone">🎰</div>
+  <h1 id="heroTitulo">O Maior Cassino Online do Mundo</h1>
+  <p id="heroSub">Cadastre-se e comece a jogar em segundos</p>
+  <button class="btn-cadastrar" onclick="abrirCadastro()">Cadastre-se</button>
 </div>
 
 <!-- JOGOS -->
@@ -217,14 +225,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
   <div class="drawer-saldo" id="drawerSaldoBox" style="display:none">
     <div class="lbl">Saldo disponível</div>
     <div class="val" id="drawerSaldo">R$ 0,00</div>
-  </div>
-  <div class="drawer-saldo" id="drawerSaldoBloqBox" style="display:none;background:linear-gradient(135deg,rgba(243,186,47,.1),rgba(243,186,47,.02));border-color:rgba(243,186,47,.3)">
-    <div id="drawerSaldoBloq"></div>
-    <div style="font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5">Liberado automaticamente após o <b style="color:var(--gold)">primeiro depósito</b>.</div>
-  </div>
-  <div class="drawer-saldo" id="drawerSaldoBloqBox" style="display:none;background:linear-gradient(135deg,rgba(243,186,47,.1),rgba(243,186,47,.02));border-color:rgba(243,186,47,.3)">
-    <div id="drawerSaldoBloq"></div>
-    <div style="font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5">Liberado automaticamente após o <b style="color:var(--gold)">primeiro depósito</b>.</div>
   </div>
   <ul class="drawer-menu" id="drawerMenu"></ul>
   <div class="drawer-foot">Temple of Games © 2026</div>
@@ -337,31 +337,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
   </div>
 </div>
 
-<!-- MODAL SUPORTE -->
-<div class="modal-bg" id="modalSuporte" onclick="fecharSeBg(event,'modalSuporte')">
-  <div class="modal">
-    <button class="fechar" onclick="fecharModal('modalSuporte')" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--mut);font-size:20px;cursor:pointer">✕</button>
-    <h4>🎧 Suporte</h4>
-    <div class="desc">Entre em contato conosco</div>
-    <div style="margin-top:16px">
-      <div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--bd)">
-        <span style="font-size:20px">📧</span>
-        <div>
-          <div style="color:var(--mut);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px">E-mail</div>
-          <div style="color:#fff;font-weight:600;font-size:14px;margin-top:2px">templeof.vaquinha@gmail.com</div>
-        </div>
-      </div>
-      <div style="display:flex;align-items:center;gap:12px;padding:14px 0">
-        <span style="font-size:20px">📞</span>
-        <div>
-          <div style="color:var(--mut);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Telefone</div>
-          <div style="color:#fff;font-weight:600;font-size:14px;margin-top:2px">011-9999-0000</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <div class="toast" id="toast"></div>
 
 <script>
@@ -395,9 +370,7 @@ function renderHeader(){
       '<button class="btn-menu" onclick="abrirMenu()">☰ Menu</button>';
   }else{
     bar.innerHTML=
-      '<div class="logo-top" style="flex:1;font-size:15px;font-weight:900;letter-spacing:1.5px;color:#fff;display:flex;align-items:center;gap:8px">'+
-        '<span style="font-size:22px">🐂</span> VAQUINHAGAMES'+
-      '</div>'+
+      '<div style="flex:1"></div>'+
       '<button class="btn-login" onclick="abrirAuth(\'entrar\')" style="flex:0 0 auto;padding:10px 24px">Entrar</button>';
   }
 }
@@ -412,38 +385,18 @@ function renderMenu(){
     document.getElementById('drawerEmail').textContent=usuario.email;
     saldoBox.style.display='block';
     document.getElementById('drawerSaldo').textContent='R$ '+parseFloat(usuario.saldo||0).toFixed(2).replace('.',',');
-    // Atualiza saldo bloqueado
-    const sb = document.getElementById('drawerSaldoBloq');
-    if(sb){
-      const temSaldo = (usuario.saldo||0) >= 5;
-      if(temSaldo){
-        sb.innerHTML='<div class="lbl">Saldo bloqueado</div><div class="val" style="color:var(--grn)">R$ 5,00 ✅ Liberado</div>';
-      }else{
-        sb.innerHTML='<div class="lbl">Saldo bloqueado</div><div class="val" style="color:var(--gold)">R$ 5,00 🔒</div>';
-      }
-    }
-    // Atualiza saldo bloqueado
-    const sb = document.getElementById('drawerSaldoBloq');
-    if(sb){
-      const temSaldo = (usuario.saldo||0) >= 5;
-      if(temSaldo){
-        sb.innerHTML='<div class="lbl">Saldo bloqueado</div><div class="val" style="color:var(--grn)">R$ 5,00 ✅ Liberado</div>';
-      }else{
-        sb.innerHTML='<div class="lbl">Saldo bloqueado</div><div class="val" style="color:var(--gold)">R$ 5,00 🔒</div>';
-      }
-    }
     lista.innerHTML=
       '<li onclick="abrirCarteira()"><span class="ic">💼</span> Carteira</li>'+
       '<li onclick="verHistorico()"><span class="ic">📋</span> Transações</li>'+
       '<li onclick="verHistorico()"><span class="ic">📜</span> Histórico</li>'+
       '<li onclick="verDadosPessoais()"><span class="ic">👤</span> Dados Pessoais</li>'+
-      '<li onclick="menuIr(\'suporte\')"><span class="ic">🎧</span> Suporte</li>'+
+      '<li onclick="menuIr(\'suporte\')"><span class="ic">🎧</span> Suporte ao Vivo</li>'+
       '<li onclick="sair()"><span class="ic">🚪</span> Sair</li>';
   }else{
     head.classList.remove('ativo');
     saldoBox.style.display='none';
     lista.innerHTML=
-      '<li onclick="menuIr(\'suporte\')"><span class="ic">🎧</span> Suporte</li>';
+      '<li onclick="menuIr(\'suporte\')"><span class="ic">🎧</span> Suporte ao Vivo</li>';
   }
 }
 
@@ -546,8 +499,12 @@ function sair(){
 function aplicarUsuario(){
   renderHeader();
   renderMenu();
-  const hero=document.querySelector('.hero-banner');
-  if(hero) hero.style.display = usuario ? 'none' : 'block';
+  const heroBtn=document.getElementById('heroBanner');
+  if(usuario){
+    heroBtn.style.display='none';
+  }else{
+    heroBtn.style.display='block';
+  }
 }
 
 function atualizarSaldoUI(v){
@@ -688,7 +645,6 @@ function menuIr(item){
   fecharMenu();
   if(!usuario){abrirAuth('entrar');return;}
   if(item==='carteira'){abrirDeposito();return;}
-  if(item==='suporte'){abrirModal('modalSuporte');return;}
   toast(item.charAt(0).toUpperCase()+item.slice(1)+' — em breve','info');
 }
 
@@ -711,43 +667,32 @@ function carregarJogos(){
   const grid=document.getElementById('grid');
   for(let i=0;i<6;i++){const s=document.createElement('div');s.className='skel';grid.appendChild(s);}
   fetch(API+'/api/config').then(r=>r.json()).then(cfg=>{
+    if(cfg.empresa && cfg.empresa.nome){
+      document.getElementById('heroTitulo').textContent='O Maior Cassino Online do Mundo';
+    }
+    if(cfg.banner){
+      document.getElementById('heroSub').textContent=cfg.banner;
+    }
     jogosData=cfg.jogos||[];
-    renderGrid(jogosData);
-  }).catch(()=>{
-    const jogosFallback=[
-      {nome:'Zeus vs Hades',imagem:'https://i.ibb.co/PzcPLBtg/Screenshot-2026-09-30-10-34-24-313-com-android-chrome.png',link:'https://www.pragmaticplay.com/br/jogos/zeus-vs-hades-gods-of-war-250/?gamelang=br&cur=BRL'},
-      {nome:'Fortune Tiger',imagem:'https://i.ibb.co/bRgRw8kF/Screenshot-2026-09-30-10-34-02-165-com-android-chrome.png',link:'https://templeofgames.com/gameDetailIos?gameId=23537'},
-      {nome:'Gates of Olympus',imagem:'https://i.ibb.co/PvtjC7rg/Screenshot-2026-09-30-10-33-44-230-com-android-chrome.png',link:'https://www.pragmaticplay.com/br/jogos/gates-of-olympus/'},
-      {nome:'Fortune Rabbit',imagem:'https://i.ibb.co/bTkYQCz/Screenshot-2026-09-30-10-33-26-327-com-android-chrome.png',link:'https://templeofgames.com/gameDetailIos?gameId=23536'},
-      {nome:'Fortune Ox',imagem:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPlVsMXAaZ130eBumGDhW3NVDNn5-LTJx-mqtT5ha3ww&s=10',link:'https://templeofgames.com/gameDetailIos?gameId=12475'},
-      {nome:'Tigre Sortudo',imagem:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRIuMG3iUsuQD8dvF50cbQiohl7vcsek71fV98_pRYCg&s=10',link:'#'},
-      {nome:'Fortune Dragon',imagem:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYNKBNAec0CrMnlVic1KyG0f80jsI9Q9WmYhBY7NlSPw&s=10',link:'#'},
-      {nome:'Área VIP',imagem:'https://casasdeapostasonline.pt/wp-content/uploads/2024/11/pragmatic.jpg',link:'#vip',vip:true}
-    ];
-    renderGrid(jogosFallback);
-  });
-}
-
-function renderGrid(jogos){
-  const grid=document.getElementById('grid');
-  grid.innerHTML='';
-  jogos.forEach((j,i)=>{
-    const div=document.createElement('div');
-    div.className='jogo'+(j.vip?' vip':'');
-    const linkEsc=(j.link||'').replace(/'/g,"\\'");
-    const numJog=numeroAleatorioJogando();
-    div.innerHTML=
-      '<div class="jogo-img">'+
-        (j.imagem?'<img src="'+j.imagem+'" alt="'+j.nome+'" loading="lazy" onerror="this.style.display=\'none\'">':'')+
-        '<div class="jogo-overlay"></div>'+
-        (j.vip?'<div class="jogo-tag">VIP</div>':'')+
-        '<div class="jogo-titulo">'+j.nome+'</div>'+
-        '<div class="jogo-prov">PRAGMATIC PLAY</div>'+
-      '</div>'+
-      '<div class="jogo-jogando"><span class="dot"></span> <b>'+numJog+'</b> jogando</div>';
-    div.onclick=()=>jogar(linkEsc);
-    grid.appendChild(div);
-  });
+    grid.innerHTML='';
+    jogosData.forEach((j,i)=>{
+      const div=document.createElement('div');
+      div.className='jogo';
+      const linkEsc=(j.link||'').replace(/'/g,"\\'");
+      const numJog=numeroAleatorioJogando();
+      div.innerHTML=
+        '<div class="jogo-img">'+
+          (j.imagem?'<img src="'+j.imagem+'" alt="'+j.nome+'" loading="lazy" onerror="this.style.display=\'none\'">':'')+
+          '<div class="jogo-overlay"></div>'+
+          (j.vip?'<div class="jogo-tag">VIP</div>':'')+
+          '<div class="jogo-titulo">'+j.nome+'</div>'+
+          '<div class="jogo-prov">PRAGMATIC PLAY</div>'+
+        '</div>'+
+        '<div class="jogo-jogando"><span class="dot"></span> <b>'+numJog+'</b> jogando</div>';
+      div.onclick=()=>jogar(linkEsc);
+      grid.appendChild(div);
+    });
+  }).catch(()=>{grid.innerHTML='<p style="grid-column:1/-1;text-align:center;color:var(--mut);padding:40px">Erro ao carregar.</p>';});
 }
 
 const saved=localStorage.getItem('temple_user');
@@ -763,8 +708,6 @@ if(usuario){
     if(u&&!u.erro){usuario.nome=u.nome;usuario.saldo=u.saldo||0;localStorage.setItem('temple_user',JSON.stringify(usuario));aplicarUsuario();}
   }).catch(()=>{});
 }
-
-carregarJogos();
 
 carregarJogos();
 
