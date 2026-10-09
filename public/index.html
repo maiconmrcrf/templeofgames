@@ -175,45 +175,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
 </div>
 <div class="grid" id="grid"></div>
 
-<!-- SUPORTE -->
-<div class="ajuda-sec" style="max-width:480px;margin:32px auto 8px;padding:0 16px">
-  <div class="ajuda-titulo">SUPORTE</div>
-  <div class="ajuda-item" style="cursor:default">
-    <span style="font-size:16px">📧</span>
-    <span style="color:var(--mut);font-size:13px">templeof.vaquinha@gmail.com</span>
-  </div>
-  <div class="ajuda-item" style="cursor:default">
-    <span style="font-size:16px">📞</span>
-    <span style="color:var(--mut);font-size:13px">011-9999-0000</span>
-  </div>
-</div>
-
-<!-- SUPORTE -->
-<div class="ajuda-sec" style="max-width:480px;margin:32px auto 8px;padding:0 16px">
-  <div class="ajuda-titulo">SUPORTE</div>
-  <div class="ajuda-item" style="cursor:default">
-    <span style="font-size:16px">📧</span>
-    <span style="color:var(--mut);font-size:13px">templeof.vaquinha@gmail.com</span>
-  </div>
-  <div class="ajuda-item" style="cursor:default">
-    <span style="font-size:16px">📞</span>
-    <span style="color:var(--mut);font-size:13px">011-9999-0000</span>
-  </div>
-</div>
-
-<!-- SUPORTE -->
-<div class="ajuda-sec" style="max-width:480px;margin:32px auto 8px;padding:0 16px">
-  <div class="ajuda-titulo">SUPORTE</div>
-  <div class="ajuda-item" style="cursor:default">
-    <span style="font-size:16px">📧</span>
-    <span style="color:var(--mut);font-size:13px">templeof.vaquinha@gmail.com</span>
-  </div>
-  <div class="ajuda-item" style="cursor:default">
-    <span style="font-size:16px">📞</span>
-    <span style="color:var(--mut);font-size:13px">011-9999-0000</span>
-  </div>
-</div>
-
 <!-- RODAPÉ -->
 <div class="rodape">
   <div class="rodape-social">
@@ -368,6 +329,31 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
   </div>
 </div>
 
+<!-- MODAL SUPORTE -->
+<div class="modal-bg" id="modalSuporte" onclick="fecharSeBg(event,'modalSuporte')">
+  <div class="modal">
+    <button class="fechar" onclick="fecharModal('modalSuporte')" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--mut);font-size:20px;cursor:pointer">✕</button>
+    <h4>🎧 Suporte</h4>
+    <div class="desc">Entre em contato conosco</div>
+    <div style="margin-top:16px">
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--bd)">
+        <span style="font-size:20px">📧</span>
+        <div>
+          <div style="color:var(--mut);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px">E-mail</div>
+          <div style="color:#fff;font-weight:600;font-size:14px;margin-top:2px">templeof.vaquinha@gmail.com</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px;padding:14px 0">
+        <span style="font-size:20px">📞</span>
+        <div>
+          <div style="color:var(--mut);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px">Telefone</div>
+          <div style="color:#fff;font-weight:600;font-size:14px;margin-top:2px">011-9999-0000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -421,13 +407,13 @@ function renderMenu(){
       '<li onclick="verHistorico()"><span class="ic">📋</span> Transações</li>'+
       '<li onclick="verHistorico()"><span class="ic">📜</span> Histórico</li>'+
       '<li onclick="verDadosPessoais()"><span class="ic">👤</span> Dados Pessoais</li>'+
-      '<li onclick="menuIr(\'suporte\')"><span class="ic">🎧</span> Suporte ao Vivo</li>'+
+      '<li onclick="menuIr(\'suporte\')"><span class="ic">🎧</span> Suporte</li>'+
       '<li onclick="sair()"><span class="ic">🚪</span> Sair</li>';
   }else{
     head.classList.remove('ativo');
     saldoBox.style.display='none';
     lista.innerHTML=
-      '<li onclick="menuIr(\'suporte\')"><span class="ic">🎧</span> Suporte ao Vivo</li>';
+      '<li onclick="menuIr(\'suporte\')"><span class="ic">🎧</span> Suporte</li>';
   }
 }
 
@@ -672,6 +658,7 @@ function menuIr(item){
   fecharMenu();
   if(!usuario){abrirAuth('entrar');return;}
   if(item==='carteira'){abrirDeposito();return;}
+  if(item==='suporte'){abrirModal('modalSuporte');return;}
   toast(item.charAt(0).toUpperCase()+item.slice(1)+' — em breve','info');
 }
 
