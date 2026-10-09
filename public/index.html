@@ -16,212 +16,171 @@
   --txt:#f5f6f8;--mut:#8a9099;--grn:#22c55e;--red:#ef4444;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{scroll-behavior:smooth}
-body{
-  background:var(--bg);color:var(--txt);
-  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-  min-height:100vh;overflow-x:hidden;
-  background-image:
-    radial-gradient(ellipse 80% 60% at 50% -10%,rgba(212,175,55,.15),transparent 60%),
-    radial-gradient(ellipse 60% 50% at 80% 100%,rgba(212,175,55,.06),transparent 60%);
-  background-attachment:fixed;
-}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;
+  background-image:radial-gradient(ellipse 80% 60% at 50% -10%,rgba(212,175,55,.15),transparent 60%),
+  radial-gradient(ellipse 60% 50% at 80% 100%,rgba(212,175,55,.06),transparent 60%);
+  background-attachment:fixed}
 .wrap{max-width:1180px;margin:0 auto;padding:0 20px}
 
-/* ===== HEADER ===== */
-header{
-  position:sticky;top:0;z-index:50;
-  background:rgba(5,6,8,.85);backdrop-filter:blur(20px);
-  -webkit-backdrop-filter:blur(20px);
-  border-bottom:1px solid var(--bd);
-  padding:16px 0;
-}
-.header-inner{display:flex;align-items:center;justify-content:space-between;gap:16px}
-.logo{display:flex;align-items:center;gap:12px;text-decoration:none}
-.logo-icon{
-  width:44px;height:44px;border-radius:12px;
-  background:linear-gradient(135deg,var(--gold),var(--gold3));
-  display:flex;align-items:center;justify-content:center;
-  font-size:24px;box-shadow:0 8px 24px rgba(212,175,55,.35);
-  position:relative;
-}
-.logo-icon::after{
-  content:'';position:absolute;inset:0;border-radius:12px;
-  background:linear-gradient(135deg,rgba(255,255,255,.3),transparent 50%);
-}
-.logo-text h1{
-  font-size:17px;font-weight:900;letter-spacing:-.3px;
-  background:linear-gradient(135deg,#fff,var(--gold2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  line-height:1.2;
-}
-.logo-text .sub{
-  font-size:10px;color:var(--mut);letter-spacing:2px;
-  text-transform:uppercase;font-weight:600;margin-top:2px;
-}
-.badge-live{
-  display:flex;align-items:center;gap:6px;
-  padding:8px 14px;border-radius:20px;
-  background:rgba(34,197,94,.12);
-  border:1px solid rgba(34,197,94,.25);
-  font-size:11px;font-weight:700;color:var(--grn);
-  text-transform:uppercase;letter-spacing:1px;
-}
-.badge-live .dot{
-  width:6px;height:6px;border-radius:50%;background:var(--grn);
-  box-shadow:0 0 8px var(--grn);
-  animation:pulse 1.5s infinite;
-}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+/* HEADER */
+header{position:sticky;top:0;z-index:50;background:rgba(5,6,8,.85);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--bd);padding:16px 0}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.header-left{display:flex;align-items:center;gap:12px;min-width:0}
+.menu-btn{background:transparent;border:none;color:var(--txt);font-size:24px;cursor:pointer;padding:8px;line-height:1;display:flex;align-items:center;justify-content:center}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;min-width:0}
+.logo-icon{width:40px;height:40px;border-radius:11px;background:linear-gradient(135deg,var(--gold),var(--gold3));display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 24px rgba(212,175,55,.35);flex-shrink:0}
+.logo-text{min-width:0}
+.logo-text h1{font-size:15px;font-weight:900;letter-spacing:-.3px;background:linear-gradient(135deg,#fff,var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.logo-text .sub{font-size:9px;color:var(--mut);letter-spacing:2px;text-transform:uppercase;font-weight:600;margin-top:2px}
+.header-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.saldo-pill{display:flex;align-items:center;gap:6px;padding:8px 14px;border-radius:20px;background:rgba(212,175,55,.12);border:1px solid rgba(212,175,55,.3);font-size:13px;font-weight:800;color:var(--gold2);cursor:pointer}
+.saldo-pill .lbl{font-size:10px;color:var(--mut);font-weight:600;text-transform:uppercase;letter-spacing:1px}
+.btn-entrar{padding:9px 18px;border-radius:20px;background:linear-gradient(135deg,var(--gold),var(--gold3));color:#000;font-size:12px;font-weight:800;border:none;cursor:pointer;text-transform:uppercase;letter-spacing:.5px}
 
-/* ===== HERO ===== */
-.hero{
-  text-align:center;padding:50px 20px 30px;
-  position:relative;
-}
-.hero h2{
-  font-size:clamp(28px,6vw,44px);font-weight:900;
-  letter-spacing:-1px;line-height:1.1;margin-bottom:12px;
-  background:linear-gradient(135deg,#fff 0%,var(--gold2) 50%,var(--gold) 100%);
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-}
-.hero p{
-  color:var(--mut);font-size:14px;font-weight:500;
-  max-width:500px;margin:0 auto;line-height:1.6;
-}
-.hero .shine{
-  display:inline-block;
-  background:linear-gradient(90deg,var(--gold) 0%,#fff 50%,var(--gold) 100%);
-  background-size:200% auto;
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  animation:shine 3s linear infinite;
-}
+/* HERO */
+.hero{text-align:center;padding:50px 20px 30px}
+.hero h2{font-size:clamp(28px,6vw,44px);font-weight:900;letter-spacing:-1px;line-height:1.1;margin-bottom:12px;background:linear-gradient(135deg,#fff 0%,var(--gold2) 50%,var(--gold) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero p{color:var(--mut);font-size:14px;font-weight:500;max-width:500px;margin:0 auto;line-height:1.6}
+.hero .shine{display:inline-block;background:linear-gradient(90deg,var(--gold) 0%,#fff 50%,var(--gold) 100%);background-size:200% auto;-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:shine 3s linear infinite}
 @keyframes shine{to{background-position:200% center}}
 
-/* ===== SEÇÃO TÍTULO ===== */
-.section-title{
-  display:flex;align-items:center;gap:12px;
-  margin:40px 0 20px;
-}
-.section-title .bar{
-  width:4px;height:24px;border-radius:2px;
-  background:linear-gradient(180deg,var(--gold),var(--gold3));
-}
-.section-title h3{
-  font-size:18px;font-weight:800;letter-spacing:-.3px;
-}
-.section-title .count{
-  margin-left:auto;font-size:12px;color:var(--mut);
-  font-weight:600;
-}
+/* SECTION */
+.section-title{display:flex;align-items:center;gap:12px;margin:40px 0 20px}
+.section-title .bar{width:4px;height:24px;border-radius:2px;background:linear-gradient(180deg,var(--gold),var(--gold3))}
+.section-title h3{font-size:18px;font-weight:800;letter-spacing:-.3px}
+.section-title .count{margin-left:auto;font-size:12px;color:var(--mut);font-weight:600}
 
-/* ===== GRID JOGOS ===== */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-  gap:16px;
-  margin-bottom:60px;
-}
-.jogo{
-  background:var(--bg2);
-  border:1px solid var(--bd);
-  border-radius:16px;
-  overflow:hidden;
-  text-decoration:none;color:inherit;
-  display:block;
-  transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s;
-  position:relative;
-}
-.jogo:hover,.jogo:active{
-  transform:translateY(-6px) scale(1.02);
-  border-color:var(--gold);
-  box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 0 1px rgba(212,175,55,.3),0 0 30px rgba(212,175,55,.15);
-}
-.jogo-img{
-  position:relative;width:100%;aspect-ratio:1/1;
-  overflow:hidden;background:#000;
-}
-.jogo-img img{
-  width:100%;height:100%;object-fit:cover;
-  transition:transform .5s cubic-bezier(.2,.8,.2,1);
-  display:block;
-}
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin-bottom:60px}
+.jogo{background:var(--bg2);border:1px solid var(--bd);border-radius:16px;overflow:hidden;position:relative;transition:transform .3s cubic-bezier(.2,.8,.2,1),border-color .3s,box-shadow .3s;display:block;text-decoration:none;color:inherit;cursor:pointer}
+.jogo:hover,.jogo:active{transform:translateY(-6px) scale(1.02);border-color:var(--gold);box-shadow:0 20px 40px rgba(0,0,0,.5),0 0 0 1px rgba(212,175,55,.3),0 0 30px rgba(212,175,55,.15)}
+.jogo-img{position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;background:#000}
+.jogo-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.8,.2,1);display:block}
 .jogo:hover .jogo-img img{transform:scale(1.1)}
-.jogo-img::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(180deg,transparent 40%,rgba(0,0,0,.9) 100%);
-  pointer-events:none;
-}
-.jogo-nome{
-  position:absolute;bottom:0;left:0;right:0;
-  padding:14px 12px 12px;
-  font-size:13px;font-weight:700;line-height:1.3;
-  color:#fff;z-index:2;
-  text-shadow:0 2px 8px rgba(0,0,0,.8);
-}
-.jogo-tag{
-  position:absolute;top:10px;right:10px;z-index:3;
-  padding:4px 10px;border-radius:20px;
-  background:linear-gradient(135deg,var(--gold),var(--gold3));
-  color:#000;font-size:9px;font-weight:900;
-  letter-spacing:.8px;text-transform:uppercase;
-  box-shadow:0 4px 12px rgba(212,175,55,.4);
-}
-.jogo.vip{
-  border-color:rgba(212,175,55,.4);
-  background:linear-gradient(135deg,var(--bg2),#1a1408);
-}
-.jogo.vip .jogo-nome{color:var(--gold2)}
+.jogo-img::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(0,0,0,.95) 100%);pointer-events:none}
+.jogo-nome{position:absolute;bottom:44px;left:0;right:0;padding:0 12px;font-size:13px;font-weight:700;line-height:1.3;color:#fff;z-index:2;text-shadow:0 2px 8px rgba(0,0,0,.9)}
+.btn-play{position:absolute;bottom:10px;left:10px;right:10px;padding:10px;border-radius:10px;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000;font-weight:900;font-size:12px;text-transform:uppercase;letter-spacing:1px;text-align:center;z-index:3;border:none;cursor:pointer;box-shadow:0 6px 16px rgba(212,175,55,.4);transition:.2s}
+.btn-play:active{transform:scale(.96)}
+.jogo-tag{position:absolute;top:10px;right:10px;z-index:3;padding:4px 10px;border-radius:20px;background:linear-gradient(135deg,var(--gold),var(--gold3));color:#000;font-size:9px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;box-shadow:0 4px 12px rgba(212,175,55,.4)}
+.jogo.vip{border-color:rgba(212,175,55,.4);background:linear-gradient(135deg,var(--bg2),#1a1408)}
 
-/* ===== FOOTER ===== */
-footer{
-  border-top:1px solid var(--bd);
-  padding:30px 20px;text-align:center;
-  color:var(--mut);font-size:11px;
-  letter-spacing:1px;text-transform:uppercase;
-  font-weight:600;
-}
-footer .gold{color:var(--gold)}
-
-/* ===== SKELETON ===== */
-.skel{
-  background:linear-gradient(90deg,var(--bg2) 0%,var(--bg3) 50%,var(--bg2) 100%);
-  background-size:200% 100%;
-  animation:skel 1.5s infinite;
-  border-radius:16px;
-  aspect-ratio:1/1;
-}
+/* SKELETON */
+.skel{background:linear-gradient(90deg,var(--bg2) 0%,var(--bg3) 50%,var(--bg2) 100%);background-size:200% 100%;animation:skel 1.5s infinite;border-radius:16px;aspect-ratio:1/1}
 @keyframes skel{0%{background-position:200% 0}100%{background-position:-200% 0}}
 
-/* ===== MOBILE ===== */
+/* FOOTER */
+footer{border-top:1px solid var(--bd);padding:40px 20px 30px;text-align:center;color:var(--mut);font-size:12px;line-height:1.8}
+footer .logo-foot{font-size:16px;font-weight:900;color:var(--gold);margin-bottom:12px}
+footer .links{display:flex;justify-content:center;gap:18px;flex-wrap:wrap;margin:14px 0}
+footer .links a{color:var(--mut);text-decoration:none;font-size:12px}
+footer .links a:hover{color:var(--gold)}
+footer .aviso{font-size:10px;color:#555;margin-top:14px;letter-spacing:.5px;line-height:1.6}
+footer .aviso .18{display:inline-block;background:var(--red);color:#fff;font-weight:900;padding:2px 6px;border-radius:4px;font-size:9px;margin-right:4px}
+
+/* MENU LATERAL */
+.drawer-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);z-index:100;opacity:0;pointer-events:none;transition:.3s}
+.drawer-bg.aberto{opacity:1;pointer-events:all}
+.drawer{position:fixed;top:0;left:0;bottom:0;width:290px;max-width:85vw;background:var(--bg2);border-right:1px solid var(--bd);z-index:101;transform:translateX(-100%);transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;overflow-y:auto}
+.drawer.aberto{transform:translateX(0)}
+.drawer-head{padding:20px;border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.drawer-head .user{font-weight:800;font-size:15px;color:var(--txt)}
+.drawer-head .user small{display:block;color:var(--mut);font-weight:500;font-size:11px;margin-top:3px;text-transform:none;letter-spacing:0}
+.drawer-head .close{background:transparent;border:none;color:var(--mut);font-size:22px;cursor:pointer;padding:4px 10px}
+.drawer-saldo{margin:16px;padding:16px;border-radius:12px;background:linear-gradient(135deg,rgba(212,175,55,.15),rgba(212,175,55,.05));border:1px solid rgba(212,175,55,.3)}
+.drawer-saldo .lbl{font-size:10px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1.5px}
+.drawer-saldo .val{font-size:24px;font-weight:900;color:var(--gold2);margin-top:4px}
+.drawer-menu{list-style:none;padding:8px}
+.drawer-menu li{padding:14px 16px;border-radius:10px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:.2s;font-weight:600;font-size:14px;color:var(--txt)}
+.drawer-menu li:hover{background:var(--bg3);color:var(--gold)}
+.drawer-menu li .ico{font-size:18px;width:24px;text-align:center}
+.drawer-menu li.destaque{background:linear-gradient(135deg,var(--gold),var(--gold3));color:#000;font-weight:800;margin:8px 0}
+.drawer-menu li.destaque:hover{color:#000}
+.drawer-foot{margin-top:auto;padding:16px;border-top:1px solid var(--bd);font-size:10px;color:var(--mut);text-align:center;letter-spacing:1px;text-transform:uppercase}
+
+/* MODAIS */
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(6px);z-index:200;display:none;align-items:center;justify-content:center;padding:20px}
+.modal-bg.aberto{display:flex}
+.modal{background:var(--bg2);border:1px solid var(--bd);border-radius:20px;width:100%;max-width:420px;padding:26px;max-height:90vh;overflow-y:auto;animation:modalIn .3s cubic-bezier(.2,.8,.2,1)}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(10px)}to{opacity:1;transform:none}}
+.modal h3{font-size:20px;font-weight:900;margin-bottom:6px;color:var(--txt)}
+.modal .sub{color:var(--mut);font-size:12px;margin-bottom:20px}
+.modal label{display:block;font-size:10px;color:var(--mut);text-transform:uppercase;font-weight:700;letter-spacing:1px;margin:14px 0 6px}
+.modal input{width:100%;padding:14px;background:var(--bg);border:1px solid var(--bd);color:var(--txt);border-radius:10px;font-size:15px;font-family:inherit}
+.modal input:focus{outline:none;border-color:var(--gold)}
+.modal .btn{width:100%;padding:14px;border-radius:10px;border:none;font-weight:900;font-size:13px;text-transform:uppercase;letter-spacing:1px;cursor:pointer;margin-top:16px;font-family:inherit}
+.modal .btn.gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000}
+.modal .btn.ghost{background:transparent;border:1px solid var(--bd);color:var(--mut);margin-top:8px}
+.modal .btn-close{position:absolute;top:14px;right:14px;background:transparent;border:none;color:var(--mut);font-size:22px;cursor:pointer;padding:4px 10px}
+.modal{position:relative}
+.modal .valores{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:8px}
+.modal .valores button{padding:12px;background:var(--bg);border:1px solid var(--bd);color:var(--txt);border-radius:10px;font-weight:700;cursor:pointer;font-size:13px}
+.modal .valores button:hover{border-color:var(--gold);color:var(--gold)}
+.modal .aviso-pix{margin-top:16px;padding:14px;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.3);border-radius:10px;font-size:12px;color:var(--grn);text-align:center;line-height:1.6}
+.modal .codigo{background:#000;padding:14px;border-radius:10px;font-family:monospace;font-size:11px;word-break:break-all;color:var(--gold2);margin-top:12px;max-height:120px;overflow-y:auto;border:1px solid var(--bd)}
+.tabs-auth{display:flex;gap:6px;background:var(--bg);padding:4px;border-radius:12px;margin-bottom:18px}
+.tabs-auth button{flex:1;padding:10px;background:transparent;border:none;color:var(--mut);border-radius:8px;font-weight:700;cursor:pointer;font-size:13px}
+.tabs-auth button.ativo{background:linear-gradient(135deg,var(--gold),var(--gold3));color:#000}
+
 @media(max-width:600px){
   .wrap{padding:0 14px}
   .grid{grid-template-columns:repeat(2,1fr);gap:12px}
-  .jogo-nome{font-size:12px;padding:10px}
-  .badge-live span.txt{display:none}
-  .badge-live{padding:8px 10px}
+  .jogo-nome{font-size:12px;bottom:40px}
+  .btn-play{padding:9px;font-size:11px}
+  .logo-text h1{font-size:13px}
+  .logo-text .sub{display:none}
+  .saldo-pill{padding:7px 11px;font-size:12px}
   .hero{padding:30px 10px 20px}
+  .header-inner{gap:8px}
 }
 </style>
 </head>
 <body>
 
+<!-- ===================== DRAWER (menu lateral) ===================== -->
+<div class="drawer-bg" id="drawerBg" onclick="fecharDrawer()"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div class="user" id="drawerUser">Visitante<small id="drawerEmail">Não logado</small></div>
+    <button class="close" onclick="fecharDrawer()">✕</button>
+  </div>
+  <div class="drawer-saldo" id="drawerSaldoBox" style="display:none">
+    <div class="lbl">Saldo disponível</div>
+    <div class="val" id="drawerSaldo">R$ 0,00</div>
+  </div>
+  <ul class="drawer-menu">
+    <li class="destaque" onclick="abrirDeposito()"><span class="ico">💰</span> Depositar</li>
+    <li onclick="abrirSacar()"><span class="ico">💸</span> Sacar</li>
+    <li onclick="abrirLogin()" id="menuLogin"><span class="ico">🔑</span> Entrar / Cadastrar</li>
+    <li onclick="verHistorico()"><span class="ico">📜</span> Histórico</li>
+    <li onclick="window.location.href='/'"><span class="ico">🎮</span> Jogos</li>
+    <li onclick="sair()" id="menuSair" style="display:none"><span class="ico">🚪</span> Sair</li>
+  </ul>
+  <div class="drawer-foot">Temple of Games © 2026</div>
+</aside>
+
+<!-- ===================== HEADER ===================== -->
 <header>
 <div class="wrap header-inner">
-  <a href="/" class="logo">
-    <div class="logo-icon" id="logoIcon">🎰</div>
-    <div class="logo-text">
-      <h1 id="logoNome">Temple of Games</h1>
-      <div class="sub" id="logoSub">Cassino Online</div>
+  <div class="header-left">
+    <button class="menu-btn" onclick="abrirDrawer()" aria-label="Menu">☰</button>
+    <a href="/" class="logo">
+      <div class="logo-icon" id="logoIcon">🎰</div>
+      <div class="logo-text">
+        <h1 id="logoNome">Temple of Games</h1>
+        <div class="sub" id="logoSub">Cassino Online</div>
+      </div>
+    </a>
+  </div>
+  <div class="header-right">
+    <div class="saldo-pill" id="saldoPill" style="display:none" onclick="abrirDrawer()">
+      <span class="lbl">R$</span><span id="saldoHeader">0,00</span>
     </div>
-  </a>
-  <div class="badge-live">
-    <div class="dot"></div>
-    <span class="txt">Online</span>
+    <button class="btn-entrar" id="btnEntrar" onclick="abrirLogin()">Entrar</button>
   </div>
 </div>
 </header>
 
+<!-- ===================== HERO ===================== -->
 <section class="hero">
   <h2>Jogue os melhores <span class="shine">slots</span> do mundo</h2>
   <p id="heroSub">Os maiores títulos das produtoras premium, disponíveis 24 horas por dia.</p>
@@ -236,60 +195,346 @@ footer .gold{color:var(--gold)}
   <div class="grid" id="grid"></div>
 </div>
 
+<!-- ===================== FOOTER ===================== -->
 <footer>
-  <p>Temple of Games &copy; <span class="gold" id="ano"></span> — Todos os direitos reservados</p>
+  <div class="logo-foot">🎰 Temple of Games</div>
+  <div class="links">
+    <a href="#">Termos de Uso</a>
+    <a href="#">Política de Privacidade</a>
+    <a href="#">Suporte</a>
+    <a href="#">Contato</a>
+  </div>
+  <div class="aviso">
+    <span class="18">+18</span> Conteúdo destinado a maiores de 18 anos. Jogue com responsabilidade.
+  </div>
+  <div class="aviso" style="margin-top:8px">
+    © <span id="ano"></span> Temple of Games — Todos os direitos reservados.
+  </div>
 </footer>
 
+<!-- ===================== MODAL LOGIN/CADASTRO ===================== -->
+<div class="modal-bg" id="modalLogin" onclick="fecharSeBg(event,'modalLogin')">
+  <div class="modal">
+    <button class="btn-close" onclick="fecharModal('modalLogin')">✕</button>
+    <div class="tabs-auth">
+      <button class="ativo" id="tabEntrar" onclick="trocarAuth('entrar')">Entrar</button>
+      <button id="tabCadastrar" onclick="trocarAuth('cadastrar')">Cadastrar</button>
+    </div>
+    <div id="formEntrar">
+      <h3>Bem-vindo</h3>
+      <div class="sub">Acesse sua conta para jogar</div>
+      <label>E-mail</label><input id="login_email" type="email" placeholder="seu@email.com">
+      <label>Senha</label><input id="login_senha" type="password" placeholder="••••••">
+      <button class="btn gold" onclick="fazerLogin()">Entrar</button>
+    </div>
+    <div id="formCadastrar" style="display:none">
+      <h3>Criar conta</h3>
+      <div class="sub">Cadastre-se grátis</div>
+      <label>Nome completo</label><input id="cad_nome" type="text" placeholder="Seu nome">
+      <label>E-mail</label><input id="cad_email" type="email" placeholder="seu@email.com">
+      <label>CPF</label><input id="cad_cpf" type="text" placeholder="000.000.000-00">
+      <label>Nascimento</label><input id="cad_nasc" type="text" placeholder="DD/MM/AAAA">
+      <label>Senha</label><input id="cad_senha" type="password" placeholder="••••••">
+      <button class="btn gold" onclick="fazerCadastro()">Criar conta</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL DEPÓSITO ===================== -->
+<div class="modal-bg" id="modalDep" onclick="fecharSeBg(event,'modalDep')">
+  <div class="modal">
+    <button class="btn-close" onclick="fecharModal('modalDep')">✕</button>
+    <h3>💰 Depositar</h3>
+    <div class="sub">Escolha o valor e gere o PIX</div>
+    <label>Valor (R$)</label>
+    <input id="dep_valor" type="number" inputmode="decimal" placeholder="0,00" min="5">
+    <div class="valores">
+      <button onclick="setDep(20)">R$ 20</button>
+      <button onclick="setDep(50)">R$ 50</button>
+      <button onclick="setDep(100)">R$ 100</button>
+    </div>
+    <button class="btn gold" onclick="gerarPix()">Gerar PIX</button>
+    <div id="dep_resultado" style="display:none">
+      <div class="aviso-pix">
+        ✅ PIX gerado! Copie o código abaixo e pague no app do seu banco.
+      </div>
+      <div class="codigo" id="dep_codigo"></div>
+      <button class="btn gold" onclick="copiarPix()" style="margin-top:10px">📋 Copiar código PIX</button>
+      <div class="aviso-pix" style="margin-top:10px;background:rgba(212,175,55,.08);border-color:rgba(212,175,55,.3);color:var(--gold2)">
+        ⏳ Após pagar, aguarde a confirmação. O saldo entra em instantes.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL SACAR ===================== -->
+<div class="modal-bg" id="modalSaq" onclick="fecharSeBg(event,'modalSaq')">
+  <div class="modal">
+    <button class="btn-close" onclick="fecharModal('modalSaq')">✕</button>
+    <h3>💸 Sacar</h3>
+    <div class="sub">Solicite o saque do seu saldo</div>
+    <label>Valor (R$)</label>
+    <input id="saq_valor" type="number" inputmode="decimal" placeholder="0,00">
+    <label>Chave PIX</label>
+    <input id="saq_chave" type="text" placeholder="CPF, e-mail ou telefone">
+    <button class="btn gold" onclick="pedirSaque()">Solicitar saque</button>
+    <div class="aviso-pix" style="background:rgba(212,175,55,.08);border-color:rgba(212,175,55,.3);color:var(--gold2)">
+      ℹ️ Saques são processados em até 24h úteis.
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL HISTÓRICO ===================== -->
+<div class="modal-bg" id="modalHist" onclick="fecharSeBg(event,'modalHist')">
+  <div class="modal">
+    <button class="btn-close" onclick="fecharModal('modalHist')">✕</button>
+    <h3>📜 Histórico</h3>
+    <div class="sub">Suas últimas transações</div>
+    <div id="hist_lista" style="margin-top:16px"></div>
+  </div>
+</div>
+
 <script>
-// ano
+// ===== Config =====
+const API = '';
+let usuario = null;
+
 document.getElementById('ano').textContent = new Date().getFullYear();
 
-// skeleton inicial
-const grid = document.getElementById('grid');
+// ===== Drawer =====
+function abrirDrawer(){document.getElementById('drawer').classList.add('aberto');document.getElementById('drawerBg').classList.add('aberto')}
+function fecharDrawer(){document.getElementById('drawer').classList.remove('aberto');document.getElementById('drawerBg').classList.remove('aberto')}
+function fecharModal(id){document.getElementById(id).classList.remove('aberto')}
+function abrirModal(id){document.getElementById(id).classList.add('aberto')}
+function fecharSeBg(e,id){if(e.target.id===id)fecharModal(id)}
+
+// ===== Auth UI =====
+function trocarAuth(aba){
+  document.getElementById('tabEntrar').classList.toggle('ativo',aba==='entrar');
+  document.getElementById('tabCadastrar').classList.toggle('ativo',aba==='cadastrar');
+  document.getElementById('formEntrar').style.display=aba==='entrar'?'block':'none';
+  document.getElementById('formCadastrar').style.display=aba==='cadastrar'?'block':'none';
+}
+function abrirLogin(){
+  if(usuario){fecharDrawer();return}
+  fecharDrawer();abrirModal('modalLogin');
+}
+function abrirCadastro(){
+  fecharDrawer();
+  abrirModal('modalLogin');
+  trocarAuth('cadastrar');
+}
+
+async function fazerLogin(){
+  const email=document.getElementById('login_email').value.trim().toLowerCase();
+  const senha=document.getElementById('login_senha').value;
+  if(!email||!senha)return alert('Preencha e-mail e senha');
+  const r=await fetch(API+'/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email,senha})});
+  const d=await r.json();
+  if(!r.ok)return alert(d.erro||'Erro');
+  usuario=d;
+  localStorage.setItem('temple_user',JSON.stringify(d));
+  aplicarUsuario();
+  fecharModal('modalLogin');
+  alert('Bem-vindo, '+d.nome+'!');
+}
+
+async function fazerCadastro(){
+  const nome=document.getElementById('cad_nome').value.trim();
+  const email=document.getElementById('cad_email').value.trim().toLowerCase();
+  const cpf=document.getElementById('cad_cpf').value.trim();
+  const nasc=document.getElementById('cad_nasc').value.trim();
+  const senha=document.getElementById('cad_senha').value;
+  if(!nome||!email||!senha)return alert('Preencha nome, e-mail e senha');
+  const r=await fetch(API+'/api/usuarios',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({nome,email,cpf,nasc,senha})});
+  const d=await r.json();
+  if(!r.ok)return alert(d.erro||'Erro');
+  document.getElementById('login_email').value=email;
+  document.getElementById('login_senha').value=senha;
+  await fazerLogin();
+}
+
+function sair(){
+  usuario=null;
+  localStorage.removeItem('temple_user');
+  aplicarUsuario();
+  fecharDrawer();
+}
+
+function aplicarUsuario(){
+  const btn=document.getElementById('btnEntrar');
+  const pill=document.getElementById('saldoPill');
+  const box=document.getElementById('drawerSaldoBox');
+  const menuLogin=document.getElementById('menuLogin');
+  const menuSair=document.getElementById('menuSair');
+  if(usuario){
+    btn.style.display='none';
+    pill.style.display='flex';
+    box.style.display='block';
+    document.getElementById('drawerUser').innerHTML=(usuario.nome||'Jogador')+'<small id="drawerEmail">'+usuario.email+'</small>';
+    atualizarSaldoUI(usuario.saldo||0);
+    menuLogin.style.display='none';
+    menuSair.style.display='flex';
+  }else{
+    btn.style.display='block';
+    pill.style.display='none';
+    box.style.display='none';
+    document.getElementById('drawerUser').innerHTML='Visitante<small id="drawerEmail">Não logado</small>';
+    menuLogin.style.display='flex';
+    menuSair.style.display='none';
+  }
+}
+
+function atualizarSaldoUI(v){
+  const fmt='R$ '+parseFloat(v).toFixed(2).replace('.',',');
+  document.getElementById('drawerSaldo').textContent=fmt;
+  document.getElementById('saldoHeader').textContent=parseFloat(v).toFixed(2).replace('.',',');
+}
+
+// ===== Deposito =====
+function abrirDeposito(){
+  fecharDrawer();
+  if(!usuario){abrirModal('modalLogin');return alert('Faça login primeiro');}
+  abrirModal('modalDep');
+}
+function setDep(v){document.getElementById('dep_valor').value=v}
+async function gerarPix(){
+  const valor=parseFloat(document.getElementById('dep_valor').value.replace(',','.'));
+  if(!valor||valor<5)return alert('Valor mínimo R$ 5,00');
+  const r=await fetch(API+'/api/criar-pix',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({email:usuario.email,valor})});
+  const d=await r.json();
+  if(!r.ok)return alert(d.erro||'Erro');
+  document.getElementById('dep_codigo').textContent=d.payload;
+  document.getElementById('dep_resultado').style.display='block';
+}
+function copiarPix(){
+  const t=document.getElementById('dep_codigo').textContent;
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(t).then(()=>alert('PIX copiado!')).catch(()=>alert('Copie manualmente'));
+  }else{
+    alert('Copie manualmente:\n\n'+t);
+  }
+}
+
+// ===== Saque =====
+function abrirSacar(){
+  fecharDrawer();
+  if(!usuario){abrirModal('modalLogin');return alert('Faça login primeiro');}
+  abrirModal('modalSaq');
+}
+function pedirSaque(){
+  const valor=parseFloat(document.getElementById('saq_valor').value.replace(',','.'));
+  const chave=document.getElementById('saq_chave').value.trim();
+  if(!valor||valor<=0)return alert('Valor inválido');
+  if(!chave)return alert('Informe a chave PIX');
+  if(valor>(usuario.saldo||0))return alert('Saldo insuficiente');
+  alert('Solicitação enviada! Processamento em até 24h úteis.');
+  fecharModal('modalSaq');
+}
+
+// ===== Histórico =====
+async function verHistorico(){
+  fecharDrawer();
+  if(!usuario){abrirModal('modalLogin');return alert('Faça login primeiro');}
+  abrirModal('modalHist');
+  const lista=document.getElementById('hist_lista');
+  lista.innerHTML='<p style="color:var(--mut);text-align:center;padding:20px">Carregando...</p>';
+  try{
+    const r=await fetch(API+'/api/usuarios/'+encodeURIComponent(usuario.email)+'/historico');
+    const arr=await r.json();
+    if(!arr.length){lista.innerHTML='<p style="color:var(--mut);text-align:center;padding:20px">Nenhuma transação ainda.</p>';return}
+    lista.innerHTML=arr.map(h=>{
+      const positivo=h.valor>=0;
+      const cor=positivo?'var(--grn)':'var(--red)';
+      const sinal=positivo?'+':'';
+      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:12px;border-bottom:1px solid var(--bd)">'+
+        '<div><div style="font-weight:700;font-size:13px">'+h.tipo+'</div>'+
+        '<div style="font-size:10px;color:var(--mut);margin-top:2px">'+((h.data||'').slice(0,16).replace('T',' '))+'</div></div>'+
+        '<div style="font-weight:900;color:'+cor+';font-size:14px">'+sinal+'R$ '+Math.abs(h.valor).toFixed(2).replace('.',',')+'</div>'+
+        '</div>';
+    }).join('');
+  }catch(e){
+    lista.innerHTML='<p style="color:var(--red);text-align:center">Erro ao carregar</p>';
+  }
+}
+
+// ===== PLAY (trava de saldo) =====
+function jogar(link,nome){
+  if(!usuario){
+    abrirModal('modalLogin');
+    return alert('Faça login para jogar.');
+  }
+  const saldo=usuario.saldo||0;
+  if(saldo<=0){
+    alert('Você está sem saldo!\n\nFaça um depósito para começar a jogar.');
+    abrirDeposito();
+    return;
+  }
+  if(link&&link!=='#'&&!link.startsWith('#')){
+    window.open(link,'_blank');
+  }else{
+    alert('Este jogo ainda não está disponível.');
+  }
+}
+
+// ===== Carregar config e grid =====
+const grid=document.getElementById('grid');
 for(let i=0;i<8;i++){
-  const s = document.createElement('div');
+  const s=document.createElement('div');
   s.className='skel';
   grid.appendChild(s);
 }
 
-fetch('/api/config')
-  .then(r => r.json())
-  .then(cfg => {
-    // logo
+// aplica usuário salvo
+const saved=localStorage.getItem('temple_user');
+if(saved){try{usuario=JSON.parse(saved);}catch(e){}}
+aplicarUsuario();
+
+// puxa dados frescos do servidor se tiver logado
+if(usuario){
+  fetch(API+'/api/usuarios/'+encodeURIComponent(usuario.email)).then(r=>r.json()).then(u=>{
+    if(u&&!u.erro){
+      usuario.nome=u.nome;
+      usuario.saldo=u.saldo||0;
+      localStorage.setItem('temple_user',JSON.stringify(usuario));
+      aplicarUsuario();
+    }
+  }).catch(()=>{});
+}
+
+fetch(API+'/api/config')
+  .then(r=>r.json())
+  .then(cfg=>{
     if(cfg.empresa){
-      document.getElementById('logoIcon').textContent = cfg.empresa.logo_emoji || '🎰';
-      document.getElementById('logoNome').textContent = cfg.empresa.nome || 'Temple of Games';
+      document.getElementById('logoIcon').textContent=cfg.empresa.logo_emoji||'🎰';
+      document.getElementById('logoNome').textContent=cfg.empresa.nome||'Temple of Games';
     }
     if(cfg.banner){
-      document.getElementById('heroSub').textContent = cfg.banner;
+      document.getElementById('heroSub').textContent=cfg.banner;
     }
-    // grid
-    const jogos = cfg.jogos || [];
-    document.getElementById('count').textContent = jogos.length + ' títulos';
-    grid.innerHTML = '';
-    jogos.forEach((j, i) => {
-      const a = document.createElement('a');
-      a.className = 'jogo' + (j.vip ? ' vip' : '');
-      a.href = j.link || '#';
-      a.target = '_blank';
-      a.rel = 'noopener';
-      a.style.animation = 'fadeUp .5s cubic-bezier(.2,.8,.2,1) ' + (i*0.05) + 's both';
-      a.innerHTML =
-        '<div class="jogo-img">' +
-          (j.imagem ? '<img src="'+j.imagem+'" alt="'+j.nome+'" loading="lazy" onerror="this.style.display=\'none\'">' : '') +
-          (j.vip ? '<div class="jogo-tag">VIP</div>' : '') +
-          '<div class="jogo-nome">'+j.nome+'</div>' +
+    const jogos=cfg.jogos||[];
+    document.getElementById('count').textContent=jogos.length+' títulos';
+    grid.innerHTML='';
+    jogos.forEach((j,i)=>{
+      const div=document.createElement('div');
+      div.className='jogo'+(j.vip?' vip':'');
+      div.style.animation='fadeUp .5s cubic-bezier(.2,.8,.2,1) '+(i*0.05)+'s both';
+      div.innerHTML=
+        '<div class="jogo-img">'+
+          (j.imagem?'<img src="'+j.imagem+'" alt="'+j.nome+'" loading="lazy" onerror="this.style.display=\'none\'">':'')+
+          (j.vip?'<div class="jogo-tag">VIP</div>':'')+
+          '<div class="jogo-nome">'+j.nome+'</div>'+
+          '<button class="btn-play" onclick="event.stopPropagation();jogar(\''+(j.link||'').replace(/'/g,"\\'")+'\',\''+j.nome.replace(/'/g,"\\'")+'\')">▶ Jogar</button>'+
         '</div>';
-      grid.appendChild(a);
+      grid.appendChild(div);
     });
   })
-  .catch(err => {
-    grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:var(--mut);padding:40px">Erro ao carregar jogos.</p>';
+  .catch(err=>{
+    grid.innerHTML='<p style="grid-column:1/-1;text-align:center;color:var(--mut);padding:40px">Erro ao carregar jogos.</p>';
   });
 
-// animação fade
-const style = document.createElement('style');
-style.textContent = '@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}';
+const style=document.createElement('style');
+style.textContent='@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}';
 document.head.appendChild(style);
 </script>
 </body>
