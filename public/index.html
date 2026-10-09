@@ -18,29 +18,29 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{overflow-x:hidden}
-body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.4;min-height:100vh;padding-bottom:70px}
+body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.4;min-height:100vh}
 
 /* HEADER */
-.top-bar{background:var(--bg);padding:12px 16px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(255,255,255,.04)}
-.logo-stake{font-size:30px;font-weight:900;letter-spacing:-1.5px;color:#fff;font-family:'Inter',sans-serif;font-style:italic;line-height:1}
-.saldo-box{background:var(--bg2);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;flex:1;max-width:220px}
-.saldo-box .flag{font-size:16px}
-.saldo-box .val{font-size:15px;font-weight:700;color:#fff}
-.saldo-box .arrow{color:var(--mut);font-size:12px;margin-left:auto}
-.top-bar .icons{margin-left:auto;display:flex;align-items:center;gap:6px}
-.icon-btn{background:transparent;border:none;color:#fff;font-size:20px;padding:8px;cursor:pointer;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:.15s}
-.icon-btn:active{background:var(--bg2)}
-.icon-btn.carteira{background:var(--red);color:#fff;border-radius:8px;padding:8px 12px;font-size:16px}
+.top-bar{background:var(--bg);padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(255,255,255,.04)}
+.saldo-box{background:var(--bg2);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.saldo-box .info{display:flex;flex-direction:column;line-height:1.1;min-width:0}
+.saldo-box .lbl{font-size:9.5px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+.saldo-box .val{font-size:15px;font-weight:800;color:#fff;white-space:nowrap}
+.saldo-box .flag{font-size:15px}
+.saldo-box .arrow{color:var(--mut);font-size:11px;margin-left:auto}
+.btn-deposito{background:var(--red);color:#fff;border:none;padding:10px 14px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;transition:.15s;white-space:nowrap}
+.btn-deposito:active{transform:scale(.97);background:var(--red2)}
+.icon-btn{background:var(--bg2);border:none;color:#fff;font-size:18px;padding:10px 12px;cursor:pointer;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:.15s}
+.icon-btn:active{background:var(--bg3)}
 
-/* NAV CATEGORIAS */
-.cats{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;scrollbar-width:none;background:var(--bg)}
+/* CATEGORIAS */
+.cats{display:flex;gap:8px;padding:12px 14px;overflow-x:auto;scrollbar-width:none;background:var(--bg)}
 .cats::-webkit-scrollbar{display:none}
-.cat{flex-shrink:0;background:var(--bg2);color:var(--txt);border:none;padding:8px 14px;border-radius:20px;font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;transition:.15s;white-space:nowrap}
-.cat:hover{background:var(--bg3)}
+.cat{flex-shrink:0;background:var(--bg2);color:var(--txt);border:none;padding:8px 16px;border-radius:20px;font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;transition:.15s;white-space:nowrap}
 .cat.ativo{background:var(--red);color:#fff}
 
 /* HERO BANNER */
-.hero-banner{margin:8px 16px 16px;background:linear-gradient(135deg,#1e3a4c,#0f212e);border-radius:12px;padding:24px 20px;text-align:center;position:relative;overflow:hidden;border:1px solid var(--bd)}
+.hero-banner{margin:8px 14px 16px;background:linear-gradient(135deg,#1e3a4c,#0f212e);border-radius:12px;padding:24px 20px;text-align:center;position:relative;overflow:hidden;border:1px solid var(--bd)}
 .hero-banner::before{content:'';position:absolute;top:-50%;right:-30%;width:250px;height:250px;background:radial-gradient(circle,rgba(230,57,70,.25),transparent 70%);border-radius:50%}
 .hero-banner .icone{font-size:44px;margin-bottom:12px;position:relative;z-index:1}
 .hero-banner h1{font-size:22px;font-weight:900;margin-bottom:6px;position:relative;z-index:1;line-height:1.2;letter-spacing:-.3px}
@@ -49,13 +49,13 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
 .hero-banner .btn-cadastrar:active{transform:scale(.97);background:var(--red2)}
 
 /* SECTION HEADER */
-.sec-head{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 12px}
+.sec-head{display:flex;align-items:center;justify-content:space-between;padding:8px 14px 12px}
 .sec-head h2{font-size:15px;font-weight:800;letter-spacing:-.2px}
 .sec-head a{color:var(--mut);font-size:12px;font-weight:600;text-decoration:none}
 .sec-head a:hover{color:var(--red)}
 
 /* GRID JOGOS */
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:0 16px;margin-bottom:24px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:0 14px;margin-bottom:24px}
 .jogo{background:var(--bg2);border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s;position:relative}
 .jogo:active{transform:scale(.98)}
 .jogo-img{position:relative;width:100%;aspect-ratio:1/1;overflow:hidden;background:#000}
@@ -84,12 +84,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
 .rodape-txt{color:var(--mut2);font-size:11.5px;line-height:1.7;max-width:520px;margin:0 auto 12px}
 .rodape-txt b{color:var(--mut)}
 .rodape-18{display:inline-block;background:var(--red);color:#fff;font-weight:900;padding:3px 8px;border-radius:4px;font-size:11px;margin:8px 0}
-
-/* BARRA INFERIOR */
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--bg2);border-top:1px solid var(--bd);display:flex;justify-content:space-around;padding:8px 0 max(8px,env(safe-area-inset-bottom));z-index:80}
-.bnav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;background:transparent;border:none;color:var(--mut);font-family:inherit;font-size:10px;font-weight:600;cursor:pointer;padding:6px 0;transition:.15s}
-.bnav-item .ic{font-size:20px;line-height:1}
-.bnav-item.ativo{color:var(--red)}
 
 /* MENU LATERAL */
 .drawer-bg{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:100;opacity:0;pointer-events:none;transition:.25s}
@@ -132,9 +126,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
 .modal .btn.primario:hover{background:var(--red2)}
 .modal .btn.primario:active{transform:scale(.98)}
 .modal .btn.primario:disabled{opacity:.55;cursor:not-allowed}
-.modal .btn.secundario{background:var(--bg3);color:#fff;margin-top:10px}
-.modal .divisor{display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--mut);font-size:13px}
-.modal .divisor::before,.modal .divisor::after{content:'';flex:1;height:1px;background:var(--bd)}
 .modal .tabs-auth{display:flex;gap:6px;background:var(--bg);padding:4px;border-radius:9px;margin-bottom:18px}
 .modal .tab-auth{flex:1;padding:10px;background:transparent;border:none;color:var(--mut);border-radius:6px;font-family:inherit;font-size:13px;font-weight:700;cursor:pointer}
 .modal .tab-auth.ativo{background:var(--red);color:#fff}
@@ -157,7 +148,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
 .pix-aviso{margin-top:12px;padding:10px;background:rgba(230,57,70,.08);border:1px solid rgba(230,57,70,.25);border-radius:8px;font-size:11.5px;color:var(--mut);line-height:1.6;text-align:center}
 
 /* TOAST */
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--bg3);border:1px solid var(--bd);border-radius:10px;padding:12px 20px;color:#fff;font-weight:600;font-size:13px;z-index:9999;opacity:0;transition:.3s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 40px rgba(0,0,0,.6);max-width:90vw;text-align:center;pointer-events:none}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--bg3);border:1px solid var(--bd);border-radius:10px;padding:12px 20px;color:#fff;font-weight:600;font-size:13px;z-index:9999;opacity:0;transition:.3s cubic-bezier(.2,.8,.2,1);box-shadow:0 20px 40px rgba(0,0,0,.6);max-width:90vw;text-align:center;pointer-events:none}
 .toast.visivel{opacity:1;transform:translateX(-50%) translateY(0)}
 .toast.ok{border-color:var(--grn)}
 .toast.erro{border-color:var(--red)}
@@ -167,27 +158,21 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
 
 <!-- HEADER -->
 <div class="top-bar">
-  <div class="logo-stake">Temple</div>
-  <div class="saldo-box" id="saldoBox" onclick="abrirCarteira()">
+  <div class="saldo-box" onclick="abrirCarteira()">
     <span class="flag">🇧🇷</span>
-    <span class="val" id="saldoTopo">R$ 0.00</span>
+    <div class="info">
+      <div class="lbl">Saldo</div>
+      <div class="val" id="saldoTopo">R$ 0.00</div>
+    </div>
     <span class="arrow">▾</span>
   </div>
-  <div class="icons">
-    <button class="icon-btn carteira" onclick="abrirCarteira()">💼</button>
-    <button class="icon-btn" onclick="abrirMenu()">👤</button>
-    <button class="icon-btn" onclick="abrirNotif()">🔔</button>
-  </div>
+  <button class="btn-deposito" onclick="abrirDeposito()">💼 Depósito</button>
+  <button class="icon-btn" onclick="abrirMenu()">🔥</button>
 </div>
 
-<!-- CATEGORIAS -->
+<!-- CATEGORIA ÚNICA -->
 <div class="cats">
   <button class="cat ativo">Todos</button>
-  <button class="cat">Slots</button>
-  <button class="cat">Cassino ao Vivo</button>
-  <button class="cat">Roleta</button>
-  <button class="cat">Crash</button>
-  <button class="cat">Tigre</button>
 </div>
 
 <!-- HERO BANNER -->
@@ -234,15 +219,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
   <div class="rodape-txt" style="margin-top:8px">
     Jogue com responsabilidade. Apostas envolvem risco.
   </div>
-</div>
-
-<!-- BARRA INFERIOR -->
-<div class="bottom-nav">
-  <button class="bnav-item ativo" onclick="mudarAba(this)"><span class="ic">🔍</span>Procurar</button>
-  <button class="bnav-item" onclick="mudarAba(this)"><span class="ic">🎰</span>Casino</button>
-  <button class="bnav-item" onclick="mudarAba(this)"><span class="ic">⭐</span>Para Você</button>
-  <button class="bnav-item" onclick="mudarAba(this)"><span class="ic">⚽</span>Esportes</button>
-  <button class="bnav-item" onclick="mudarAba(this)"><span class="ic">💬</span>Chat</button>
 </div>
 
 <!-- MENU LATERAL -->
@@ -377,8 +353,6 @@ let usuario=null;
 let pixPolling=null;
 let jogosData=[];
 
-document.getElementById('ano') && (document.getElementById('ano').textContent=new Date().getFullYear());
-
 function toast(msg,tipo){
   const t=document.getElementById('toast');
   t.textContent=msg;
@@ -406,12 +380,7 @@ function abrirCarteira(){
   if(!usuario){abrirAuth('entrar');return;}
   abrirDeposito();
 }
-function abrirNotif(){toast('Nenhuma notificação no momento','info');}
 function verTodos(){toast('Mostrando todos os jogos','info');}
-function mudarAba(el){
-  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('ativo'));
-  el.classList.add('ativo');
-}
 function verSenha(id,btn){
   const inp=document.getElementById(id);
   if(inp.type==='password'){inp.type='text';btn.textContent='🙈';}
@@ -642,9 +611,6 @@ function carregarJogos(){
   const grid=document.getElementById('grid');
   for(let i=0;i<6;i++){const s=document.createElement('div');s.className='skel';grid.appendChild(s);}
   fetch(API+'/api/config').then(r=>r.json()).then(cfg=>{
-    if(cfg.empresa && cfg.empresa.logo_emoji){
-      // nada, mantém "Temple" como logo
-    }
     if(cfg.empresa && cfg.empresa.nome){
       document.getElementById('heroTitulo').textContent='O Maior Cassino Online do Mundo';
     }
@@ -688,7 +654,6 @@ if(saved){
 
 carregarJogos();
 
-// Atualiza números aleatórios a cada 8s
 setInterval(()=>{
   document.querySelectorAll('.jogo-jogando').forEach(el=>{
     const b=el.querySelector('b');
