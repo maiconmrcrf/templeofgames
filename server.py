@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Temple of Games — Flask + PIX estático. Versão limpa + anti-index."""
+"""Vaquinhagames — Flask + PIX + contador de visitas."""
 
 import os, json
 from datetime import datetime
-from flask import Flask, request, jsonify, send_from_directory, Response, abort
+from flask import Flask, request, jsonify, send_from_directory, Response
 
 BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
 PUBLIC_DIR  = os.path.join(BASE_DIR, "public")
 
 app = Flask(__name__, static_folder=PUBLIC_DIR, static_url_path="")
 
-# ============ CONFIG ============
 PIX_KEY       = "6377167@vakinha.com.br"
 MERCHANT_NAME = "PAGAMENTO"
 MERCHANT_CITY = "BRASIL"
@@ -21,71 +20,21 @@ ADMIN_SENHA   = "temple2026"
 USERS_FILE  = os.path.join(BASE_DIR, "usuarios.json")
 PIX_FILE    = os.path.join(BASE_DIR, "pix_pendentes.json")
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
+VISITAS_FILE = os.path.join(BASE_DIR, "visitas.json")
 
-# ============ ANTI-GOOGLE / ANTI-BOT ============
-BOTS_BLOQUEADOS = (
-    "googlebot", "bingbot", "yandex", "baiduspider", "duckduckbot",
-    "slurp", "sogou", "exabot", "facebot", "ia_archiver",
-    "semrush", "ahrefs", "mj12bot", "dotbot", "petalbot",
-    "applebot", "bytespider", "gptbot", "ccbot", "claudebot",
-    "perplexitybot", "amazonbot"
-)
-
-def is_bot(ua: str) -> bool:
-    if not ua: return True
-    ua = ua.lower()
-    return any(b in ua for b in BOTS_BLOQUEADOS)
-
-@app.before_request
-def bloquear_bots():
-    # Deixa /admin passar (voce usa)
-    if request.path.startswith("/admin"):
-        return None
-    ua = request.headers.get("User-Agent", "")
-    if is_bot(ua):
-        return Response("Acesso restrito.", status=403)
-
-@app.after_request
-def headers_anti_index(resp):
-    resp.headers["X-Robots-Tag"] = "noindex, nofollow, noarchive, nosnippet"
-    resp.headers["X-Frame-Options"] = "SAMEORIGIN"
-    resp.headers["X-Content-Type-Options"] = "nosniff"
-    resp.headers["Referrer-Policy"] = "no-referrer"
-    return resp
-
-# ============ ARQUIVOS ============
 CONFIG_PADRAO = {
-    "empresa": {"nome": "Temple of Games",
-                "descricao_pix": "Temple of Games - Creditos",
-                "logo_emoji": "🎰"},
-    "banner": "ONLINE CASINO GAMES",
-    "cores": {"dourado": "#d4af37", "dourado_claro": "#f0c040"},
+    "empresa": {"nome": "Vaquinhagames","descricao_pix": "Vaquinhagames - Creditos","logo_emoji": "🎰"},
+    "banner": "VAQUINHAGAMES",
+    "cores": {"dourado": "#e5b82e", "dourado_claro": "#f5cf54"},
     "jogos": [
-        {"nome": "Zeus vs Hades",
-         "link": "https://www.pragmaticplay.com/br/jogos/zeus-vs-hades-gods-of-war-250/?gamelang=br&cur=BRL",
-         "imagem": "https://i.ibb.co/PzcPLBtg/Screenshot-2026-09-30-10-34-24-313-com-android-chrome.png"},
-        {"nome": "Fortune Tiger",
-         "link": "https://templeofgames.com/gameDetailIos?gameId=23537",
-         "imagem": "https://i.ibb.co/bRgRw8kF/Screenshot-2026-09-30-10-34-02-165-com-android-chrome.png"},
-        {"nome": "Gates of Olympus",
-         "link": "https://www.pragmaticplay.com/br/jogos/gates-of-olympus/",
-         "imagem": "https://i.ibb.co/PvtjC7rg/Screenshot-2026-09-30-10-33-44-230-com-android-chrome.png"},
-        {"nome": "Fortune Rabbit",
-         "link": "https://templeofgames.com/gameDetailIos?gameId=23536",
-         "imagem": "https://i.ibb.co/bTkYQCz/Screenshot-2026-09-30-10-33-26-327-com-android-chrome.png"},
-        {"nome": "Fortune Ox",
-         "link": "https://templeofgames.com/gameDetailIos?gameId=12475",
-         "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPlVsMXAaZ130eBumGDhW3NVDNn5-LTJx-mqtT5ha3ww&s=10"},
-        {"nome": "Tigre Sortudo",
-         "link": "#",
-         "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRIuMG3iUsuQD8dvF50cbQiohl7vcsek71fV98_pRYCg&s=10"},
-        {"nome": "Fortune Dragon",
-         "link": "#",
-         "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYNKBNAec0CrMnlVic1KyG0f80jsI9Q9WmYhBY7NlSPw&s=10"},
-        {"nome": "Area VIP - Faca 2 depositos no minimo para liberar",
-         "link": "#vip",
-         "imagem": "https://casasdeapostasonline.pt/wp-content/uploads/2024/11/pragmatic.jpg",
-         "vip": True}
+        {"nome":"Zeus vs Hades","link":"https://www.pragmaticplay.com/br/jogos/zeus-vs-hades-gods-of-war-250/?gamelang=br&cur=BRL","imagem":"https://i.ibb.co/PzcPLBtg/Screenshot-2026-09-30-10-34-24-313-com-android-chrome.png"},
+        {"nome":"Fortune Tiger","link":"https://templeofgames.com/gameDetailIos?gameId=23537","imagem":"https://i.ibb.co/bRgRw8kF/Screenshot-2026-09-30-10-34-02-165-com-android-chrome.png"},
+        {"nome":"Gates of Olympus","link":"https://www.pragmaticplay.com/br/jogos/gates-of-olympus/","imagem":"https://i.ibb.co/PvtjC7rg/Screenshot-2026-09-30-10-33-44-230-com-android-chrome.png"},
+        {"nome":"Fortune Rabbit","link":"https://templeofgames.com/gameDetailIos?gameId=23536","imagem":"https://i.ibb.co/bTkYQCz/Screenshot-2026-09-30-10-33-26-327-com-android-chrome.png"},
+        {"nome":"Fortune Ox","link":"https://templeofgames.com/gameDetailIos?gameId=12475","imagem":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPlVsMXAaZ130eBumGDhW3NVDNn5-LTJx-mqtT5ha3ww&s=10"},
+        {"nome":"Tigre Sortudo","link":"#","imagem":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRIuMG3iUsuQD8dvF50cbQiohl7vcsek71fV98_pRYCg&s=10"},
+        {"nome":"Fortune Dragon","link":"#","imagem":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYNKBNAec0CrMnlVic1KyG0f80jsI9Q9WmYhBY7NlSPw&s=10"},
+        {"nome":"Area VIP - Faca 2 depositos no minimo para liberar","link":"#vip","imagem":"https://casasdeapostasonline.pt/wp-content/uploads/2024/11/pragmatic.jpg","vip":True}
     ]
 }
 
@@ -135,19 +84,37 @@ def gerar_pix(valor, txid="***"):
     valor_pix = f"{float(valor):.2f}"
     merchant_account = campo("00", "br.gov.bcb.pix") + campo("01", PIX_KEY)
     payload = (
-        campo("00", "01") + campo("01", "11") +
+        campo("00","01") + campo("01","11") +
         campo("26", merchant_account) +
-        campo("52", "0000") + campo("53", "986") +
-        campo("54", valor_pix) + campo("58", "BR") +
+        campo("52","0000") + campo("53","986") +
+        campo("54", valor_pix) + campo("58","BR") +
         campo("59", MERCHANT_NAME) + campo("60", MERCHANT_CITY) +
         campo("62", campo("05", txid)) + "6304"
     )
     return payload + crc16(payload)
 
-# ============ ROBOTS.TXT ============
-@app.route("/robots.txt")
-def robots():
-    return Response("User-agent: *\nDisallow: /\n", mimetype="text/plain")
+# ============ VISITAS ============
+def registrar_visita(pagina):
+    v = ler_json(VISITAS_FILE, [])
+    v.insert(0, {
+        "ip": get_ip_cliente(),
+        "ua": request.headers.get("User-Agent", "")[:180],
+        "ref": request.headers.get("Referer", "")[:180],
+        "pagina": pagina,
+        "data": datetime.now().isoformat()
+    })
+    v = v[:2000]  # mantém só as últimas 2000
+    salvar_json(VISITAS_FILE, v)
+
+@app.before_request
+def contar_visita():
+    # Só conta acessos à página principal e rotas públicas
+    if request.method != "GET": return
+    p = request.path
+    if p.startswith("/admin") or p.startswith("/api") or p.startswith("/static"): return
+    if p == "/" or p.endswith(".html"):
+        try: registrar_visita(p)
+        except Exception: pass
 
 # ============ ROTAS ============
 @app.route("/")
@@ -195,8 +162,7 @@ def api_login():
     u = ler_json(USERS_FILE, {}).get(email)
     if not u: return jsonify({"erro": "E-mail nao cadastrado"}), 404
     if u.get("senha") != senha: return jsonify({"erro": "Senha incorreta"}), 401
-    return jsonify({"ok": True, "nome": u.get("nome"), "email": u.get("email"),
-                    "saldo": u.get("saldo", 0.0)})
+    return jsonify({"ok": True, "nome": u.get("nome"), "email": u.get("email"), "saldo": u.get("saldo", 0.0)})
 
 @app.route("/api/usuarios/<email>/saldo", methods=["POST"])
 def atualizar_saldo(email):
@@ -207,8 +173,7 @@ def atualizar_saldo(email):
     u = users.get(email.lower())
     if not u: return jsonify({"erro": "Usuario nao encontrado"}), 404
     u["saldo"] = round((u.get("saldo", 0.0) + delta), 2)
-    u.setdefault("historico", []).insert(0, {
-        "tipo": motivo, "valor": delta, "data": datetime.now().isoformat()})
+    u.setdefault("historico", []).insert(0, {"tipo": motivo, "valor": delta, "data": datetime.now().isoformat()})
     u["historico"] = u["historico"][:50]
     salvar_json(USERS_FILE, users)
     return jsonify({"ok": True, "saldo": u["saldo"]})
@@ -228,211 +193,139 @@ def api_criar_pix():
         return jsonify({"erro": "Valor invalido."}), 400
     if valor < VALOR_MINIMO:
         return jsonify({"erro": f"Valor minimo: R$ {VALOR_MINIMO:.2f}"}), 400
-
     email_user = (data.get("email") or "").strip().lower()
     txid = "VK" + datetime.now().strftime("%H%M%S")
     codigo = gerar_pix(valor, txid=txid)
-
     pend = ler_json(PIX_FILE, {})
     chave = f"local_{datetime.now().strftime('%Y%m%d%H%M%S')}_{email_user}"
-    pend[chave] = {
-        "email": email_user, "valor": valor,
-        "criado_em": datetime.now().isoformat(), "status": "PENDENTE",
-        "codigo": codigo
-    }
+    pend[chave] = {"email": email_user, "valor": valor, "criado_em": datetime.now().isoformat(), "status": "PENDENTE", "codigo": codigo}
     salvar_json(PIX_FILE, pend)
     return jsonify({"payment_id": chave, "payload": codigo, "encodedImage": ""})
 
-# ============ ADMIN (interface moderna) ============
+# ============ ADMIN ============
 ADMIN_HTML = """<!DOCTYPE html><html lang="pt-BR"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"><title>Admin - Vaquinhagames</title>
 <meta name="robots" content="noindex,nofollow">
 <style>
-:root{--gold:#d4af37;--gold2:#f0c040;--bg:#08090c;--bg2:#101216;--bg3:#161a20;--bd:#22262e;--txt:#e8eaed;--mut:#8a9099;--grn:#22c55e;--red:#ef4444}
+:root{--red:#e63946;--bg:#0f212e;--bg2:#1a2c38;--bg3:#213743;--bd:#2a4050;--txt:#fff;--mut:#8ba0b0;--grn:#00e701;--gold:#f3ba2f}
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;padding:20px 20px 100px;min-height:100vh}
+body{background:var(--bg);color:var(--txt);font-family:Arial,sans-serif;padding:16px}
 .wrap{max-width:1200px;margin:0 auto}
-h1{font-size:24px;font-weight:700;margin-bottom:24px;background:linear-gradient(135deg,var(--gold),var(--gold2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:flex;align-items:center;gap:10px}
-h2{font-size:16px;font-weight:600;color:var(--gold);margin:20px 0 12px;display:flex;align-items:center;gap:8px}
-.tabs{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;background:var(--bg2);padding:6px;border-radius:12px;border:1px solid var(--bd)}
-.tab{padding:10px 18px;background:transparent;border:none;color:var(--mut);border-radius:8px;cursor:pointer;font-weight:600;font-size:13px;transition:.2s}
-.tab:hover{color:var(--txt);background:var(--bg3)}
-.tab.ativo{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000}
-.painel{display:none;animation:fade .3s}
-.painel.ativo{display:block}
-@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-.card{background:var(--bg2);border:1px solid var(--bd);border-radius:14px;padding:20px;margin-bottom:16px}
-label{display:block;font-size:11px;color:var(--mut);text-transform:uppercase;margin:12px 0 6px;letter-spacing:.8px;font-weight:600}
-input{width:100%;padding:12px 14px;background:var(--bg);border:1px solid var(--bd);color:var(--txt);border-radius:10px;font-size:14px;font-family:inherit;transition:.2s}
-input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(212,175,55,.1)}
-button{padding:12px 20px;border:none;border-radius:10px;font-weight:700;cursor:pointer;font-size:13px;transition:.2s;font-family:inherit}
-button:hover{transform:translateY(-1px);filter:brightness(1.1)}
-.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold2));color:#000}
-.btn-red{background:var(--red);color:#fff}
-.btn-green{background:var(--grn);color:#000}
-.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
-.stat{background:linear-gradient(135deg,var(--bg2),var(--bg3));border:1px solid var(--bd);border-radius:14px;padding:18px;position:relative;overflow:hidden}
-.stat::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),transparent)}
-.stat b{color:var(--mut);display:block;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;font-weight:600}
-.stat span{font-size:26px;font-weight:800;color:var(--gold)}
-.stat.grn span{color:var(--grn)}
-table{width:100%;border-collapse:collapse;font-size:13px;background:var(--bg2);border-radius:12px;overflow:hidden}
-th{background:var(--bg3);color:var(--gold);padding:12px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.8px;font-weight:700;border-bottom:1px solid var(--bd)}
-td{padding:12px;border-bottom:1px solid var(--bd);font-size:12px}
-tr:last-child td{border-bottom:none}
+h1{color:var(--gold);font-size:22px;margin-bottom:20px}
+h2{color:var(--gold);font-size:15px;margin:20px 0 10px;text-transform:uppercase;letter-spacing:1px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:20px}
+.stat{background:var(--bg2);border:1px solid var(--bd);border-radius:10px;padding:14px}
+.stat b{display:block;color:var(--mut);font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.stat span{font-size:22px;font-weight:900;color:var(--grn)}
+.stat.gold span{color:var(--gold)}
+table{width:100%;border-collapse:collapse;background:var(--bg2);border-radius:10px;overflow:hidden;font-size:12px}
+th{background:var(--bg3);color:var(--gold);padding:10px;text-align:left;font-size:10px;text-transform:uppercase;letter-spacing:.8px}
+td{padding:10px;border-bottom:1px solid var(--bd)}
 tr:hover td{background:var(--bg3)}
-.jogo-editor{display:grid;grid-template-columns:80px 1fr auto;gap:12px;align-items:flex-start;background:var(--bg3);padding:14px;border-radius:12px;border:1px solid var(--bd);margin-bottom:10px}
-.jogo-editor img{width:80px;height:80px;object-fit:cover;border-radius:8px;background:#000}
-.jogo-editor .campos{display:flex;flex-direction:column;gap:8px}
-.jogo-editor .campos input{font-size:12px;padding:9px 12px}
-.msg{padding:14px;border-radius:10px;margin-top:16px;font-size:13px;font-weight:600;display:none;position:fixed;bottom:100px;left:20px;right:20px;z-index:100;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.4)}
-.msg.ok{background:#052e16;color:#4ade80;border:1px solid var(--grn);display:block}
-.msg.erro{background:#450a0a;color:#f87171;border:1px solid var(--red);display:block}
-.salvar-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(16,18,22,.95);backdrop-filter:blur(12px);padding:14px 20px;border-top:1px solid var(--bd);display:flex;gap:10px;max-width:1200px;margin:0 auto;left:50%;transform:translateX(-50%);border-radius:14px 14px 0 0}
-.salvar-bar button{flex:1;margin:0}
-@media(max-width:600px){h1{font-size:20px}.tab{padding:8px 12px;font-size:12px}.stat span{font-size:20px}}
+.btn{background:var(--red);color:#fff;border:none;padding:8px 14px;border-radius:6px;font-weight:700;cursor:pointer;font-size:12px}
+.btn.gold{background:var(--gold);color:#000}
+.tab{display:inline-block;padding:8px 14px;background:var(--bg2);border:1px solid var(--bd);border-radius:6px;color:var(--mut);cursor:pointer;font-weight:700;font-size:12px;margin-right:6px}
+.tab.ativo{background:var(--red);color:#fff;border-color:var(--red)}
+.painel{display:none}.painel.ativo{display:block}
 </style></head><body>
 <div class="wrap">
-<h1>🎰 Painel Admin</h1>
-<div class="tabs">
-  <button class="tab ativo" onclick="mostrarAba('stats', this)">📊 Stats</button>
-  <button class="tab" onclick="mostrarAba('config', this)">⚙️ Config</button>
-  <button class="tab" onclick="mostrarAba('jogos', this)">🎰 Jogos</button>
-  <button class="tab" onclick="mostrarAba('users', this)">👥 Usuários</button>
-  <button class="tab" onclick="mostrarAba('pix', this)">💰 PIX</button>
+<h1>🐂 Painel Admin — Vaquinhagames</h1>
+
+<div>
+<div class="tab ativo" onclick="aba('visitas',this)">👁 Visitas</div>
+<div class="tab" onclick="aba('usuarios',this)">👥 Usuários</div>
+<div class="tab" onclick="aba('pix',this)">💰 PIX</div>
 </div>
-<div class="painel ativo" id="painel-stats"><div class="stats" id="stats"></div></div>
-<div class="painel" id="painel-config">
-  <div class="card">
-    <h2>🏢 Empresa</h2>
-    <label>Nome</label><input id="cfg_nome">
-    <label>Descrição PIX</label><input id="cfg_desc">
-    <label>Emoji logo</label><input id="cfg_logo">
-    <label>Banner</label><input id="cfg_banner">
-    <label>Cor dourada</label><input id="cfg_dourado" type="color">
-    <label>Cor dourada clara</label><input id="cfg_dourado2" type="color">
-  </div>
+
+<div class="painel ativo" id="p-visitas">
+  <div class="stats" id="stats-visitas"></div>
+  <h2>Últimas visitas</h2>
+  <div style="overflow-x:auto"><table id="tab-visitas">
+    <thead><tr><th>Data/Hora</th><th>IP</th><th>Página</th><th>Navegador</th></tr></thead>
+    <tbody></tbody>
+  </table></div>
 </div>
-<div class="painel" id="painel-jogos">
-  <h2>🎰 Lista de Jogos</h2>
-  <div id="lista-jogos"></div>
-  <button class="btn-green" onclick="addJogo()">➕ Adicionar Jogo</button>
-</div>
-<div class="painel" id="painel-users">
-  <h2>👥 Usuários</h2>
-  <div style="overflow-x:auto"><table id="tabela-users">
+
+<div class="painel" id="p-usuarios">
+  <div class="stats" id="stats-users"></div>
+  <h2>Usuários cadastrados</h2>
+  <div style="overflow-x:auto"><table id="tab-users">
     <thead><tr><th>Nome</th><th>E-mail</th><th>CPF</th><th>Saldo</th><th>IP</th><th>Data</th><th>Ação</th></tr></thead>
     <tbody></tbody>
   </table></div>
 </div>
-<div class="painel" id="painel-pix">
-  <h2>💰 PIX Pendentes</h2>
-  <p style="font-size:12px;color:var(--mut);margin-bottom:14px">Confirme manualmente quando o PIX cair.</p>
-  <div style="overflow-x:auto"><table id="tabela-pix">
-    <thead><tr><th>Usuário</th><th>Valor</th><th>Criado</th><th>Status</th><th>Ação</th></tr></thead>
+
+<div class="painel" id="p-pix">
+  <h2>PIX Pendentes</h2>
+  <div style="overflow-x:auto"><table id="tab-pix">
+    <thead><tr><th>Usuário</th><th>Valor</th><th>Criado em</th><th>Status</th><th>Ação</th></tr></thead>
     <tbody></tbody>
   </table></div>
 </div>
-<div class="msg" id="msg"></div>
-<div class="salvar-bar">
-  <button class="btn-gold" onclick="salvarTudo()">💾 Salvar Tudo</button>
-  <button class="btn-gold" onclick="location.reload()" style="max-width:100px">🔄</button>
-</div>
+
 </div>
 <script>
-const SENHA=new URLSearchParams(location.search).get('s');
-let cfg={};
-function mostrarAba(n,el){
+const SENHA = new URLSearchParams(location.search).get('s');
+function aba(nome,el){
   document.querySelectorAll('.painel').forEach(p=>p.classList.remove('ativo'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('ativo'));
-  document.getElementById('painel-'+n).classList.add('ativo');
+  document.getElementById('p-'+nome).classList.add('ativo');
   el.classList.add('ativo');
-  if(n==='pix')carregarPIX();
-}
-function setMsg(t,ok){
-  const m=document.getElementById('msg');m.textContent=t;
-  m.className='msg '+(ok?'ok':'erro');
-  setTimeout(()=>{m.className='msg'},3500);
 }
 async function carregar(){
-  cfg=await(await fetch('/api/config')).json();
-  const users=await(await fetch('/api/usuarios')).json();
-  const total=Object.keys(users).length;
-  const saldoTotal=Object.values(users).reduce((s,u)=>s+(u.saldo||0),0);
-  const pend=await(await fetch('/api/pix-pendentes')).json();
-  const pendN=Object.values(pend).filter(p=>p.status==='PENDENTE').length;
-  document.getElementById('stats').innerHTML=
-    '<div class="stat"><b>Usuários</b><span>'+total+'</span></div>'+
-    '<div class="stat grn"><b>Saldo total</b><span>R$ '+saldoTotal.toFixed(2)+'</span></div>'+
-    '<div class="stat"><b>PIX pendentes</b><span>'+pendN+'</span></div>'+
-    '<div class="stat grn"><b>Sistema</b><span style="font-size:16px">Online</span></div>';
-  document.getElementById('cfg_nome').value=cfg.empresa.nome||'';
-  document.getElementById('cfg_desc').value=cfg.empresa.descricao_pix||'';
-  document.getElementById('cfg_logo').value=cfg.empresa.logo_emoji||'';
-  document.getElementById('cfg_banner').value=cfg.banner||'';
-  document.getElementById('cfg_dourado').value=(cfg.cores&&cfg.cores.dourado)||'#d4af37';
-  document.getElementById('cfg_dourado2').value=(cfg.cores&&cfg.cores.dourado_claro)||'#f0c040';
-  renderJogos();renderUsers(users);
-}
-function renderJogos(){
-  document.getElementById('lista-jogos').innerHTML=cfg.jogos.map((j,i)=>
-    '<div class="jogo-editor"><img src="'+(j.imagem||'')+'">'+
-    '<div class="campos">'+
-    '<input placeholder="Nome" value="'+(j.nome||'').replace(/"/g,'&quot;')+'" onchange="cfg.jogos['+i+'].nome=this.value">'+
-    '<input placeholder="Link" value="'+(j.link||'').replace(/"/g,'&quot;')+'" onchange="cfg.jogos['+i+'].link=this.value">'+
-    '<input placeholder="Imagem URL" value="'+(j.imagem||'').replace(/"/g,'&quot;')+'" onchange="cfg.jogos['+i+'].imagem=this.value;renderJogos()">'+
-    '</div><button class="btn-red" onclick="remJogo('+i+')" style="margin-top:0">🗑</button></div>'
-  ).join('');
-}
-function addJogo(){cfg.jogos.push({nome:'',link:'',imagem:''});renderJogos()}
-function remJogo(i){if(confirm('Remover?')){cfg.jogos.splice(i,1);renderJogos()}}
-function renderUsers(users){
-  const tb=document.querySelector('#tabela-users tbody');
-  const arr=Object.entries(users);
-  if(!arr.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--mut);padding:30px">Nenhum usuário ainda.</td></tr>';return}
-  tb.innerHTML=arr.map(p=>{
-    const e=p[0],u=p[1];
-    return '<tr><td>'+(u.nome||'—')+'</td><td>'+e+'</td><td>'+(u.cpf||'—')+'</td>'+
-    '<td style="color:var(--grn);font-weight:700">R$ '+(u.saldo||0).toFixed(2)+'</td>'+
-    '<td style="color:var(--mut)">'+(u.ip_capturado||'—')+'</td>'+
-    '<td style="color:var(--mut)">'+((u.criado_em||'').slice(0,16).replace('T',' '))+'</td>'+
-    '<td><button class="btn-green" style="padding:6px 12px;font-size:11px;margin:0" onclick="addSaldo(\\''+e+'\\')">+ R$</button></td></tr>'
-  }).join('');
+  // VISITAS
+  const v = await (await fetch('/api/visitas')).json();
+  const total = v.length;
+  const hoje = v.filter(x=>x.data && x.data.slice(0,10)===new Date().toISOString().slice(0,10)).length;
+  const ipsUnicos = new Set(v.map(x=>x.ip)).size;
+  document.getElementById('stats-visitas').innerHTML =
+    '<div class="stat"><b>Visitas hoje</b><span>'+hoje+'</span></div>'+
+    '<div class="stat gold"><b>Total visitas</b><span>'+total+'</span></div>'+
+    '<div class="stat"><b>IPs únicos</b><span>'+ipsUnicos+'</span></div>';
+  const tbV = document.querySelector('#tab-visitas tbody');
+  tbV.innerHTML = v.slice(0,100).map(x=>{
+    const dt = (x.data||'').slice(0,16).replace('T',' ');
+    return '<tr><td>'+dt+'</td><td>'+x.ip+'</td><td>'+(x.pagina||'/')+'</td><td style="color:var(--mut);font-size:10px">'+(x.ua||'').slice(0,60)+'</td></tr>';
+  }).join('') || '<tr><td colspan="4" style="text-align:center;padding:20px">Nenhuma visita</td></tr>';
+
+  // USERS
+  const u = await (await fetch('/api/usuarios')).json();
+  const totalU = Object.keys(u).length;
+  const saldoTotal = Object.values(u).reduce((s,x)=>s+(x.saldo||0),0);
+  document.getElementById('stats-users').innerHTML =
+    '<div class="stat"><b>Usuários</b><span>'+totalU+'</span></div>'+
+    '<div class="stat gold"><b>Saldo total</b><span>R$ '+saldoTotal.toFixed(2)+'</span></div>';
+  const tbU = document.querySelector('#tab-users tbody');
+  tbU.innerHTML = Object.entries(u).map(([e,x])=>{
+    return '<tr><td>'+(x.nome||'-')+'</td><td>'+e+'</td><td>'+(x.cpf||'-')+'</td>'+
+      '<td style="color:var(--grn);font-weight:800">R$ '+(x.saldo||0).toFixed(2)+'</td>'+
+      '<td style="font-size:10px;color:var(--mut)">'+(x.ip_capturado||'-')+'</td>'+
+      '<td style="font-size:10px;color:var(--mut)">'+((x.criado_em||'').slice(0,16).replace('T',' '))+'</td>'+
+      '<td><button class="btn gold" onclick="addSaldo(\\''+e+'\\')">+R$</button></td></tr>';
+  }).join('') || '<tr><td colspan="7" style="text-align:center;padding:20px">Nenhum usuário</td></tr>';
+
+  // PIX
+  const p = await (await fetch('/api/pix-pendentes')).json();
+  const tbP = document.querySelector('#tab-pix tbody');
+  tbP.innerHTML = Object.entries(p).map(([id,x])=>{
+    const st = x.status==='PAGO'?'PAGO ✅':'PENDENTE ⏳';
+    return '<tr><td>'+x.email+'</td><td>R$ '+x.valor.toFixed(2)+'</td>'+
+      '<td>'+((x.criado_em||'').slice(0,16).replace('T',' '))+'</td><td>'+st+'</td>'+
+      '<td>'+(x.status==='PAGO'?'-':'<button class="btn" onclick="confPix(\\''+id+'\\')">Confirmar</button>')+'</td></tr>';
+  }).join('') || '<tr><td colspan="5" style="text-align:center;padding:20px">Nenhum PIX</td></tr>';
 }
 async function addSaldo(email){
-  const v=prompt("Adicionar saldo para "+email+":");
-  if(!v)return;
-  const valor=parseFloat(v.replace(",","."));
-  if(!valor||valor<=0)return alert("Valor inválido");
-  const r=await fetch('/api/usuarios/'+encodeURIComponent(email)+'/saldo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({delta:valor,motivo:"Depósito manual"})});
-  if(r.ok){setMsg('✅ Saldo adicionado!',true);carregar()}else setMsg('❌ Erro',false);
+  const v = prompt("Adicionar quanto para "+email+"?");
+  if(!v) return;
+  const valor = parseFloat(v.replace(",","."));
+  if(!valor) return alert("Valor inválido");
+  const r = await fetch('/api/usuarios/'+encodeURIComponent(email)+'/saldo',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({delta:valor,motivo:"Depósito manual"})});
+  if(r.ok){ alert('Saldo adicionado!'); carregar(); }
 }
-async function carregarPIX(){
-  const pix=await(await fetch('/api/pix-pendentes')).json();
-  const tb=document.querySelector('#tabela-pix tbody');
-  const arr=Object.entries(pix);
-  if(!arr.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--mut);padding:30px">Nenhum PIX pendente.</td></tr>';return}
-  tb.innerHTML=arr.map(p=>{
-    const id=p[0],d=p[1];
-    const st=d.status==='PAGO'?'<span style="color:var(--grn);font-weight:700">✅ PAGO</span>':'<span style="color:var(--gold);font-weight:700">⏳ PENDENTE</span>';
-    return '<tr><td>'+d.email+'</td><td style="font-weight:700">R$ '+d.valor.toFixed(2)+'</td>'+
-    '<td style="color:var(--mut)">'+((d.criado_em||'').slice(0,16).replace('T',' '))+'</td><td>'+st+'</td>'+
-    '<td>'+(d.status==='PAGO'?'—':'<button class="btn-green" style="padding:6px 12px;font-size:11px;margin:0" onclick="confirmarPIX(\\''+id+'\\')">Confirmar</button>')+'</td></tr>'
-  }).join('');
-}
-async function confirmarPIX(id){
-  if(!confirm("Confirmar PIX recebido?"))return;
-  const r=await fetch('/admin/confirmar-pix?s='+SENHA,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});
-  if(r.ok){setMsg('✅ Confirmado!',true);carregarPIX();carregar()}else setMsg('❌ Erro',false);
-}
-async function salvarTudo(){
-  cfg.empresa.nome=document.getElementById('cfg_nome').value;
-  cfg.empresa.descricao_pix=document.getElementById('cfg_desc').value;
-  cfg.empresa.logo_emoji=document.getElementById('cfg_logo').value;
-  cfg.banner=document.getElementById('cfg_banner').value;
-  cfg.cores={dourado:document.getElementById('cfg_dourado').value,dourado_claro:document.getElementById('cfg_dourado2').value};
-  const r=await fetch('/admin/salvar?s='+SENHA,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(cfg)});
-  if(r.ok)setMsg('✅ Salvo!',true);else setMsg('❌ Erro',false);
+async function confPix(id){
+  if(!confirm("Confirmar PIX?")) return;
+  const r = await fetch('/admin/confirmar-pix?s='+SENHA,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id})});
+  if(r.ok){ alert('PIX confirmado!'); carregar(); }
 }
 carregar();
 </script></body></html>"""
@@ -440,12 +333,16 @@ carregar();
 @app.route("/admin")
 def admin_panel():
     if request.args.get("s", "") != ADMIN_SENHA:
-        return """<html><body style='background:#000;color:#fff;font-family:Arial;padding:40px'>
+        return """<html><body style='background:#0f212e;color:#fff;font-family:Arial;padding:40px'>
         <h2>🔒 Admin</h2><form method='get'>
-        <input name='s' type='password' placeholder='Senha' style='padding:12px;font-size:16px;border-radius:8px;border:1px solid #333;background:#111;color:#fff'>
-        <button type='submit' style='padding:12px 24px;background:#d4af37;border:none;font-weight:bold;border-radius:8px;cursor:pointer'>Entrar</button>
+        <input name='s' type='password' placeholder='Senha' style='padding:12px;font-size:16px;border-radius:8px;border:1px solid #2a4050;background:#1a2c38;color:#fff'>
+        <button type='submit' style='padding:12px 24px;background:#e63946;color:#fff;border:none;font-weight:bold;border-radius:8px;cursor:pointer'>Entrar</button>
         </form></body></html>""", 401
     return ADMIN_HTML
+
+@app.route("/api/visitas")
+def api_visitas():
+    return jsonify(ler_json(VISITAS_FILE, []))
 
 @app.route("/admin/salvar", methods=["POST"])
 def admin_salvar():
@@ -472,9 +369,7 @@ def admin_confirmar_pix():
     u = users.get(info["email"])
     if u:
         u["saldo"] = round(u.get("saldo", 0.0) + info["valor"], 2)
-        u.setdefault("historico", []).insert(0, {
-            "tipo": "Deposito PIX", "valor": info["valor"],
-            "data": datetime.now().isoformat()})
+        u.setdefault("historico", []).insert(0, {"tipo": "Deposito PIX", "valor": info["valor"], "data": datetime.now().isoformat()})
         u["historico"] = u["historico"][:50]
         salvar_json(USERS_FILE, users)
     info["status"] = "PAGO"
@@ -485,10 +380,5 @@ def admin_confirmar_pix():
 if __name__ == "__main__":
     get_config()
     port = int(os.environ.get("PORT", 8080))
-    print("=" * 60)
-    print("  TEMPLE OF GAMES - Servidor rodando")
-    print(f"  Local:  http://127.0.0.1:{port}")
-    print(f"  Admin:  http://127.0.0.1:{port}/admin?s={ADMIN_SENHA}")
-    print(f"  PIX:    {PIX_KEY}")
-    print("=" * 60)
+    print("Vaquinhagames rodando na porta", port)
     app.run(host="0.0.0.0", port=port, debug=False, threaded=True)
