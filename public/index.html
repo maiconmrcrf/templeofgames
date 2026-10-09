@@ -168,14 +168,6 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
   <button class="btn-cadastrar" onclick="abrirCadastro()">Cadastrar</button>
 </div>
 
-<!-- HERO BANNER -->
-<div class="hero-banner" id="heroBanner">
-  <div class="icone">🎰</div>
-  <h1 id="heroTitulo">O Maior Cassino Online do Mundo</h1>
-  <p id="heroSub">Cadastre-se e comece a jogar em segundos</p>
-  <button class="btn-cadastrar" onclick="abrirCadastro()">Cadastre-se</button>
-</div>
-
 <!-- JOGOS -->
 <div class="sec-head">
   <h2>🎰 Jogos Populares</h2>
@@ -499,12 +491,6 @@ function sair(){
 function aplicarUsuario(){
   renderHeader();
   renderMenu();
-  const heroBtn=document.getElementById('heroBanner');
-  if(usuario){
-    heroBtn.style.display='none';
-  }else{
-    heroBtn.style.display='block';
-  }
 }
 
 function atualizarSaldoUI(v){
@@ -667,12 +653,6 @@ function carregarJogos(){
   const grid=document.getElementById('grid');
   for(let i=0;i<6;i++){const s=document.createElement('div');s.className='skel';grid.appendChild(s);}
   fetch(API+'/api/config').then(r=>r.json()).then(cfg=>{
-    if(cfg.empresa && cfg.empresa.nome){
-      document.getElementById('heroTitulo').textContent='O Maior Cassino Online do Mundo';
-    }
-    if(cfg.banner){
-      document.getElementById('heroSub').textContent=cfg.banner;
-    }
     jogosData=cfg.jogos||[];
     grid.innerHTML='';
     jogosData.forEach((j,i)=>{
