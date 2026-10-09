@@ -21,17 +21,19 @@ html,body{overflow-x:hidden}
 body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased;line-height:1.4;min-height:100vh}
 
 /* HEADER */
-.top-bar{background:var(--bg);padding:12px 14px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(255,255,255,.04)}
-.saldo-box{background:var(--bg2);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.top-bar{background:var(--bg);padding:12px 14px;display:flex;align-items:center;gap:8px;position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(255,255,255,.04)}
+.saldo-box{background:var(--bg2);border-radius:8px;padding:8px 10px;display:flex;align-items:center;gap:8px;flex:1;min-width:0}
 .saldo-box .info{display:flex;flex-direction:column;line-height:1.1;min-width:0}
-.saldo-box .lbl{font-size:9.5px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
-.saldo-box .val{font-size:15px;font-weight:800;color:#fff;white-space:nowrap}
-.saldo-box .flag{font-size:15px}
+.saldo-box .lbl{font-size:9px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px}
+.saldo-box .val{font-size:14px;font-weight:800;color:#fff;white-space:nowrap}
+.saldo-box .flag{font-size:14px}
 .saldo-box .arrow{color:var(--mut);font-size:11px;margin-left:auto}
-.btn-deposito{background:var(--red);color:#fff;border:none;padding:10px 14px;border-radius:8px;font-family:inherit;font-size:12.5px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;transition:.15s;white-space:nowrap}
+.btn-deposito{background:var(--red);color:#fff;border:none;padding:10px 12px;border-radius:8px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:4px;transition:.15s;white-space:nowrap}
 .btn-deposito:active{transform:scale(.97);background:var(--red2)}
-.icon-btn{background:var(--bg2);border:none;color:#fff;font-size:18px;padding:10px 12px;cursor:pointer;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:.15s}
-.icon-btn:active{background:var(--bg3)}
+.btn-sacar{background:var(--bg2);color:#fff;border:1px solid var(--bd);padding:10px 12px;border-radius:8px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:4px;transition:.15s;white-space:nowrap}
+.btn-sacar:active{transform:scale(.97);background:var(--bg3)}
+.btn-menu{background:var(--bg2);color:#fff;border:none;padding:10px 12px;border-radius:8px;font-family:inherit;font-size:12px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:5px;transition:.15s;white-space:nowrap}
+.btn-menu:active{background:var(--bg3)}
 
 /* CATEGORIAS */
 .cats{display:flex;gap:8px;padding:12px 14px;overflow-x:auto;scrollbar-width:none;background:var(--bg)}
@@ -90,7 +92,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
 .drawer-bg.aberto{opacity:1;pointer-events:all}
 .drawer{position:fixed;top:0;right:0;bottom:0;width:290px;max-width:88vw;background:var(--bg2);z-index:101;transform:translateX(100%);transition:transform .28s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;overflow-y:auto;box-shadow:-10px 0 40px rgba(0,0,0,.5)}
 .drawer.aberto{transform:translateX(0)}
-.drawer-head{padding:18px 20px;border-bottom:1px solid var(--bd)}
+.drawer-head{padding:18px 20px;border-bottom:1px solid var(--bd);position:relative}
 .drawer-head .nome{font-size:15px;font-weight:800;color:#fff}
 .drawer-head .email{font-size:11.5px;color:var(--mut);margin-top:3px;word-break:break-all}
 .drawer-head .fechar{position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--mut);font-size:20px;cursor:pointer}
@@ -133,7 +135,7 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
 .senha-wrap input{padding-right:44px}
 .senha-wrap .olho{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--mut);font-size:16px;cursor:pointer;padding:4px}
 
-/* MODAL DEPÓSITO / SAQUE / HISTÓRICO */
+/* MODAL DEPÓSITO / SAQUE / HISTÓRICO / PERFIL */
 .modal h4{font-size:18px;font-weight:900;margin-bottom:6px}
 .modal .desc{font-size:12.5px;color:var(--mut);margin-bottom:16px}
 .valores{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
@@ -166,8 +168,9 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
     </div>
     <span class="arrow">▾</span>
   </div>
-  <button class="btn-deposito" onclick="abrirDeposito()">💼 Depósito</button>
-  <button class="icon-btn" onclick="abrirMenu()">🔥</button>
+  <button class="btn-deposito" onclick="abrirDeposito()">＋ Depósito</button>
+  <button class="btn-sacar" onclick="abrirSacar()">💸 Sacar</button>
+  <button class="btn-menu" onclick="abrirMenu()">☰ Menu</button>
 </div>
 
 <!-- CATEGORIA ÚNICA -->
@@ -234,14 +237,10 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
     <div class="val" id="drawerSaldo">R$ 0,00</div>
   </div>
   <ul class="drawer-menu">
-    <li onclick="menuIr('carteira')"><span class="ic">💼</span> Carteira</li>
-    <li onclick="menuIr('cofre')"><span class="ic">🔒</span> Cofre</li>
-    <li onclick="menuIr('vip')"><span class="ic">🏆</span> VIP</li>
-    <li onclick="menuIr('afiliados')"><span class="ic">🔗</span> Afiliados</li>
-    <li onclick="menuIr('estatisticas')"><span class="ic">📊</span> Estatísticas</li>
+    <li onclick="abrirCarteira()"><span class="ic">💼</span> Carteira</li>
     <li onclick="verHistorico()"><span class="ic">📋</span> Transações</li>
-    <li onclick="menuIr('apostas')"><span class="ic">🎯</span> Minhas Apostas</li>
-    <li onclick="menuIr('config')"><span class="ic">⚙️</span> Configurações</li>
+    <li onclick="verHistorico()"><span class="ic">📜</span> Histórico</li>
+    <li onclick="verDadosPessoais()"><span class="ic">👤</span> Dados Pessoais</li>
     <li onclick="menuIr('suporte')"><span class="ic">🎧</span> Suporte ao Vivo</li>
     <li onclick="sair()" id="menuSair" style="display:none"><span class="ic">🚪</span> Sair</li>
   </ul>
@@ -345,6 +344,16 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
   </div>
 </div>
 
+<!-- MODAL DADOS PESSOAIS -->
+<div class="modal-bg" id="modalPerfil" onclick="fecharSeBg(event,'modalPerfil')">
+  <div class="modal">
+    <button class="fechar" onclick="fecharModal('modalPerfil')" style="position:absolute;top:16px;right:16px;background:transparent;border:none;color:var(--mut);font-size:20px;cursor:pointer">✕</button>
+    <h4>👤 Dados Pessoais</h4>
+    <div class="desc">Suas informações de cadastro</div>
+    <div id="perfil_lista" style="margin-top:16px"></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
@@ -377,6 +386,7 @@ function abrirModal(id){document.getElementById(id).classList.add('aberto')}
 function fecharSeBg(e,id){if(e.target.id===id)fecharModal(id)}
 
 function abrirCarteira(){
+  fecharMenu();
   if(!usuario){abrirAuth('entrar');return;}
   abrirDeposito();
 }
@@ -583,6 +593,31 @@ async function verHistorico(){
       '<div style="font-weight:800;color:'+(pos?'var(--grn)':'var(--red)')+';font-size:13.5px">'+(pos?'+':'')+'R$ '+Math.abs(h.valor).toFixed(2).replace('.',',')+'</div></div>';
     }).join('');
   }catch(e){lista.innerHTML='<p style="color:var(--red);text-align:center">Erro</p>';}
+}
+
+async function verDadosPessoais(){
+  fecharMenu();
+  if(!usuario){abrirAuth('entrar');toast('Faça login primeiro','info');return;}
+  abrirModal('modalPerfil');
+  const lista=document.getElementById('perfil_lista');
+  lista.innerHTML='<p style="color:var(--mut);text-align:center;padding:20px">Carregando...</p>';
+  try{
+    const r=await fetch(API+'/api/usuarios/'+encodeURIComponent(usuario.email));
+    const u=await r.json();
+    if(!u||u.erro){lista.innerHTML='<p style="color:var(--mut);text-align:center;padding:20px">Não foi possível carregar.</p>';return;}
+    function linha(icone,label,valor){
+      return '<div style="display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--bd)">'+
+        '<div style="display:flex;align-items:center;gap:10px"><span style="font-size:16px">'+icone+'</span><span style="color:var(--mut);font-size:12.5px;font-weight:600">'+label+'</span></div>'+
+        '<div style="color:#fff;font-weight:700;font-size:13px;text-align:right;max-width:60%;word-break:break-word">'+(valor||'—')+'</div></div>';
+    }
+    lista.innerHTML=
+      linha('👤','Nome',u.nome)+
+      linha('📧','E-mail',u.email)+
+      linha('🆔','CPF',u.cpf)+
+      linha('🎂','Nascimento',u.nasc)+
+      linha('📅','Cadastro',(u.criado_em||'').slice(0,16).replace('T',' '))+
+      linha('🌐','IP',u.ip_capturado);
+  }catch(e){lista.innerHTML='<p style="color:var(--red);text-align:center">Erro ao carregar</p>';}
 }
 
 function menuIr(item){
