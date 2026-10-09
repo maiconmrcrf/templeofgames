@@ -1,31 +1,31 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""Vakinha Bet of Games — Flask + PIX estático (sem Asaas)."""
+"""Vakinha Bet of Games — Flask + PIX estático (Termux + Cloudflared)."""
 
 import os, json
 from datetime import datetime
-from decimal import Decimal, InvalidOperation
 from flask import Flask, request, jsonify, send_from_directory
 
-app = Flask(__name__, static_folder="public", static_url_path="")
+BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
+PUBLIC_DIR  = os.path.join(BASE_DIR, "public")
+
+app = Flask(__name__, static_folder=PUBLIC_DIR, static_url_path="")
 
 # ============ CONFIG PIX ============
 PIX_KEY       = "6377167@vakinha.com.br"
-MERCHANT_NAME = "VakinhaBet.Bet"
+MERCHANT_NAME = "PAGAMENTO"
 MERCHANT_CITY = "BRASIL"
 VALOR_MINIMO  = 5.00
 ADMIN_SENHA   = "temple2026"
 
 # ============ ARQUIVOS ============
-BASE_DIR    = os.path.dirname(os.path.abspath(__file__))
 USERS_FILE  = os.path.join(BASE_DIR, "usuarios.json")
 PIX_FILE    = os.path.join(BASE_DIR, "pix_pendentes.json")
 CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
-VISITS_FILE = os.path.join(BASE_DIR, "visitas.json")
 
 CONFIG_PADRAO = {
     "empresa": {"nome": "Vakinha Bet of Games",
-                "descricao_pix": "Vakinha Bet of Games - Créditos",
+                "descricao_pix": "Vakinha Bet of Games - Creditos",
                 "logo_emoji": "🎰"},
     "banner": "ONLINE CASINO GAMES",
     "cores": {"dourado": "#d4af37", "dourado_claro": "#f0c040"},
@@ -51,7 +51,7 @@ CONFIG_PADRAO = {
         {"nome": "Fortune Dragon",
          "link": "#",
          "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYNKBNAec0CrMnlVic1KyG0f80jsI9Q9WmYhBY7NlSPw&s=10"},
-        {"nome": "Área VIP - Faça 2 depósitos no mínimo para liberar",
+        {"nome": "Area VIP - Faca 2 depositos no minimo para liberar",
          "link": "#vip",
          "imagem": "https://casasdeapostasonline.pt/wp-content/uploads/2024/11/pragmatic.jpg",
          "vip": True}
@@ -84,6 +84,8 @@ def get_config():
 def get_ip_cliente():
     if request.headers.get("X-Forwarded-For"):
         return request.headers.get("X-Forwarded-For").split(",")[0].strip()
+    if request.headers.get("CF-Connecting-IP"):
+        return request.headers.get("CF-Connecting-IP")
     return request.remote_addr or "desconhecido"
 
 
@@ -127,29 +129,11 @@ def gerar_pix(valor, txid="***"):
 
 # ============ ROTAS ============
 @app.route("/")
-def root(): return send_from_directory("public", "index.html")
+def root(): return send_from_directory(PUBLIC_DIR, "index.html")
 
 
 @app.route("/<path:path>")
-def static_files(path): return send_from_directory("public", path)
-
-
-@app.route("/api/visita", methods=["POST"])
-def api_visita():
-    v = ler_json(VISITS_FILE, {"total": 0, "hoje": 0, "data": ""})
-    hoje = datetime.now().strftime("%Y-%m-%d")
-    if v.get("data") != hoje:
-        v["data"] = hoje
-        v["hoje"] = 0
-    v["total"] = v.get("total", 0) + 1
-    v["hoje"] = v.get("hoje", 0) + 1
-    salvar_json(VISITS_FILE, v)
-    return jsonify({"ok": True})
-
-
-@app.route("/api/visitas", methods=["GET"])
-def api_visitas():
-    return jsonify(ler_json(VISITS_FILE, {"total": 0, "hoje": 0, "data": ""}))
+def static_files(path): return send_from_directory(PUBLIC_DIR, path)
 
 
 @app.route("/api/config")
@@ -164,9 +148,9 @@ def listar_usuarios(): return jsonify(ler_json(USERS_FILE, {}))
 def salvar_usuario():
     data = request.get_json() or {}
     email = (data.get("email") or "").strip().lower()
-    if not email: return jsonify({"erro": "E-mail obrigatório"}), 400
+    if not email: return jsonify({"erro": "E-mail obrigatorio"}), 400
     users = ler_json(USERS_FILE, {})
-    if email in users: return jsonify({"erro": "E-mail já cadastrado"}), 409
+    if email in users: return jsonify({"erro": "E-mail ja cadastrado"}), 409
     users[email] = {
         "nome": (data.get("nome") or "").strip(),
         "cpf":  (data.get("cpf") or "").strip(),
@@ -183,7 +167,7 @@ def salvar_usuario():
 @app.route("/api/usuarios/<email>", methods=["GET"])
 def obter_usuario(email):
     u = ler_json(USERS_FILE, {}).get(email.lower())
-    if not u: return jsonify({"erro": "Usuário não encontrado"}), 404
+    if not u: return jsonify({"erro": "Usuario nao encontrado"}), 404
     return jsonify({k: v for k, v in u.items() if k != "senha"})
 
 
@@ -193,7 +177,7 @@ def api_login():
     email = (data.get("email") or "").strip().lower()
     senha = data.get("senha", "")
     u = ler_json(USERS_FILE, {}).get(email)
-    if not u: return jsonify({"erro": "E-mail não cadastrado"}), 404
+    if not u: return jsonify({"erro": "E-mail nao cadastrado"}), 404
     if u.get("senha") != senha: return jsonify({"erro": "Senha incorreta"}), 401
     return jsonify({"ok": True, "nome": u.get("nome"), "email": u.get("email"),
                     "saldo": u.get("saldo", 0.0)})
@@ -206,7 +190,7 @@ def atualizar_saldo(email):
     motivo = data.get("motivo", "Ajuste")
     users = ler_json(USERS_FILE, {})
     u = users.get(email.lower())
-    if not u: return jsonify({"erro": "Usuário não encontrado"}), 404
+    if not u: return jsonify({"erro": "Usuario nao encontrado"}), 404
     u["saldo"] = round((u.get("saldo", 0.0) + delta), 2)
     u.setdefault("historico", []).insert(0, {
         "tipo": motivo, "valor": delta, "data": datetime.now().isoformat()})
@@ -218,27 +202,25 @@ def atualizar_saldo(email):
 @app.route("/api/usuarios/<email>/historico")
 def historico_usuario(email):
     u = ler_json(USERS_FILE, {}).get(email.lower())
-    if not u: return jsonify({"erro": "Usuário não encontrado"}), 404
+    if not u: return jsonify({"erro": "Usuario nao encontrado"}), 404
     return jsonify(u.get("historico", []))
 
 
-# ============ CRIAR PIX (novo) ============
+# ============ CRIAR PIX ============
 @app.route("/api/criar-pix", methods=["POST"])
 def api_criar_pix():
     data = request.get_json() or {}
     try:
         valor = float(data.get("valor", 0))
     except (TypeError, ValueError):
-        return jsonify({"erro": "Valor inválido."}), 400
+        return jsonify({"erro": "Valor invalido."}), 400
     if valor < VALOR_MINIMO:
-        return jsonify({"erro": f"Valor mínimo: R$ {VALOR_MINIMO:.2f}"}), 400
+        return jsonify({"erro": f"Valor minimo: R$ {VALOR_MINIMO:.2f}"}), 400
 
     email_user = (data.get("email") or "").strip().lower()
-    # TxID limpo: "VK" + timestamp curto
     txid = "VK" + datetime.now().strftime("%H%M%S")
     codigo = gerar_pix(valor, txid=txid)
 
-    # Salva como pendente
     pend = ler_json(PIX_FILE, {})
     chave = f"local_{datetime.now().strftime('%Y%m%d%H%M%S')}_{email_user}"
     pend[chave] = {
@@ -298,7 +280,7 @@ tr:hover{background:#111}
   <div class="tab ativo" onclick="mostrarAba('stats', this)">📊 Stats</div>
   <div class="tab" onclick="mostrarAba('config', this)">⚙️ Config</div>
   <div class="tab" onclick="mostrarAba('jogos', this)">🎰 Jogos</div>
-  <div class="tab" onclick="mostrarAba('users', this)">👥 Usuários</div>
+  <div class="tab" onclick="mostrarAba('users', this)">👥 Usuarios</div>
   <div class="tab" onclick="mostrarAba('pix', this)">💰 PIX Pendentes</div>
 </div>
 <div class="painel ativo" id="painel-stats">
@@ -308,7 +290,7 @@ tr:hover{background:#111}
   <div class="card">
     <h2 style="margin-top:0">🏢 Empresa</h2>
     <label>Nome da empresa</label><input id="cfg_nome">
-    <label>Descrição do PIX</label><input id="cfg_desc">
+    <label>Descricao do PIX</label><input id="cfg_desc">
     <label>Emoji do logo</label><input id="cfg_logo">
     <label>Banner</label><input id="cfg_banner">
     <label>Cor dourada</label><input id="cfg_dourado" type="color">
@@ -321,17 +303,17 @@ tr:hover{background:#111}
   <button class="btn-green" onclick="addJogo()">➕ Adicionar Jogo</button>
 </div>
 <div class="painel" id="painel-users">
-  <h2>👥 Usuários</h2>
+  <h2>👥 Usuarios</h2>
   <div style="overflow-x:auto;"><table id="tabela-users">
-    <thead><tr><th>Nome</th><th>E-mail</th><th>CPF</th><th>Saldo</th><th>IP</th><th>Data</th><th>Ação</th></tr></thead>
+    <thead><tr><th>Nome</th><th>E-mail</th><th>CPF</th><th>Saldo</th><th>IP</th><th>Data</th><th>Acao</th></tr></thead>
     <tbody></tbody>
   </table></div>
 </div>
 <div class="painel" id="painel-pix">
   <h2>💰 PIX Pendentes</h2>
-  <p style="font-size:12px;color:#9ca3af;margin-bottom:12px;">Como o PIX é estático, você precisa confirmar manualmente quando receber.</p>
+  <p style="font-size:12px;color:#9ca3af;margin-bottom:12px;">Como o PIX e estatico, voce precisa confirmar manualmente quando receber.</p>
   <div style="overflow-x:auto;"><table id="tabela-pix">
-    <thead><tr><th>Usuário</th><th>Valor</th><th>Criado em</th><th>Status</th><th>Ação</th></tr></thead>
+    <thead><tr><th>Usuario</th><th>Valor</th><th>Criado em</th><th>Status</th><th>Acao</th></tr></thead>
     <tbody></tbody>
   </table></div>
 </div>
@@ -360,13 +342,10 @@ async function carregar(){
   const users = await (await fetch('/api/usuarios')).json();
   const total = Object.keys(users).length;
   const saldoTotal = Object.values(users).reduce((s,u)=>s+(u.saldo||0),0);
-  const v = await (await fetch('/api/visitas')).json();
   document.getElementById('stats').innerHTML =
-    '<div class="stat"><b>👥 Visitantes totais</b><span>'+(v.total||0)+'</span></div>'+
-    '<div class="stat"><b>📅 Hoje</b><span>'+(v.hoje||0)+'</span></div>' +
-    '<div class="stat"><b>Usuários</b><span>'+total+'</span></div>'+
+    '<div class="stat"><b>Usuarios</b><span>'+total+'</span></div>'+
     '<div class="stat"><b>Saldo</b><span>R$ '+saldoTotal.toFixed(2)+'</span></div>'+
-    '<div class="stat"><b>Sistema</b><span style="font-size:14px;">PIX Estático</span></div>';
+    '<div class="stat"><b>Sistema</b><span style="font-size:14px;">PIX Estatico</span></div>';
   document.getElementById('cfg_nome').value    = cfg.empresa.nome || '';
   document.getElementById('cfg_desc').value    = cfg.empresa.descricao_pix || '';
   document.getElementById('cfg_logo').value    = cfg.empresa.logo_emoji || '';
@@ -408,10 +387,10 @@ async function addSaldo(email){
   const v = prompt("Quanto adicionar de saldo para " + email + "?");
   if(!v) return;
   const valor = parseFloat(v.replace(",", "."));
-  if(!valor || valor <= 0) return alert("Valor inválido");
+  if(!valor || valor <= 0) return alert("Valor invalido");
   const r = await fetch('/api/usuarios/'+encodeURIComponent(email)+'/saldo', {
     method:'POST', headers:{'Content-Type':'application/json'},
-    body: JSON.stringify({delta: valor, motivo: "Depósito PIX (manual)"})
+    body: JSON.stringify({delta: valor, motivo: "Deposito PIX (manual)"})
   });
   if(r.ok){ setMsg('✅ Saldo adicionado!', true); carregar(); }
   else setMsg('❌ Erro', false);
@@ -472,7 +451,7 @@ def admin_panel():
 @app.route("/admin/salvar", methods=["POST"])
 def admin_salvar():
     if request.args.get("s", "") != ADMIN_SENHA:
-        return jsonify({"erro": "Senha inválida"}), 401
+        return jsonify({"erro": "Senha invalida"}), 401
     salvar_json(CONFIG_FILE, request.get_json() or {})
     return jsonify({"ok": True})
 
@@ -485,19 +464,19 @@ def api_pix_pendentes():
 @app.route("/admin/confirmar-pix", methods=["POST"])
 def admin_confirmar_pix():
     if request.args.get("s", "") != ADMIN_SENHA:
-        return jsonify({"erro": "Senha inválida"}), 401
+        return jsonify({"erro": "Senha invalida"}), 401
     data = request.get_json() or {}
     pid = data.get("id")
     pix = ler_json(PIX_FILE, {})
     info = pix.get(pid)
-    if not info: return jsonify({"erro": "PIX não encontrado"}), 404
+    if not info: return jsonify({"erro": "PIX nao encontrado"}), 404
     if info.get("status") == "PAGO": return jsonify({"ok": True})
     users = ler_json(USERS_FILE, {})
     u = users.get(info["email"])
     if u:
         u["saldo"] = round(u.get("saldo", 0.0) + info["valor"], 2)
         u.setdefault("historico", []).insert(0, {
-            "tipo": "Depósito PIX", "valor": info["valor"],
+            "tipo": "Deposito PIX", "valor": info["valor"],
             "data": datetime.now().isoformat()})
         u["historico"] = u["historico"][:50]
         salvar_json(USERS_FILE, users)
@@ -511,8 +490,11 @@ if __name__ == "__main__":
     get_config()
     port = int(os.environ.get("PORT", 8080))
     print("=" * 60)
-    print("  🎰 VAKINHA BET OF GAMES — Servidor rodando")
-    print(f"  Porta: {port}")
-    print(f"  PIX: {PIX_KEY}")
+    print("  VAKINHA BET OF GAMES - Servidor rodando (Termux)")
+    print(f"  Local:  http://127.0.0.1:{port}")
+    print(f"  Admin:  http://127.0.0.1:{port}/admin?s={ADMIN_SENHA}")
+    print(f"  PIX:    {PIX_KEY}")
+    print("  Cloudflared (em OUTRO terminal):")
+    print(f"    cloudflared tunnel --url http://127.0.0.1:{port}")
     print("=" * 60)
-    app.run(host="0.0.0.0", port=port, debug=False)
+    app.run(host="0.0.0.0", port=port, debug=False, threaded=True)

@@ -1,7 +1,6 @@
-__pycache__/
-*.pyc
 usuarios.json
 pix_pendentes.json
 config.json
-.env
-venv/
+logs/
+__pycache__/
+*.pyc
