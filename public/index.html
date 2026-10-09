@@ -218,6 +218,10 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
     <div class="lbl">Saldo disponível</div>
     <div class="val" id="drawerSaldo">R$ 0,00</div>
   </div>
+  <div class="drawer-saldo" id="drawerSaldoBloqBox" style="display:none;background:linear-gradient(135deg,rgba(243,186,47,.1),rgba(243,186,47,.02));border-color:rgba(243,186,47,.3)">
+    <div id="drawerSaldoBloq"></div>
+    <div style="font-size:11px;color:var(--mut);margin-top:6px;line-height:1.5">Liberado automaticamente após o <b style="color:var(--gold)">primeiro depósito</b>.</div>
+  </div>
   <ul class="drawer-menu" id="drawerMenu"></ul>
   <div class="drawer-foot">Temple of Games © 2026</div>
 </aside>
@@ -374,9 +378,6 @@ function renderHeader(){
   const bar=document.getElementById('topBar');
   if(usuario){
     bar.innerHTML=
-      '<div class="logo-top" style="font-size:14px;font-weight:900;letter-spacing:1.2px;color:#fff;display:flex;align-items:center;gap:6px;margin-right:8px">'+
-        '<span style="font-size:20px">🐂</span>'+
-      '</div>'+
       '<div class="saldo-box" onclick="abrirCarteira()">'+
         '<span class="flag">🇧🇷</span>'+
         '<div class="info">'+
@@ -407,6 +408,16 @@ function renderMenu(){
     document.getElementById('drawerEmail').textContent=usuario.email;
     saldoBox.style.display='block';
     document.getElementById('drawerSaldo').textContent='R$ '+parseFloat(usuario.saldo||0).toFixed(2).replace('.',',');
+    // Atualiza saldo bloqueado
+    const sb = document.getElementById('drawerSaldoBloq');
+    if(sb){
+      const temSaldo = (usuario.saldo||0) >= 5;
+      if(temSaldo){
+        sb.innerHTML='<div class="lbl">Saldo bloqueado</div><div class="val" style="color:var(--grn)">R$ 5,00 ✅ Liberado</div>';
+      }else{
+        sb.innerHTML='<div class="lbl">Saldo bloqueado</div><div class="val" style="color:var(--gold)">R$ 5,00 🔒</div>';
+      }
+    }
     lista.innerHTML=
       '<li onclick="abrirCarteira()"><span class="ic">💼</span> Carteira</li>'+
       '<li onclick="verHistorico()"><span class="ic">📋</span> Transações</li>'+
