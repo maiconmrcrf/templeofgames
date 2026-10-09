@@ -160,6 +160,14 @@ body{background:var(--bg);color:var(--txt);font-family:'Inter',sans-serif;-webki
 <!-- HEADER -->
 <div class="top-bar" id="topBar"></div>
 
+<!-- HERO BANNER -->
+<div class="hero-banner">
+  <div class="icone">🎰</div>
+  <h1>O Maior Cassino Online do Mundo</h1>
+  <p>ONLINE CASINO GAMES</p>
+  <button class="btn-cadastrar" onclick="abrirCadastro()">Cadastrar</button>
+</div>
+
 <!-- JOGOS -->
 <div class="sec-head">
   <h2>🎰 Jogos Populares</h2>
@@ -354,8 +362,8 @@ function renderHeader(){
       '<button class="btn-menu" onclick="abrirMenu()">☰ Menu</button>';
   }else{
     bar.innerHTML=
-      '<button class="btn-login" onclick="abrirAuth(\'entrar\')">Entrar</button>'+
-      '<button class="btn-cadastro" onclick="abrirAuth(\'cadastrar\')">Cadastrar</button>';
+      '<div style="flex:1"></div>'+
+      '<button class="btn-login" onclick="abrirAuth(\'entrar\')" style="flex:0 0 auto;padding:10px 24px">Entrar</button>';
   }
 }
 
@@ -483,6 +491,8 @@ function sair(){
 function aplicarUsuario(){
   renderHeader();
   renderMenu();
+  const hero=document.querySelector('.hero-banner');
+  if(hero) hero.style.display = usuario ? 'none' : 'block';
 }
 
 function atualizarSaldoUI(v){
